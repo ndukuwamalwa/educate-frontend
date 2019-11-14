@@ -20,6 +20,10 @@ import { BatchPageComponent } from './core/batch/batch-page/batch-page.component
 
 export const routes: Routes = [
     {
+        path: "",
+        component: StudentComponent
+    },
+    {
         path: 'users',
         component: UserComponent
     },
