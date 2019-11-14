@@ -1,0 +1,21 @@
+<p class="danger" *ngIf="http_422">
+  The received data contains errors. Please fill the indicated fields correctly.
+</p>
+<p class="danger" *ngIf="http_409">
+  Duplicate entries were found.
+</p>
+<p class="danger" *ngIf="http_400">
+  The server received a unexpected request.
+</p>
+<p class="green" *ngIf="http_200">
+  Operation succeeded.
+</p>
+<p class="green" *ngIf="http_201">
+  Creation successful.
+</p>
+<p class="danger" *ngIf="http_500">
+  Server problem. Please try again or contact developers.
+</p>
+<p class="danger" *ngIf="http_501">
+  Server problem. Please try again or contact developers.
+</p>

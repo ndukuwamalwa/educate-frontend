@@ -1,0 +1,188 @@
+<app-portal>
+  <ng-container class="render">
+    <div>
+      <button class="btn btn--blue" (click)="back()">Back</button>
+      <span class="item-title">{{exam?.name}}</span>
+    </div>
+    <div class="tabs tabs--vertical">
+      <ol class="tabs__links tabs__links--vertical">
+        <li data-revealId="details" data-default="true" appTabView>Details</li>
+        <li data-revealId="update" appTabView>Update details</li>
+        <li data-revealId="add-results" appTabView>Add results</li>
+        <li data-revealId="view-results" appTabView>View results</li>
+        <li data-revealId="danger" appTabView>Danger zone</li>
+      </ol>
+      <div class="tabs__content tabs__content--vertical">
+        <div data-revealId="details">
+          <app-loader *ngIf="isGettingDetails"></app-loader>
+          <table *ngIf="!isGettingDetails" class="details-table">
+            <tbody>
+              <tr>
+                <td>Title</td>
+                <td>{{exam?.name | titlecase}}</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>{{exam?.status | titlecase}}</td>
+              </tr>
+              <tr>
+                <td>Start date</td>
+                <td>{{exam?.startDate | date}}</td>
+              </tr>
+              <tr>
+                <td>End date</td>
+                <td>{{exam?.endDate | date}}</td>
+              </tr>
+              <tr>
+                <td>Term</td>
+                <td>{{exam?.term | uppercase}}</td>
+              </tr>
+              <tr>
+                <td>Grading system</td>
+                <td>{{exam?.grading | uppercase}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="update">
+          <form #form="ngForm" (ngSubmit)="updateExam(form.value)" ngNativeValidate>
+            <span></span>
+            <div class="input">
+              <fieldset>
+                <label for="name">Exam title</label>
+                <input type="text" id="name" name="name" required [ngModel]="exam?.name" autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="startDate">Start date</label>
+                <input type="date" id="startDate" name="startDate" [ngModel]="exam?.startDate" required>
+              </fieldset>
+              <fieldset>
+                <label for="endDate">End date</label>
+                <input type="date" id="endDate" name="endDate" [ngModel]="exam?.endDate" required>
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="term">Term</label>
+                <select name="term" id="term" required [ngModel]="exam?.termNo">
+                  <option value="1">Term I</option>
+                  <option value="2">Term II</option>
+                  <option value="3">Term III</option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label for="grading">Grading scheme</label>
+                <select name="grading" id="grading" required [ngModel]="exam?.gradingId">
+                  <option [value]="grading.id" *ngFor="let grading of gradings">{{grading.label}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSaving">Save</button>
+                <app-loader *ngIf="isSaving"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="add-results">
+          <form #resultsForm="ngForm" (ngSubmit)="getStudents(resultsForm.value)" ngNativeValidate>
+            <span>Add results</span>
+            <div class="inputs">
+              <fieldset>
+                <label for="batch">Select class</label>
+                <select name="batch" id="batch" ngModel required>
+                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name | titlecase}} -
+                    {{batch.academic_year}}</option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label for="subject">Select subject</label>
+                <select name="subject" id="subject" ngModel required>
+                  <option [value]="subject.id" *ngFor="let subject of subjects">{{subject.name}}</option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label style="color: transparent;">.</label>
+                <button class="btn btn--blue" [disabled]="isLoadingStudents">Load students</button>
+                <app-loader *ngIf="isLoadingStudents"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+          <app-loader *ngIf="isLoadingStudents"></app-loader>
+          <form #marksForm="ngForm" (ngSubmit)="addResults(marksForm.value)" ngNativeValidate *ngIf="selectedStudents">
+            <span></span>
+            <table>
+              <thead>
+                <tr>
+                  <th>Adm</th>
+                  <th>Name</th>
+                  <th>Marks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let student of selectedStudents">
+                  <label [for]="student.studentId">
+                    <td>{{student.adm}}</td>
+                    <td>{{student.student}}</td>
+                  </label>
+                  <td></td>
+                  <td>
+                    <input type="number" [id]="student.studentId" [name]="'student_' + student.studentId"
+                      [ngModel]="student.marks" min="0" max="100" maxlength="2">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSavingResults">Save</button>
+                <app-loader *ngIf="isSavingResults"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="view-results">
+          <form #viewResultsForm="ngForm" (ngSubmit)="viewResults(viewResultsForm.value.batch)" ngNativeValidate>
+            <span></span>
+            <div class="cat-selector">
+              <label for="batch">Select class</label>
+              <select name="batch" id="batch" ngModel required>
+                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name | titlecase}} -
+                  {{batch.academic_year}}</option>
+              </select>
+              <button class="btn btn--blue">View</button>
+            </div>
+          </form>
+          <app-loader *ngIf="isGettingResults"></app-loader>
+          <table *ngIf="!isGettingResults" id="resultsTable">
+            <thead>
+              <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th *ngFor="let sub of shortSubjectNames">{{sub.name}}</th>
+                <th>TOT</th>
+                <th>AVG</th>
+                <th>POS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let result of results; let i = index">
+                <td>{{result.adm}}</td>
+                <td>{{result.name}}</td>
+                <td *ngFor="let sub of result.subjects">{{sub.marks}}</td>
+                <td class="bold">{{result.total}}</td>
+                <td class="bold">{{result.avg}}</td>
+                <td class="bold">{{i + 1}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="danger">Danger zone</div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

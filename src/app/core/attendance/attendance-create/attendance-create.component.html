@@ -1,0 +1,92 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="mark-register" data-default="true" appTabView>Mark Register</li>
+        <li data-revealId="view-register" appTabView>View Register</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="mark-register">
+          <form #catForm="ngForm" (ngSubmit)="loadStudents(catForm.value.batch)" ngNativeValidate>
+            <span>Mark register</span>
+            <app-loader *ngIf="isGettingBatches"></app-loader>
+            <div class="cat-selector" *ngIf="!isGettingBatches">
+              <label for="batch">Select class</label>
+              <select name="batch" id="batch" required ngModel>
+                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+              </select>
+              <button class="btn btn--blue" [disabled]="isLoadingStudents">Load students</button>
+            </div>
+          </form>
+          <app-loader *ngIf="isLoadingStudents"></app-loader>
+          <table *ngIf="!isLoadingStudents && students">
+            <caption>Select students</caption>
+            <thead>
+              <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th class="not-mobile">Category</th>
+                <th>Present?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of students" [id]="student.adm" style="cursor: pointer;">
+                <td><label [for]="'_' + student.adm">{{student.adm}}</label></td>
+                <td><label [for]="'_' + student.adm">{{student.student | titlecase}}</label></td>
+                <td class="not-mobile"><label [for]="'_' + student.adm">{{student.batch}}</label></td>
+                <td><input type="checkbox" name="{{student.adm}}" [id]="'_' + student.adm"
+                    (change)="onPresentChange($event, student.studentId)"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"></td>
+                <td><button class="btn btn--blue" (click)="sendAttended()" [disabled]="isSendingAttendance">Mark
+                    Present</button></td>
+                <td><app-loader *ngIf="isSendingAttendance"></app-loader></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div data-revealId="view-register">
+          <form #attViewForm="ngForm" ngNativeValidate (ngSubmit)="viewAttendance(attViewForm.value)">
+            <span>View register</span>
+            <div class="cat-selector">
+              <label for="batch">Category</label>
+              <select name="batch" id="batch" required ngModel>
+                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+              </select>
+              <label for="date">Date</label>
+              <input type="date" id="date" required name="date" ngModel>
+              <button class="btn btn--blue" [disabled]="isGettingRegister">View</button>
+            </div>
+          </form>
+          <app-loader *ngIf="isGettingRegister"></app-loader>
+          <table *ngIf="!isGettingRegister && register">
+            <caption>Register</caption>
+            <thead>
+              <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th class="not-mobile">Date</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let att of register">
+                <td>{{att.adm | uppercase}}</td>
+                <td>{{att.student | titlecase}}</td>
+                <td class="not-mobile">{{att.day | date}}</td>
+                <td class="danger" (click)="remove(att.id)">Remove</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-attendance-dash></app-attendance-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

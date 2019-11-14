@@ -1,0 +1,82 @@
+<app-portal>
+  <ng-container class="render">
+    <table class="details-table" *ngIf="!updateMode">
+      <tbody>
+        <tr>
+          <td>Your name</td>
+          <td>Title</td>
+          <td>Username</td>
+          <td>Type of user</td>
+          <td>State</td>
+        </tr>
+        <tr>
+          <td>{{user?.name | titlecase}}</td>
+          <td>{{user?.title | titlecase}}</td>
+          <td>{{user?.username | lowercase}}</td>
+          <td>{{user?.type | titlecase}}</td>
+          <td>{{user?.state | titlecase}}</td>
+        </tr>
+        <tr>
+          <td colspan="5" style="text-align: right;opacity: 1;">
+            <button class="btn btn--blue" (click)="changeMode()">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form #updateForm="ngForm" (ngSubmit)="updateDetails(updateForm.value)" ngNativeValidate *ngIf="updateMode">
+      <span>Update your details</span>
+      <div class="input">
+        <fieldset>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" [ngModel]="user?.name" required autocomplete="off">
+        </fieldset>
+      </div>
+      <div class="input">
+        <fieldset>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" [ngModel]="user?.username" required autocomplete="off">
+        </fieldset>
+      </div>
+      <div class="submit">
+        <fieldset>
+          <button class="btn btn--blue" [disabled]="updateForm.pristine || isUpdating">Update</button>
+          <app-loader *ngIf="isUpdating"></app-loader>
+        </fieldset>
+      </div>
+    </form>
+    <form #passForm="ngForm" (ngSubmit)="changePassword(passForm.value)" ngNativeValidate>
+      <span>Update password</span>
+      <div class="input">
+        <fieldset>
+          <label for=""></label>
+          <input type="password" name="current" id="current" ngModel required placeholder="Current password">
+        </fieldset>
+      </div>
+      <div class="input">
+        <fieldset>
+          <label for=""></label>
+          <input type="password" name="new" id="new" ngModel required placeholder="New password" #newPass>
+        </fieldset>
+      </div>
+      <div class="input">
+        <fieldset>
+          <label for=""></label>
+          <input type="password" name="confirm" id="confirm" ngModel required placeholder="Confirm password"
+            #confirmPass>
+        </fieldset>
+      </div>
+      <div class="input">
+        <p class="danger" *ngIf="newPass.value !== confirmPass.value">Passwords do not match</p>
+      </div>
+      <div class="submit">
+        <fieldset>
+          <button class="btn btn--blue" [disabled]="isUpdatingPassword || (newPass.value !== confirmPass.value)">Change
+            password</button>
+          <app-loader *ngIf="isUpdatingPassword"></app-loader>
+        </fieldset>
+      </div>
+    </form>
+  </ng-container>
+  <ng-container class="insights"></ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

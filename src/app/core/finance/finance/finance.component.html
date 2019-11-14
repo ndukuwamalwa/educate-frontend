@@ -1,0 +1,264 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="fee-balances" data-default="true" appTabView>Balance</li>
+        <li data-revealId="fee-payments" appTabView (click)="getPayments()">Payments</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="fee-balances">
+          <div class="tabs tabs--vertical">
+            <ol class="tabs__links tabs__links--vertical">
+              <li data-revealId="all" data-default="true" appTabView>All balances</li>
+              <li data-revealId="batch-balance" appTabView (click)="getBatches()">Batch balance</li>
+              <li data-revealId="student" appTabView>Student balance</li>
+            </ol>
+            <div class="tabs__content tabs__content--vertical">
+              <div data-revealId="all">
+                <app-normal-pagination [total]="total" [sorts]="sorts" *ngIf="balances"
+                  (options)="onPaginationChange($event)"></app-normal-pagination>
+                <app-loader *ngIf="isGettingAllBalances"></app-loader>
+                <table *ngIf="!isGettingAllBalances">
+                  <thead>
+                    <tr>
+                      <th>Adm</th>
+                      <th>Name</th>
+                      <th>Total charged</th>
+                      <th>Total paid</th>
+                      <th>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let balance of balances" class="clickable" (click)="viewStudent(balance.id)">
+                      <td>{{balance.adm}}</td>
+                      <td>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</td>
+                      <td>{{balance.credit | currency: 'Ksh. '}}</td>
+                      <td>{{balance.debit | currency: 'Ksh. '}}</td>
+                      <td>{{balance.balance | currency: 'Ksh.'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div data-revealId="student">
+                <form #balanceForm="ngForm" (ngSubmit)="getStudentBalance(balanceForm.value.adm)" ngNativeValidate>
+                  <span>View student balance</span>
+                  <div class="cat-selector">
+                    <input type="text" name="adm" id="adm" required ngModel placeholder="Admission number"
+                      autocomplete="off">
+                    <button class="btn btn--blue" [disabled]="isGettingStudentBalance">View</button>
+                  </div>
+                </form>
+                <app-loader *ngIf="isGettingStudentBalance"></app-loader>
+                <table *ngIf="studentBalance">
+                  <tbody>
+                    <tr>
+                      <td>Name</td>
+                      <td>{{studentBalance.fname | titlecase}} {{studentBalance.lname | titlecase}}</td>
+                    </tr>
+                    <tr>
+                      <td>Charged</td>
+                      <td>{{studentBalance.credit | currency: 'Ksh. '}}</td>
+                    </tr>
+                    <tr>
+                      <td>Paid</td>
+                      <td>{{studentBalance.debit | currency: 'Ksh. '}}</td>
+                    </tr>
+                    <tr class="bold" [ngClass]="{
+                      blue: +studentBalance.balance === 0,
+                      danger: +studentBalance.balance > 0,
+                      green: +studentBalance.balance < 0
+                    }">
+                      <td>Balance</td>
+                      <td>{{studentBalance.balance | currency: 'Ksh. '}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div data-revealId="batch-balance">
+                <form #batchForm="ngForm" (ngSubmit)="getBatchBalance(batchForm.value.batch)" ngNativeValidate>
+                  <span></span>
+                  <div class="cat-selector">
+                    <label for="batch">Select batch</label>
+                    <app-loader *ngIf="isGettingBatches"></app-loader>
+                    <select name="batch" id="batch" ngModel required *ngIf="!isGettingBatches">
+                      <option [value]="batch.id" *ngFor="let batch of batches">
+                        {{batch.name}}-{{batch.academic_year}}
+                      </option>
+                    </select>
+                    <button class="btn btn--blue" [disabled]="isGettingBatches || isGettingBatchBalances">View
+                      balances</button>
+                  </div>
+                </form>
+                <app-loader *ngIf="isGettingBatchBalances"></app-loader>
+                <app-normal-pagination [total]="batchTotal"
+                  [sorts]="['id', 'adm', 'fname', 'lname', 'balance', 'credit', 'debit']" *ngIf="batchBalances"
+                  (options)="onBatchOptionsChange($event)"></app-normal-pagination>
+                <table *ngIf="!isGettingBatchBalances && batchBalances">
+                  <thead>
+                    <tr>
+                      <th>Adm</th>
+                      <th>Name</th>
+                      <th>Total charged</th>
+                      <th>Total paid</th>
+                      <th>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let balance of batchBalances" class="clickable" (click)="viewStudent(balance.id)">
+                      <td>{{balance.adm}}</td>
+                      <td>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</td>
+                      <td>{{balance.credit | currency: 'Ksh. '}}</td>
+                      <td>{{balance.debit | currency: 'Ksh. '}}</td>
+                      <td>{{balance.balance | currency: 'Ksh.'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-revealId="fee-payments">
+          <div class="tabs tabs--vertical">
+            <ol class="tabs__links tabs__links--vertical">
+              <li data-revealId="new-payments" data-default="true" appTabView>New payment</li>
+              <li data-revealId="all-payments" (click)="getPayments({}, true)" appTabView>All payments</li>
+              <li data-revealId="payment-by-date" appTabView>Payments by date</li>
+              <li data-revealId="print-by-date" appTabView>Print</li>
+            </ol>
+            <div class="tabs__content tabs__content--vertical">
+              <div data-revealId="all-payments">
+                <app-normal-pagination *ngIf="allPayments" [total]="totalPayments" (options)="onPaymentOptions($event)"
+                  [sorts]="['id', 'receiptNo','paidBy','adm','student','datePaid','amount']">
+                </app-normal-pagination>
+                <app-loader *ngIf="isGettingAllPayments"></app-loader>
+                <table *ngIf="!isGettingAllPayments">
+                  <thead>
+                    <tr>
+                      <th>Receipt No.</th>
+                      <th>Paid by</th>
+                      <th>Adm</th>
+                      <th>Student name</th>
+                      <th>Date paid</th>
+                      <th>Amount paid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let payment of allPayments" class="clickable" (click)="viewStudent(payment.studentId)">
+                      <td>{{payment.receiptNo}}</td>
+                      <td>{{payment.paidBy}}</td>
+                      <td>{{payment.adm}}</td>
+                      <td>{{payment.student}}</td>
+                      <td>{{payment.datePaid | date}}</td>
+                      <td>{{payment.amount | currency: 'Kshs. '}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div data-revealId="payment-by-date">
+                <form #byDateForm="ngForm" (ngSubmit)="viewByDate(byDateForm.value)" ngNativeValidate>
+                  <span></span>
+                  <div class="cat-selector">
+                    <label for="startDate">Enter start date</label>
+                    <input type="date" name="startDate" id="startDate" required ngModel>
+                    <label for="endDate">Enter end date</label>
+                    <input type="date" name="endDate" id="endDate" required ngModel>
+                    <button class="btn btn--blue">View</button>
+                  </div>
+                </form>
+                <app-loader *ngIf="isGettingAllPayments"></app-loader>
+                <table *ngIf="!isGettingAllPayments">
+                  <thead>
+                    <tr>
+                      <th>Receipt No.</th>
+                      <th>Paid by</th>
+                      <th>Adm</th>
+                      <th>Student name</th>
+                      <th>Date paid</th>
+                      <th>Amount paid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let payment of allPayments" class="clickable" (click)="viewStudent(payment.studentId)">
+                      <td>{{payment.receiptNo}}</td>
+                      <td>{{payment.paidBy}}</td>
+                      <td>{{payment.adm}}</td>
+                      <td>{{payment.student}}</td>
+                      <td>{{payment.datePaid | date}}</td>
+                      <td>{{payment.amount | currency: 'Kshs. '}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div data-revealId="new-payments">
+                <form #newPayment="ngForm" (ngSubmit)="pay(newPayment)" ngNativeValidate>
+                  <span>Enter payment details</span>
+                  <div class="input">
+                    <fieldset>
+                      <label for="receiptNo">Receipt/Transaction number</label>
+                      <input type="text" id="receiptNo" name="receiptNo" required ngModel autocomplete="off"
+                        autocapitalize="characters">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="student">Admission number</label>
+                      <input type="text" name="student" id="student" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="amount">Amount</label>
+                      <input type="number" name="amount" id="amount" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="datePaid">Date of payment</label>
+                      <input type="date" name="datePaid" id="datePaid" required ngModel>
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="paidBy">Paid by</label>
+                      <input type="text" name="paidBy" id="paidBy" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="submit">
+                    <fieldset>
+                      <button class="btn btn--blue" [disabled]="isSavingPayment">Save payment</button>
+                      <app-loader *ngIf="isSavingPayment"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
+              </div>
+              <div data-revealId="print-by-date">
+                <form #printPaymentsForm="ngForm" (ngSubmit)="printPayments(printPaymentsForm.value)" ngNativeValidate>
+                  <span></span>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="startDate">Start date</label>
+                      <input type="date" name="startDate" id="startDate" ngModel required>
+                    </fieldset>
+                    <fieldset>
+                      <label for="endDate">Start date</label>
+                      <input type="date" name="endDate" id="endDate" ngModel required>
+                    </fieldset>
+                    <fieldset>
+                      <label for="" style="color: transparent;">.</label>
+                      <button class="btn btn--blue">Print</button>
+                    </fieldset>
+                  </div>
+                </form>
+                <iframe [src]="printPaymentsUrl" *ngIf="printPaymentsUrl" frameborder="0"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-fee-dash></app-fee-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

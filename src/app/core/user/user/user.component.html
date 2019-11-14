@@ -1,0 +1,109 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="user-add" data-default="true" appTabView>Create user</li>
+        <li data-revealId="user-list" appTabView (click)="onViewUsers()">View users</li>
+        <li data-revealId="user-print" appTabView>Print users</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="user-add">
+          <form #userForm="ngForm" (ngSubmit)="addUser(userForm.value)" ngNativeValidate>
+            <span>New user</span>
+            <div class="input">
+              <fieldset>
+                <label for="name">Name of the user</label>
+                <input type="text" id="name" name="name" ngModel required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="title">Work title</label>
+                <input type="text" id="title" name="title" ngModel required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" ngModel required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" ngModel required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="type">Type of user</label>
+                <select name="type" id="type" required autocomplete="off" ngModel>
+                  <option value="Student">Student</option>
+                  <option value="Teacher">Teacher</option>
+                  <option value="Parent">Parent</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSaving">Add user</button>
+                <app-loader *ngIf="isSaving"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="user-list">
+          <app-normal-pagination [total]="totalUsers" 
+          [sorts]="userSorts" 
+          (options)="onListViewOptions($event)"
+          *ngIf="users">
+          </app-normal-pagination>
+          <app-loader *ngIf="isGettingUsers"></app-loader>
+          <table *ngIf="!isGettingUsers">
+            <caption>List of users</caption>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Username</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let u of users" class="clickable" title="Click for more actions" (click)="viewDetails(u.id)">
+                <td>{{u.name}}</td>
+                <td>{{u.title}}</td>
+                <td>{{u.username}}</td>
+                <td>{{u.type}}</td>
+                <td>{{u.state | titlecase}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="user-print">
+          <form #printForm="ngForm" (ngSubmit)="print(printForm.value.category)" ngNativeValidate>
+            <span></span>
+            <div class="cat-selector">
+              <label for="category">Select category</label>
+              <select name="category" id="category" ngModel required>
+                <option value="students">Students</option>
+                <option value="teachers">Teachers</option>
+                <option value="employees">Employees</option>
+                <option value="admins">Administrators</option>
+              </select>
+              <button class="btn btn--blue">Print</button>
+            </div>
+          </form>
+          <iframe [src]="printUrl" *ngIf="printUrl" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-user-dash></app-user-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

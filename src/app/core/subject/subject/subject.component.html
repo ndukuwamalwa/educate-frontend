@@ -1,0 +1,50 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="subject-add" data-default="true" appTabView>Create subject</li>
+        <li data-revealId="subject-list" appTabView (click)="getSubjects()">Subjects</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="subject-add">
+          <form #addForm="ngForm" (ngSubmit)="addSubject(addForm.value.name)" ngNativeValidate>
+            <span>Add new subject</span>
+            <div class="input">
+              <fieldset>
+                <label for="name">Name of the subject</label>
+                <input type="text" name="name" id="name" required ngModel autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSaving">Save subject</button>
+                <app-loader *ngIf="isSaving"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="subject-list">
+          <app-loader *ngIf="isGettingSubjects"></app-loader>
+          <table *ngIf="!isGettingSubjects">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subject of subjects">
+                <td>{{subject.name}}</td>
+                <td class="danger" (click)="delete(subject.id)">Delete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+      <app-subject-dash></app-subject-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

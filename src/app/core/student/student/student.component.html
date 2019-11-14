@@ -1,0 +1,181 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="student-add" data-default="true" appTabView>Add student</li>
+        <li data-revealId="student-list" appTabView (click)="viewStudents()">View students</li>
+        <li data-revealId="printing" appTabView (click)="printAll()">Printing</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="student-add">
+          <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="addStudent(studentForm.value)">
+            <span>New student</span>
+            <div class="inputs">
+              <fieldset>
+                <label for="adm">Admission number</label>
+                <input type="text" name="adm" id="adm" ngModel required autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="admitted">Date of Admission</label>
+                <input type="date" name="admitted" id="admitted" ngModel required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="fname">First name</label>
+                <input type="text" name="fname" id="fname" ngModel required autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="mname">Middle name</label>
+                <input type="text" name="mname" id="mname" ngModel autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="lname">Last name</label>
+                <input type="text" name="lname" id="lname" ngModel required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="dob">Date of Birth</label>
+                <input type="date" name="dob" id="dob" ngModel required autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="gender">Gender</label>
+                <div>
+                  <div>
+                    <input type="radio" id="male" name="gender" ngModel required value="Male">
+                    <label for="male">Male</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="female" name="gender" ngModel required value="Female">
+                    <label for="female">Female</label>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+                <label for="county">County</label>
+                <select name="county" id="county" required ngModel>
+                  <option [value]="county" *ngFor="let county of counties">{{county | titlecase}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <app-loader *ngIf="studentIsAdding"></app-loader>
+                <button class="btn btn--blue" [disabled]="studentIsAdding">Add student</button>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="student-list">
+          <app-normal-pagination [total]="total" [sorts]="sortingKeys" *ngIf="students"
+            (options)="onOptionsChange($event)"></app-normal-pagination>
+          <app-loader *ngIf="isFindingStudents"></app-loader>
+          <table *ngIf="!isFindingStudents">
+            <caption>List of students</caption>
+            <thead>
+              <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th>D.O.B</th>
+                <th>Gender</th>
+                <th>County</th>
+                <th>Date admitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.id)">
+                <td>{{student.adm}}</td>
+                <td>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</td>
+                <td>{{student.dob | date}}</td>
+                <td>{{student.gender | titlecase}}</td>
+                <td>{{student.county | titlecase}}</td>
+                <td>{{student.admitted | date}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="printing">
+          <div class="tabs tabs--vertical">
+            <ol class="tabs__links tabs__links--vertical">
+              <li data-revealId="print-all" data-default="true" appTabView>Print all</li>
+              <li data-revealId="print-by-admitted" appTabView>By admission date</li>
+              <li data-revealId="print-by-county" appTabView>By county</li>
+              <li data-revealId="student-contacts" appTabView (click)="printContacts('students')">Students' contacts</li>
+              <li data-revealId="parent-contacts" appTabView (click)="printContacts('parents')">Parents' contacts</li>
+            </ol>
+            <div class="tabs__content tabs__content--vertical">
+              <div data-revealId="print-all">
+                <iframe [src]="printAllUrl" *ngIf="printAllUrl" frameborder="0"></iframe>
+              </div>
+              <div data-revealId="print-by-admitted">
+                <form #byDateForm="ngForm" (ngSubmit)="printByDate(byDateForm.value)" ngNativeValidate>
+                  <span></span>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="startDate">Start date</label>
+                      <input type="date" name="startDate" id="startDate" ngModel required>
+                    </fieldset>
+                    <fieldset>
+                      <label for="endDate">End date</label>
+                      <input type="date" name="endDate" id="endDate" ngModel required>
+                    </fieldset>
+                    <fieldset>
+                      <label for="gender">Gender</label>
+                      <select name="gender" id="gender" ngModel="all" required>
+                        <option value="all">All</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="" style="color: transparent;">.</label>
+                      <button class="btn btn--blue">Print</button>
+                    </fieldset>
+                  </div>
+                </form>
+                <iframe [src]="byDateUrl" *ngIf="byDateUrl" frameborder="0"></iframe>
+              </div>
+              <div data-revealId="print-by-county">
+                <form #byCountyForm="ngForm" (ngSubmit)="printByCounty(byCountyForm.value)" ngNativeValidate>
+                  <span></span>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="county">County</label>
+                      <select name="county" id="county" ngModel required>
+                        <option [value]="county" *ngFor="let county of counties">{{county}}</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="gender">Gender</label>
+                      <select name="gender" id="gender" ngModel="all" required>
+                        <option value="all">All</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="" style="color: transparent;">.</label>
+                      <button class="btn btn--blue">Print</button>
+                    </fieldset>
+                  </div>
+                </form>
+                <iframe [src]="byCountyUrl" *ngIf="byCountyUrl" frameborder="0"></iframe>
+              </div>
+              <div data-revealId="student-contacts">
+                <iframe [src]="studentContactsUrl" *ngIf="studentContactsUrl" frameborder="0"></iframe>
+              </div>
+              <div data-revealId="parent-contacts">
+                <iframe [src]="parentContactsUrl" *ngIf="parentContactsUrl" frameborder="0"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-student-dash></app-student-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

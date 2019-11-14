@@ -1,0 +1,50 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Students summary</caption>
+  <tbody>
+    <tr appColorize>
+      <td>Total students</td>
+      <td>{{total | number}}</td>
+    </tr>
+    <tr *ngFor="let gender of genders" appColorize>
+      <td>{{gender.gender}}</td>
+      <td>{{gender.total | number}}</td>
+    </tr>
+    <tr appColorize>
+      <td>Admitted this year</td>
+      <td>{{recent | number}}</td>
+    </tr>
+    <tr appColorize *ngFor="let recentGender of recentGenders">
+      <td>This year {{recentGender.gender | lowercase}}</td>
+      <td>{{recentGender.total | number}}</td>
+    </tr>
+    <tr appColorize>
+      <td>Average student age</td>
+      <td>{{averageAge | number: '.0-0'}}</td>
+    </tr>
+    <tr appColorize *ngFor="let genderAge of genderAges">
+      <td>Average {{genderAge.gender | lowercase}} age</td>
+      <td>{{genderAge.avg | number: '.0-0'}}</td>
+    </tr>
+  </tbody>
+</table>
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Top counties</caption>
+  <tbody>
+    <tr *ngFor="let countyTop of countyTops" appColorize>
+      <td>{{countyTop.county}}</td>
+      <td>{{countyTop.total |number}}</td>
+    </tr>
+  </tbody>
+</table>
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Bottom counties</caption>
+  <tbody>
+    <tr *ngFor="let countyBottom of countyBottoms" appColorize>
+      <td>{{countyBottom.county}}</td>
+      <td>{{countyBottom.total}}</td>
+    </tr>
+  </tbody>
+</table>

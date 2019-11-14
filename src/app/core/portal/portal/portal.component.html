@@ -1,0 +1,75 @@
+<main>
+  <div id="top-bar">
+    <a href="" target="_blank">Twitter</a>
+    <a href="" target="_blank">Facebook</a>
+    <a href="" target="_blank">LinkedIn</a>
+    <a href="" target="_blank">Instagram</a>
+    <div class="row-end">
+      <a href="" target="_blank">Website</a>
+      <a href="" target="_blank">Student Portal</a>
+    </div>
+  </div>
+  <div id="title-bar">
+    <img src="assets/icons/menu-dots.svg" alt="Menu">
+    <div id="account">
+      <img src="assets/icons/avatar.svg" alt="User">
+      <div>
+        <span>John Joseph Mary Doe</span>
+        <span>System Admin</span>
+      </div>
+    </div>
+    <div class="row-end" id="school">
+      <img src="favicon.ico" alt="Logo">
+      <span class="not-mobile">St. Mary's Myanga Girls' High School</span>
+    </div>
+  </div>
+  <div id="module-pane">
+    <a routerLink="/students" title="Students" routerLinkActive="active-module">
+      <img src="assets/icons/school.svg" alt="Students">
+    </a>
+    <a routerLink="/teachers" title="Teachers" routerLinkActive="active-module">
+      <img src="assets/icons/user-group.svg" alt="Teachers">
+    </a>
+    <a routerLink="/finance" title="Finance" routerLinkActive="active-module">
+      <img src="assets/icons/coins.svg" alt="Finance">
+    </a>
+    <a routerLink="/hr" title="Human Resource" routerLinkActive="active-module">
+      <img src="assets/icons/group.svg" alt="HR">
+    </a>
+    <a routerLink="/users" title="Users" routerLinkActive="active-module">
+      <img src="assets/icons/user.svg" alt="Users">
+    </a>
+    <a routerLink="/subjects" title="Subjects" routerLinkActive="active-module">
+      <img src="assets/icons/book.svg" alt="Subjects">
+    </a>
+    <a routerLink="/exams" title="Exams" routerLinkActive="active-module">
+      <img src="assets/icons/paper.svg" alt="Exams">
+    </a>
+    <a routerLink="/attendance" title="Class attendance" routerLinkActive="active-module">
+      <img src="assets/icons/tick.svg" alt="Attendance">
+    </a>
+    <a routerLink="/batch" title="Batch/Classes" routerLinkActive="active-module">
+      <img src="assets/icons/folder.svg" alt="Batch">
+    </a>
+    <a routerLink="/sms" title="SMS Service" routerLinkActive="active-module">
+      <img src="assets/icons/chat.svg" alt="SMS">
+    </a>
+    <a routerLink="/institute" title="Institute" routerLinkActive="active-module">
+      <img src="assets/icons/at.svg" alt="Institute">
+    </a>
+    <a routerLink="/settings" title="Settings" routerLinkActive="active-module" style="margin-top: auto;">
+      <img src="assets/icons/gear.svg" alt="Settings">
+    </a>
+  </div>
+  <div id="container">
+    <div id="render">
+      <ng-content select=".render"></ng-content>
+    </div>
+    <div id="insights">
+      <ng-content select=".insights"></ng-content>
+    </div>
+  </div>
+  <div id="quick-actions">
+    <ng-content select=".quick-actions"></ng-content>
+  </div>
+</main>

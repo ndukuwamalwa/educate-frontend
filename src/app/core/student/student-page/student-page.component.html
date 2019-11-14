@@ -1,0 +1,467 @@
+<app-portal>
+  <ng-container class="render">
+    <div>
+      <button class="btn btn--blue" (click)="back()">Back</button>
+      <span class="item-title">{{student?.fname}} {{student?.mname}} {{student?.lname}} - <span>Student</span></span>
+    </div>
+    <div class="tabs tabs--vertical">
+      <ol class="tabs__links tabs__links--vertical">
+        <li data-revealId="details" data-default="true" appTabView>Details</li>
+        <li data-revealId="update" appTabView>Update details</li>
+        <li data-revealId="add-contact" appTabView>Add contacts</li>
+        <li data-revealId="view-contact" appTabView (click)="getContacts()">Contacts</li>
+        <li data-revealId="attendance" appTabView>Class attendance</li>
+        <li data-revealId="add-to-batch" appTabView (click)="getBaches()">Add to batch</li>
+        <li data-revealId="view-batches" appTabView (click)="viewBatches()">Batches</li>
+        <li data-revealId="view-charges" appTabView (click)="viewBatches()">Charges</li>
+        <li data-revealId="register-subject" appTabView (click)="getSubjects()">Register subject</li>
+        <li data-revealId="view-subjects" appTabView (click)="getBaches()">View subjects</li>
+        <li data-revealId="view-results" appTabView (click)="getExams()">Exam results</li>
+        <li data-revealId="view-payments" appTabView (click)="getPayments()">Payments</li>
+        <li data-revealId="view-hostel" appTabView (click)="getHostels()">Hostel</li>
+        <li data-revealId="danger" appTabView>Danger zone</li>
+      </ol>
+      <div class="tabs__content tabs__content--vertical">
+        <div data-revealId="details">
+          <app-loader *ngIf="isGettingBasicInfo"></app-loader>
+          <table class="details-table" *ngIf="!isGettingBasicInfo">
+            <tbody>
+              <tr>
+                <td>Admission number</td>
+                <td>{{student?.adm}}</td>
+              </tr>
+              <tr>
+                <td>Date of admission</td>
+                <td>{{student?.admitted | date}}</td>
+              </tr>
+              <tr>
+                <td>First name</td>
+                <td>{{student?.fname | titlecase}}</td>
+              </tr>
+              <tr>
+                <td>Middle name</td>
+                <td>{{student?.mname | titlecase}}</td>
+              </tr>
+              <tr>
+                <td>Last name</td>
+                <td>{{student?.lname | titlecase}}</td>
+              </tr>
+              <tr>
+                <td>Date of Birth</td>
+                <td>{{student?.dob | date}}</td>
+              </tr>
+              <tr>
+                <td>Gender</td>
+                <td>{{student?.gender}}</td>
+              </tr>
+              <tr>
+                <td>County of Residence</td>
+                <td>{{student?.county}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="update">
+          <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="updateStudent(studentForm.value)">
+            <div class="inputs">
+              <fieldset>
+                <label for="adm">Admission number</label>
+                <input type="text" name="adm" id="adm" [ngModel]="student?.adm" required autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="admitted">Date of Admission</label>
+                <input type="date" name="admitted" id="admitted" [ngModel]="student?.admitted" required
+                  autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="fname">First name</label>
+                <input type="text" name="fname" id="fname" [ngModel]="student?.fname" required autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="mname">Middle name</label>
+                <input type="text" name="mname" id="mname" [ngModel]="student?.mname" autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="lname">Last name</label>
+                <input type="text" name="lname" id="lname" [ngModel]="student?.lname" required autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="dob">Date of Birth</label>
+                <input type="date" name="dob" id="dob" [ngModel]="student?.dob" required autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="gender">Gender</label>
+                <div>
+                  <div>
+                    <input type="radio" id="male" name="gender" [ngModel]="student?.gender" required value="Male">
+                    <label for="male">Male</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="female" name="gender" [ngModel]="student?.gender" required value="Female">
+                    <label for="female">Female</label>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+                <label for="county">County</label>
+                <select name="county" id="county" required [ngModel]="student?.county">
+                  <option [value]="county" *ngFor="let county of counties">{{county | titlecase}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <app-loader *ngIf="isUpdatingStudent"></app-loader>
+                <button class="btn btn--blue" [disabled]="studentForm.pristine || isUpdatingStudent">Update</button>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="add-contact">
+          <form #contactForm="ngForm" (ngSubmit)="addContact(contactForm)" ngNativeValidate>
+            <span>Add student contact</span>
+            <div class="input">
+              <fieldset>
+                <label for="type">Type of contact</label>
+                <div>
+                  <div>
+                    <input type="radio" id="phone_type" name="type" value="Phone" required ngModel #phone>
+                    <label for="phone_type">Phone</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="email_type" name="type" value="Email" required ngModel #email>
+                    <label for="email_type">Email</label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset *ngIf="phone.checked">
+                <label for="contact">Phone number</label>
+                <input type="tel" id="contact" name="contact" required ngModel autocomplete="off" pattern="^07[0-9]{8}$"
+                  placeholder="0712345678">
+              </fieldset>
+              <fieldset *ngIf="email.checked">
+                <label for="contact">Email address</label>
+                <input type="email" id="contact" name="contact" required ngModel autocomplete="off" email
+                  placeholder="username@example.com">
+              </fieldset>
+            </div>
+            <div class="input" *ngIf="phone.checked || email.checked">
+              <fieldset>
+                <label for="person">Person to contact</label>
+                <select name="person" id="person" ngModel required>
+                  <option value="Self">The student</option>
+                  <option value="Parent/Guardian">Parent/Guardian</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit" *ngIf="phone.checked || email.checked">
+              <fieldset>
+                <app-loader *ngIf="isAddingContact"></app-loader>
+                <button class="btn btn--blue" [disabled]="isAddingContact">Add contact</button>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="view-contact">
+          <app-loader *ngIf="isGettingContacts"></app-loader>
+          <table *ngIf="!isGettingContacts">
+            <thead>
+              <tr>
+                <th>Type of contact</th>
+                <th>Contact</th>
+                <th>Person to contact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contact of contacts">
+                <td>{{contact.type | titlecase}}</td>
+                <td>{{contact.contact | lowercase}}</td>
+                <td>{{contact.person | titlecase}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="attendance">
+          <form #atteForm="ngForm" (ngSubmit)="getAttendance(atteForm.value.startDate, atteForm.value.endDate)">
+            <span></span>
+            <div class="cat-selector">
+              <label for="startDate">Start date</label>
+              <input type="date" name="startDate" id="startDate" ngModel required>
+              <label for="endDate">End date</label>
+              <input type="date" name="endDate" id="endDate" ngModel required>
+              <button class="btn btn--blue" [disabled]="isGettingAttendance">View</button>
+            </div>
+          </form>
+          <app-loader *ngIf="isGettingAttendance"></app-loader>
+          <table *ngIf="attendances && !isGettingAttendance">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let attendance of attendances" [ngClass]="{ 
+                'green bold': attendance.state === 'Present',
+                'danger': attendance.state !== 'Present'
+              }">
+                <td>{{attendance.date | date}}</td>
+                <td>{{attendance.day}}</td>
+                <td>{{attendance.state}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="add-to-batch">
+          <form #addToBatchForm="ngForm" (ngSubmit)="addToBatch(addToBatchForm.value)" ngNativeValidate>
+            <span>Add to batch/class</span>
+            <div class="cat-selector">
+              <select name="batch" id="batch" ngModel required (change)="onBatchChange($event.target.value)">
+                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+              </select>
+              <app-loader *ngIf="isGettingBatches"></app-loader>
+              <span style="white-space: nowrap;" *ngIf="feeToAdd">
+                Additional fee: <strong>{{feeToAdd | currency: 'KES '}}</strong>
+              </span>
+              <app-loader *ngIf="isAddingBatch"></app-loader>
+              <button class="btn btn--blue" [disabled]="isGettingBatches || isAddingBatch">Add student</button>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="view-batches">
+          <app-loader *ngIf="isGettingStudentBatches"></app-loader>
+          <table *ngIf="!isGettingStudentBatches">
+            <thead>
+              <tr>
+                <th>Batch</th>
+                <th>Academic year</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let batch of studentBatches">
+                <td>{{batch.batch}}</td>
+                <td>{{batch.academicYear}}</td>
+                <td class="danger" (click)="removeBatch(batch.id)">Remove</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="view-charges">
+          <app-loader *ngIf="isGettingStudentBatches"></app-loader>
+          <button class="btn btn--blue" (click)="toggleView('isViewingPrintableCharges')">
+            <span *ngIf="isViewingPrintableCharges">Normal view</span>
+            <span *ngIf="!isViewingPrintableCharges">Print view</span>
+          </button>
+          <iframe [src]="printChargesUrl" *ngIf="printChargesUrl && isViewingPrintableCharges" frameborder="0"></iframe>
+          <table *ngIf="!isGettingStudentBatches && !isViewingPrintableCharges">
+            <thead>
+              <tr>
+                <th>Batch</th>
+                <th>Academic year</th>
+                <th>Amount charged</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let batch of studentBatches">
+                <td>{{batch.batch}}</td>
+                <td>{{batch.academicYear}}</td>
+                <td>{{batch.amount | currency: 'KES '}}</td>
+                <td class="danger" (click)="removeBatch(batch.id)">Delete</td>
+              </tr>
+              <tr class="bold blue">
+                <td colspan="2">Total charged</td>
+                <td>{{totalCharge | currency: 'KES '}}</td>
+              </tr>
+              <tr class="bold green">
+                <td colspan="2">Total paid</td>
+                <td>{{totalPayment | currency: 'KES '}}</td>
+              </tr>
+              <tr class="bold" [ngClass]="{ 
+                  'danger': (totalCharge - totalPayment) > 0,
+                  'blue': (totalCharge - totalPayment) === 0,
+                  'green': (totalCharge - totalPayment) < 0
+                }">
+                <td colspan="2">Total balance</td>
+                <td>{{(totalCharge - totalPayment) | currency: 'KES '}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="register-subject">
+          <form #subjectForm="ngForm" (ngSubmit)="addSubject(subjectForm)" ngNativeValidate>
+            <span></span>
+            <div class="cat-selector">
+              <label for="batch">Select batch</label>
+              <select name="batch" id="batch" required ngModel>
+                <option *ngFor="let batch of batches" [value]="batch.id">{{batch.name}}-{{batch.academic_year}}</option>
+              </select>
+              <app-loader *ngIf="isGettingBatches"></app-loader>
+            </div>
+            <app-loader *ngIf="isGettingSubjects"></app-loader>
+            <div id="subject-selection" *ngIf="!isGettingSubjects">
+              <div *ngFor="let subject of subjects">
+                <input type="checkbox" [value]="subject.id" [id]="subject.id"
+                  (change)="onSelectionChange($event, subject.id)">
+                <label [for]="subject.id">{{subject.name}}</label>
+              </div>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <app-loader *ngIf="isRegisteringSubjects"></app-loader>
+                <button class="btn btn--blue"
+                  [disabled]="(subjectBasket.length === 0) || isRegisteringSubjects">Register</button>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="view-subjects">
+          <form #subjectViewForm="ngForm" (ngSubmit)="viewStudentSubjects(subjectViewForm.value)" ngNativeValidate>
+            <span></span>
+            <div class="cat-selector">
+              <label for="batch">Select batch</label>
+              <select name="batch" id="batch" required ngModel>
+                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+              </select>
+              <button class="btn btn--blue">View subjects</button>
+            </div>
+          </form>
+          <app-loader *ngIf="isGettingStudentSubjects"></app-loader>
+          <table *ngIf="registeredSubjects && !isGettingStudentSubjects">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Batch</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let registeredSubject of registeredSubjects">
+                <td>{{registeredSubject.subject}}</td>
+                <td>{{registeredSubject.batch}}</td>
+                <td class="danger" (click)="removeSubject(registeredSubject.id)">Remove</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="view-results">
+          <form #examSelectForm="ngForm" (ngSubmit)="viewResults(examSelectForm.value)">
+            <span></span>
+            <div class="cat-selector">
+              <label for="exam">Select examination</label>
+              <select name="exam" id="exam" required ngModel>
+                <option [value]="exam.id" *ngFor="let exam of exams">{{exam.name}}-Term {{exam.term}}</option>
+              </select>
+              <app-loader *ngIf="isGettingExams"></app-loader>
+              <button class="btn btn--blue" [disabled]="isGettingExams || isGettingResults">View results</button>
+            </div>
+          </form>
+          <app-loader *ngIf="isGettingResults"></app-loader>
+          <table *ngIf="examResults && !isGettingResults">
+            <caption></caption>
+            <thead>
+              <tr>
+                <th>Exam</th>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let result of examResults">
+                <td>{{result.exam}}</td>
+                <td>{{result.subject}}</td>
+                <td>{{result.marks}}</td>
+                <td>{{result.grade}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="view-payments">
+          <app-loader *ngIf="isGettingPayments"></app-loader>
+          <button class="btn btn--blue" (click)="toggleView('isViewingPrintablePayments')">
+            <span *ngIf="isViewingPrintablePayments">Normal view</span>
+            <span *ngIf="!isViewingPrintablePayments">Print view</span>
+          </button>
+          <iframe [src]="printPaymentsUrl" *ngIf="printChargesUrl && isViewingPrintablePayments" frameborder="0"></iframe>
+          <table *ngIf="payments && !isGettingPayments && !isViewingPrintablePayments">
+            <thead>
+              <tr>
+                <th>Receipt No.</th>
+                <th>Paid by</th>
+                <th>Date paid</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let payment of payments">
+                <td>{{payment.receiptNo}}</td>
+                <td>{{payment.paidBy}}</td>
+                <td>{{payment.datePaid | date}}</td>
+                <td>{{payment.amount | currency: 'KES '}}</td>
+              </tr>
+              <tr class="bold green">
+                <td colspan="3">Total paid</td>
+                <td>{{totalPayment | currency: 'KES '}}</td>
+              </tr>
+              <tr class="bold blue">
+                <td colspan="3">Total charged</td>
+                <td>{{totalCharge | currency: 'KES '}}</td>
+              </tr>
+              <tr class="bold" [ngClass]="{ 
+                'danger': (totalCharge - totalPayment) > 0,
+                'blue': (totalCharge - totalPayment) === 0,
+                'green': (totalCharge - totalPayment) < 0
+              }">
+                <td colspan="3">Total balance</td>
+                <td>{{(totalCharge - totalPayment) | currency: 'KES '}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="view-hostel">
+          <app-loader *ngIf="isGettingHostels"></app-loader>
+          <table *ngIf="hostels && !isGettingHostels">
+            <thead>
+              <th>Hostel</th>
+              <th>Academic year</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let hostel of hostels">
+                <td>{{hostel.hostel}}</td>
+                <td>{{hostel.academicYear}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="danger">
+          <form>
+            <span>Actions here have permanent effects</span>
+            <app-loader *ngIf="isDeletingStudent"></app-loader>
+            <div class="cat-selector">
+              <button class="btn btn--red" (click)="delete()" [disabled]="isDeletingStudent">
+                Delete {{student?.fname | titlecase}} {{student?.lname | titlecase}}
+              </button>
+              <button class="btn btn--red" (click)="delete()" *ngIf="!isOld" [disabled]="isDeletingStudent">Close and
+                Archive record</button>
+              <button class="btn btn--red" (click)="restore()" *ngIf="isOld" [disabled]="isDeletingStudent">Restore
+                student</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-student-dash></app-student-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

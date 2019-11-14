@@ -1,0 +1,31 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Subjects summary</caption>
+  <tbody>
+    <tr appColorize>
+      <td>Total subject</td>
+      <td>{{total | number}}</td>
+    </tr>
+  </tbody>
+</table>
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Student enrollment per subject</caption>
+  <tbody>
+    <tr *ngFor="let enrollment of enrollments" appColorize>
+      <td>{{enrollment.name}}</td>
+      <td>{{enrollment.total}}</td>
+    </tr>
+  </tbody>
+</table>
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Batch enrollment per subject</caption>
+  <tbody>
+    <tr *ngFor="let batchEnrollment of batchEnrollments" appColorize>
+      <td>{{batchEnrollment.name}}</td>
+      <td>{{batchEnrollment.batch}}</td>
+      <td>{{batchEnrollment.total}}</td>
+    </tr>
+  </tbody>
+</table>

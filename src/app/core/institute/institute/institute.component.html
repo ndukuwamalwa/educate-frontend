@@ -1,0 +1,264 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="calender" data-default="true" appTabView>Calendar</li>
+        <li data-revealId="hostels" appTabView>Hostels</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="calender">
+          <div class="tabs tabs--vertical">
+            <ol class="tabs__links tabs__links--vertical">
+              <li data-revealId="add-year" data-default="true" appTabView>Set academic year</li>
+              <li data-revealId="view-years" appTabView (click)="getAcademicYears()">View academic years</li>
+            </ol>
+            <div class="tabs__content tabs__content--vertical">
+              <div data-revealId="add-year">
+                <form #setAcademicYear="ngForm" (ngSubmit)="addAcademicYear(setAcademicYear.value)" ngNativeValidate>
+                  <span>Set new academic year</span>
+                  <div class="input">
+                    <fieldset>
+                      <label for="label">Label/Name</label>
+                      <input type="text" id="label" name="label" ngModel required autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="startDate">Starts on</label>
+                      <input type="date" name="startDate" id="startDate" ngModel required>
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="endDate">Ends on</label>
+                      <input type="date" name="endDate" id="endDate" ngModel required>
+                    </fieldset>
+                  </div>
+                  <div class="submit">
+                    <fieldset>
+                      <button class="btn btn--blue" [disabled]="isAddingAcademicYear">Save</button>
+                      <app-loader *ngIf="isAddingAcademicYear"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
+              </div>
+              <div data-revealId="view-years">
+                <app-loader *ngIf="isGettingAcademicYears"></app-loader>
+                <table *ngIf="!isGettingAcademicYears && academicYears">
+                  <thead>
+                    <tr>
+                      <th>Label</th>
+                      <th>Start date</th>
+                      <th>End date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let academicYear of academicYears">
+                      <td>{{academicYear.label | titlecase}}</td>
+                      <td>{{academicYear.startDate | date}}</td>
+                      <td>{{academicYear.endDate | date}}</td>
+                      <td class="danger" (click)="deleteAcademicYear(academicYear.id)">Delete</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-revealId="hostels">
+          <div class="tabs tabs--vertical">
+            <ol class="tabs__links tabs__links--vertical">
+              <li data-revealId="new-hostel" data-default="true" appTabView>New hostel</li>
+              <li data-revealId="view-hostels" appTabView (click)="getHostels()">View hostels</li>
+              <li data-revealId="add-students" appTabView (click)="getHostels()">Add students</li>
+              <li data-revealId="view-students" appTabView>View students</li>
+            </ol>
+            <div class="tabs__content tabs__content--vertical">
+              <div data-revealId="new-hostel">
+                <form #hostelForm="ngForm" (ngSubmit)="addHostel(hostelForm.value)" ngNativeValidate>
+                  <span>Ne hostel</span>
+                  <div class="input">
+                    <fieldset>
+                      <label for="name">Hostel name</label>
+                      <input type="text" name="name" id="name" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="capacity">Capacity</label>
+                      <input type="number" name="capacity" id="capacity" required ngModel autocomplete="off" min="1">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="type">Occupants type</label>
+                      <div>
+                        <div>
+                          <input type="radio" name="type" id="gents" required value="Gents" ngModel>
+                          <label for="gents">Gents</label>
+                        </div>
+                        <div>
+                          <input type="radio" name="type" id="ladies" required value="Ladies" ngModel>
+                          <label for="ladies">Ladies</label>
+                        </div>
+                        <div>
+                          <input type="radio" name="type" id="mixed" required value="Mixed" ngModel>
+                          <label for="mixed">Mixed</label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div class="submit">
+                    <fieldset>
+                      <button class="btn btn--blue" [disabled]="isSavingHostel">Save</button>
+                      <app-loader *ngIf="isSavingHostel"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
+              </div>
+              <div data-revealId="view-hostels">
+                <app-loader *ngIf="isGettingHostels"></app-loader>
+                <table *ngIf="!isGettingHostels && hostels">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Capacity</th>
+                      <th>Type</th>
+                      <th>Academic year</th>
+                      <th>Students</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let hostel of hostels">
+                      <td>{{hostel.name | titlecase}}</td>
+                      <td>{{hostel.capacity | number}}</td>
+                      <td>{{hostel.type | titlecase}}</td>
+                      <td>{{hostel.academicYear}}</td>
+                      <td>{{hostel.occupants | number}}</td>
+                      <td class="danger" (click)="deleteHostel(hostel.id)">Delete</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div data-revealId="add-students">
+                <form #loadStudentsForm="ngForm" (ngSubmit)="loadStudents(loadStudentsForm.value)" ngNativeValidate>
+                  <span>Add students to hostel</span>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="hostel">Hostel</label>
+                      <select name="hostel" id="hostel" required ngModel>
+                        <option [value]="hostel.id" *ngFor="let hostel of hostels">{{hostel.name | titlecase}}</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="academicYear">Academic year</label>
+                      <select name="academicYear" id="academicYear" required ngModel>
+                        <option [value]="academicYear.id" *ngFor="let academicYear of academicYears">
+                          {{academicYear.label}}</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="batch">Load students from</label>
+                      <select name="batch" id="batch" required ngModel>
+                        <option [value]="batch.id" *ngFor="let batch of batches">
+                          {{batch.name | titlecase}}-{{batch.academic_year}}</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="" style="color: transparent;">.</label>
+                      <button class="btn btn--blue" [disabled]="isGettingStudentsToAdd">Load Students</button>
+                    </fieldset>
+                  </div>
+                </form>
+                <app-loader *ngIf="isGettingStudentsToAdd"></app-loader>
+                <form *ngIf="loadedStudents" #addForm="ngForm" (ngSubmit)="addStudents(addForm.value)">
+                  <span>(Found <b>{{loadedStudents.length}}</b> students).Only students who are not already in the
+                    hostel are shown.</span>
+                  <table *ngIf="!isGettingStudentsToAdd && loadedStudents" style="margin-top: 25px; min-width: 80%;">
+                    <thead>
+                      <tr>
+                        <th>Adm No.</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Add?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let studentToAdd of loadedStudents">
+                        <td>{{studentToAdd.adm}}</td>
+                        <td>{{studentToAdd.name}}</td>
+                        <td>{{studentToAdd.gender}}</td>
+                        <td><input type="checkbox" [name]="'_'+studentToAdd.adm" [id]="'_'+studentToAdd.adm"
+                            (change)="addStateChange($event, studentToAdd.id)"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="submit" *ngIf="studentsToAdd.length > 0">
+                    <fieldset>
+                      <button class="btn btn--blue" [disabled]="isAddingToHostel">Add {{studentsToAdd.length | number}}
+                        students</button>
+                      <app-loader *ngIf="isAddingToHostel"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
+              </div>
+              <div data-revealId="view-students">
+                <form #viewForm="ngForm" (ngSubmit)="viewStudents(viewForm.value)" ngNativeValidate>
+                  <span></span>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="hostel">Hostel</label>
+                      <select name="hostel" id="hostel" required ngModel>
+                        <option [value]="hostel.id" *ngFor="let hostel of hostels">{{hostel.name | titlecase}}</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="academicYear">Academic year</label>
+                      <select name="academicYear" id="academicYear" required ngModel>
+                        <option [value]="academicYear.id" *ngFor="let academicYear of academicYears">
+                          {{academicYear.label}}</option>
+                      </select>
+                    </fieldset>
+                    <fieldset>
+                      <label for="" style="color: transparent;">.</label>
+                      <button class="btn btn--blue" [disabled]="isGettingHostelStudents">View Students</button>
+                      <app-loader *ngIf="isGettingHostelStudents"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
+                <table *ngIf="hostelStudents">
+                  <thead>
+                    <tr>
+                      <th>Adm</th>
+                      <th>Name</th>
+                      <th>Gender</th>
+                      <th>Hostel</th>
+                      <th>Academic year</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let hostelStudent of hostelStudents">
+                      <td>{{hostelStudent.adm}}</td>
+                      <td>{{hostelStudent.student}}</td>
+                      <td>{{hostelStudent.gender}}</td>
+                      <td>{{hostelStudent.hostel}}</td>
+                      <td>{{hostelStudent.academicYear}}</td>
+                      <td class="danger" (click)="removeStudent(hostelStudent.id)">Remove</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-hostel-dash></app-hostel-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

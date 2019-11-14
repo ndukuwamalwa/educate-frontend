@@ -1,0 +1,145 @@
+<app-portal>
+  <ng-container class="render">
+    <div>
+      <button class="btn btn--blue" (click)="back()">Back</button>
+      <span class="item-title">{{batch?.name}} - <span>{{batch?.academic_year}}</span></span>
+    </div>
+    <div class="tabs tabs--vertical">
+      <ol class="tabs__links tabs__links--vertical">
+        <li data-revealId="details" data-default="true" appTabView>Details</li>
+        <li data-revealId="update" appTabView>Update details</li>
+        <li data-revealId="add-students" appTabView>Add students</li>
+        <li data-revealId="view-students" appTabView (click)="viewStudents()">View students</li>
+        <li data-revealId="print-students" appTabView (click)="printStudents()">Print students</li>
+        <li data-revealId="danger" appTabView>Danger zone</li>
+      </ol>
+      <div class="tabs__content tabs__content--vertical">
+        <div data-revealId="details">
+          <app-loader *ngIf="isGettingBasicDetails"></app-loader>
+          <table class="details-table" *ngIf="!isGettingBasicDetails && batch">
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>{{batch?.name | titlecase}}</td>
+              </tr>
+              <tr>
+                <td>Academic year</td>
+                <td>{{batch?.academic_year}}</td>
+              </tr>
+              <tr>
+                <td>Fees</td>
+                <td>{{batch?.fees | currency: 'Kshs. '}}</td>
+              </tr>
+              <tr>
+                <td>Total students</td>
+                <td>{{batch?.students | number}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="update">
+          <form #batchForm="ngForm" (ngSubmit)="updateBatch(batchForm.value)">
+            <span></span>
+            <div class="input">
+              <fieldset>
+                <label for="name">Batch name, e.g Form 1</label>
+                <input type="text" required name="name" autocomplete="off" id="name" [ngModel]="batch?.name">
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="academicYear">Academic Year</label>
+                <select name="academicYear" id="academicYear" required [ngModel]="batch?.academicYearId">
+                  <option [value]="year.id" *ngFor="let year of academicYears">{{year.label}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="fees">Fee payable</label>
+                <input type="number" required name="fees" id="fees" [ngModel]="batch?.fees">
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSavingBatch">Save</button>
+              </fieldset>
+              <app-loader *ngIf="isSavingBatch"></app-loader>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="add-students">
+          <form #addStudentsForm="ngForm" (ngSubmit)="addStudents(addStudentsForm.value)" ngNativeValidate>
+            <span>Add students to {{batch?.name}}</span>
+            <div class="inputs">
+              <fieldset>
+                <div>
+                  <div>
+                    <input type="radio" name="means" id="admSelect" value="admSelect" required ngModel #byAdm>
+                    <label for="admSelect">Using admission number</label>
+                  </div>
+                  <div>
+                    <input type="radio" name="means" id="batchSelect" value="batchSelect" required ngModel #byBatch>
+                    <label for="batchSelect">Import from another batch</label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset *ngIf="byAdm.checked">
+                <label for="adm">Enter admission number</label>
+                <input type="text" name="adm" id="adm" required ngModel autocomplete="off">
+              </fieldset>
+              <fieldset *ngIf="byBatch.checked">
+                <label for="batch">Select batch (<span class="danger">This adds all the students from the selected batch
+                    to this batch</span>)</label>
+                <select name="batch" id="batch" required ngModel>
+                  <option [value]="batch.id" *ngFor="let batch of batches">
+                    {{batch.name | titlecase}}-{{batch.academic_year}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit" *ngIf="byBatch.checked || byAdm.checked">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isAddingStudents">Add</button>
+                <app-loader *ngIf="isAddingStudents"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="view-students">
+          <app-loader *ngIf="isGettingStudents"></app-loader>
+          <table *ngIf="!isGettingStudents && students">
+            <caption>Showing all {{students.length}} students</caption>
+            <thead>
+              <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Academic year</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of students">
+                <td>{{student.adm | uppercase}}</td>
+                <td>{{student.student | titlecase}}</td>
+                <td>{{student.batch | titlecase}}</td>
+                <td>{{batch?.academic_year}}</td>
+                <td class="danger" (click)="removeStudent(student.id)">Remove</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="print-students">
+          <iframe [src]="printUrl" *ngIf="printUrl" frameborder="0"></iframe>
+        </div>
+        <div data-revealId="danger">Danger zone</div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-batch-dash></app-batch-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

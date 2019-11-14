@@ -1,0 +1,30 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Users summary</caption>
+  <tbody>
+    <tr appColorize>
+      <td>Total users</td>
+      <td>{{total | number}}</td>
+    </tr>
+  </tbody>
+</table>
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Users by types</caption>
+  <tbody>
+    <tr *ngFor="let type of types" appColorize>
+      <td>{{type.type}}</td>
+      <td>{{type.total}}</td>
+    </tr>
+  </tbody>
+</table>
+<app-loader *ngIf="isLoading"></app-loader>
+<table class="stat-table" *ngIf="!isLoading">
+  <caption>Users by states</caption>
+  <tbody>
+    <tr *ngFor="let state of states" appColorize>
+      <td>{{state.state | titlecase}}</td>
+      <td>{{state.total}}</td>
+    </tr>
+  </tbody>
+</table>

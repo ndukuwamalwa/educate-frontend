@@ -1,0 +1,87 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="create-exam" data-default="true" appTabView>Create</li>
+        <li data-revealId="list-exam" appTabView (click)="getExams()">List</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="create-exam">
+          <form #form="ngForm" (ngSubmit)="addExam(form.value)" ngNativeValidate>
+            <span>Create exam</span>
+            <div class="input">
+              <fieldset>
+                <label for="name">Exam title</label>
+                <input type="text" id="name" name="name" required ngModel autocomplete="off">
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="startDate">Start date</label>
+                <input type="date" id="startDate" name="startDate" ngModel required>
+              </fieldset>
+              <fieldset>
+                <label for="endDate">End date</label>
+                <input type="date" id="endDate" name="endDate" ngModel required>
+              </fieldset>
+            </div>
+            <div class="inputs">
+              <fieldset>
+                <label for="term">Term</label>
+                <select name="term" id="term" required ngModel>
+                  <option value="1">Term I</option>
+                  <option value="2">Term II</option>
+                  <option value="3">Term III</option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label for="grading">Grading scheme</label>
+                <select name="grading" id="grading" required ngModel>
+                  <option [value]="grading.id" *ngFor="let grading of gradings">{{grading.label}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSaving">Save Exam</button>
+                <app-loader *ngIf="isSaving"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="list-exam">
+          <app-normal-pagination [total]="total" (options)="onOptionsChange($event)"
+            [sorts]="['id','name','startDate','endDate','term','status']"></app-normal-pagination>
+          <app-loader *ngIf="isGettingExams"></app-loader>
+          <table *ngIf="!isGettingExams">
+            <caption>List of exams</caption>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Term</th>
+                <th>Grading</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let exam of exams" class="clickable" (click)="viewDetails(exam.id)">
+                <td>{{exam.name}}</td>
+                <td>{{exam.startDate}}</td>
+                <td>{{exam.endDate}}</td>
+                <td>{{exam.term}}</td>
+                <td>{{exam.grading}}</td>
+                <td>{{exam.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-exam-dash></app-exam-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

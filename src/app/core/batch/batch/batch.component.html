@@ -1,0 +1,75 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="create-batch" data-default="true" appTabView>Create</li>
+        <li data-revealId="list-batch" appTabView (click)="getBatches()">List</li>
+        <li data-revealId="print-batch" appTabView (click)="print()">Print</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="create-batch">
+          <form #batchForm="ngForm" (ngSubmit)="addBatch(batchForm.value)" ngNativeValidate>
+            <span>Create new batch</span>
+            <div class="input">
+              <fieldset>
+                <label for="name">Batch name, e.g Form 1</label>
+                <input type="text" required name="name" autocomplete="off" id="name" ngModel>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="academicYear">Academic Year</label>
+                <select name="academicYear" id="academicYear" required ngModel>
+                  <option [value]="year.id" *ngFor="let year of academicYears">{{year.label}}</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="fees">Fee payable</label>
+                <input type="number" required name="fees" id="fees" ngModel>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSavingBatch">Save batch</button>
+              </fieldset>
+              <app-loader *ngIf="isSavingBatch"></app-loader>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="list-batch">
+          <app-normal-pagination [total]="total" [sorts]="['id', 'name', 'academic_year', 'fees']"
+            (options)="onOptionsChange($event)"></app-normal-pagination>
+          <app-loader *ngIf="isGettingBatches"></app-loader>
+          <table *ngIf="!isGettingBatches && batches">
+            <caption>List of batches/classes</caption>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Academic year</th>
+                <th>Fees</th>
+                <th>Total students</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let batch of batches" class="clickable" (click)="viewDetails(batch.id)">
+                <td>{{batch.name | titlecase}}</td>
+                <td>{{batch.academic_year}}</td>
+                <td>{{batch.fees | currency: 'KES '}}</td>
+                <td>{{batch.students | number}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="print-batch">
+          <iframe [src]="printUrl" *ngIf="printUrl" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container class="insights">
+    <app-batch-dash></app-batch-dash>
+  </ng-container>
+  <ng-container class="quick-actions"></ng-container>
+</app-portal>

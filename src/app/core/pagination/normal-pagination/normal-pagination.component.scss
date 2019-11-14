@@ -1,0 +1,59 @@
+form {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+
+    & > div {
+        width: 100%;
+        margin: auto 0;
+    }
+}
+
+select {
+    width: auto;
+}
+
+#config {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+
+    & > div {
+        flex: 1 1 auto;
+    }
+}
+
+.button-box {
+    display: flex;
+    flex-direction: column;
+    button {
+        margin: auto 0;
+        width: auto;
+    }
+}
+
+#sizing {
+    display: flex;
+    
+    & > * {
+        margin: auto 1px;
+    }
+}
+
+#search {
+    display: flex;
+    
+    & > * {
+        margin: 0 10px;
+        flex-basis: 45%;
+    }
+}
+
+#paging, #sorting {
+    text-align: center;
+    margin: auto 0;
+
+    & > * {
+        margin: 0 4px;
+    }
+}
