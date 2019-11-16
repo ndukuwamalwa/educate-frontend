@@ -2,23 +2,28 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="fee-balances" data-default="true" appTabView>Balance</li>
-        <li data-revealId="fee-payments" appTabView (click)="getPayments()">Payments</li>
+        <li data-revealId="fee-balances" data-default="true" appTabView appTabView appPermitted
+          [table]="'student_charge'" [operation]="'select'">Balance</li>
+        <li data-revealId="fee-payments" appTabView (click)="getPayments()" appTabView appPermitted
+          [table]="'fee_payment'" [operation]="'select'">Payments</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="fee-balances">
+        <div data-revealId="fee-balances" appTabView appPermitted [table]="'student_charge'" [operation]="'select'">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
-              <li data-revealId="all" data-default="true" appTabView>All balances</li>
-              <li data-revealId="batch-balance" appTabView (click)="getBatches()">Batch balance</li>
-              <li data-revealId="student" appTabView>Student balance</li>
+              <li data-revealId="all" data-default="true" appTabView appPermitted [table]="'fee_payment'"
+                [operation]="'select'">All balances</li>
+              <li data-revealId="batch-balance" appTabView (click)="getBatches()" appPermitted
+                [table]="'student_charge'" [operation]="'select'">Batch balance</li>
+              <li data-revealId="student" appTabView appPermitted [table]="'student_charge'" [operation]="'select'">
+                Student balance</li>
             </ol>
             <div class="tabs__content tabs__content--vertical">
-              <div data-revealId="all">
+              <div data-revealId="all" appPermitted [table]="'student_charge'" [operation]="'select'">
                 <app-normal-pagination [total]="total" [sorts]="sorts" *ngIf="balances"
                   (options)="onPaginationChange($event)"></app-normal-pagination>
                 <app-loader *ngIf="isGettingAllBalances"></app-loader>
-                <table *ngIf="!isGettingAllBalances">
+                <table *ngIf="!isGettingAllBalances" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Adm</th>
@@ -38,18 +43,50 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="!isGettingAllBalances" class="mobile-only">
+                  <tbody>
+                    <tr *ngFor="let balance of balances" class="clickable" (click)="viewStudent(balance.id)">
+                      <div>
+                        <span>Adm No.</span>
+                        <span>{{balance.adm}}</span>
+                      </div>
+                      <div>
+                        <span>Name</span>
+                        <span>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</span>
+                      </div>
+                      <div>
+                        <span>Credit</span>
+                        <span>{{balance.credit | currency: 'Ksh. '}}</span>
+                      </div>
+                      <div>
+                        <span>Debit</span>
+                        <span>{{balance.debit | currency: 'Ksh. '}}</span>
+                      </div>
+                      <div>
+                        <span>Balance</span>
+                        <span>{{balance.balance | currency: 'Ksh.'}}</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div data-revealId="student">
+              <div data-revealId="student" appPermitted [table]="'student_charge'" [operation]="'select'">
                 <form #balanceForm="ngForm" (ngSubmit)="getStudentBalance(balanceForm.value.adm)" ngNativeValidate>
                   <span>View student balance</span>
-                  <div class="cat-selector">
-                    <input type="text" name="adm" id="adm" required ngModel placeholder="Admission number"
-                      autocomplete="off">
-                    <button class="btn btn--blue" [disabled]="isGettingStudentBalance">View</button>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="adm" style="color: transparent;">.</label>
+                      <input type="text" name="adm" id="adm" required ngModel placeholder="Admission number"
+                        autocomplete="off">
+                    </fieldset>
+                    <fieldset>
+                      <label for="x" style="color: transparent;">.</label>
+                      <button class="btn btn--blue" [disabled]="isGettingStudentBalance">View</button>
+                    </fieldset>
                   </div>
                 </form>
                 <app-loader *ngIf="isGettingStudentBalance"></app-loader>
-                <table *ngIf="studentBalance">
+                <table *ngIf="studentBalance" class="not-mobile">
                   <tbody>
                     <tr>
                       <td>Name</td>
@@ -73,8 +110,34 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="studentBalance" class="mobile-only">
+                  <tbody>
+                    <tr>
+                      <div>
+                        <span>Name</span>
+                        <span>{{studentBalance.fname | titlecase}} {{studentBalance.lname | titlecase}}</span>
+                      </div>
+                      <div>
+                        <span>Charged</span>
+                        <span>{{studentBalance.credit | currency: 'Ksh. '}}</span>
+                      </div>
+                      <div>
+                        <span>Paid</span>
+                        <span>{{studentBalance.debit | currency: 'Ksh. '}}</span>
+                      </div>
+                      <div class="bold" [ngClass]="{
+                        blue: +studentBalance.balance === 0,
+                        danger: +studentBalance.balance > 0,
+                        green: +studentBalance.balance < 0
+                      }">
+                        <span>Balance</span>
+                        <span>{{studentBalance.balance | currency: 'Ksh. '}}</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div data-revealId="batch-balance">
+              <div data-revealId="batch-balance" appPermitted [table]="'student_charge'" [operation]="'select'">
                 <form #batchForm="ngForm" (ngSubmit)="getBatchBalance(batchForm.value.batch)" ngNativeValidate>
                   <span></span>
                   <div class="cat-selector">
@@ -93,7 +156,7 @@
                 <app-normal-pagination [total]="batchTotal"
                   [sorts]="['id', 'adm', 'fname', 'lname', 'balance', 'credit', 'debit']" *ngIf="batchBalances"
                   (options)="onBatchOptionsChange($event)"></app-normal-pagination>
-                <table *ngIf="!isGettingBatchBalances && batchBalances">
+                <table *ngIf="!isGettingBatchBalances && batchBalances" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Adm</th>
@@ -113,25 +176,55 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="!isGettingBatchBalances && batchBalances" class="mobile-only">
+                  <tbody>
+                    <tr *ngFor="let balance of batchBalances" class="clickable" (click)="viewStudent(balance.id)">
+                      <div>
+                        <span>Adm No.</span>
+                        <span>{{balance.adm}}</span>
+                      </div>
+                      <div>
+                        <span>Name</span>
+                        <span>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</span>
+                      </div>
+                      <div>
+                        <span>Credit</span>
+                        <span>{{balance.credit | currency: 'Ksh. '}}</span>
+                      </div>
+                      <div>
+                        <span>Debit</span>
+                        <span>{{balance.debit | currency: 'Ksh. '}}</span>
+                      </div>
+                      <div>
+                        <span>Balance</span>
+                        <span>{{balance.balance | currency: 'Ksh.'}}</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
-        <div data-revealId="fee-payments">
+        <div data-revealId="fee-payments" appPermitted [table]="'fee_payment'" [operation]="'select'">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
-              <li data-revealId="new-payments" data-default="true" appTabView>New payment</li>
-              <li data-revealId="all-payments" (click)="getPayments({}, true)" appTabView>All payments</li>
-              <li data-revealId="payment-by-date" appTabView>Payments by date</li>
-              <li data-revealId="print-by-date" appTabView>Print</li>
+              <li data-revealId="new-payments" data-default="true" appTabView appPermitted [table]="'fee_payment'"
+                [operation]="'create'">New payment</li>
+              <li data-revealId="all-payments" (click)="getPayments({}, true)" appTabView appPermitted
+                [table]="'fee_payment'" [operation]="'create'">All payments</li>
+              <li data-revealId="payment-by-date" appTabView appPermitted [table]="'fee_payment'"
+                [operation]="'select'">Payments by date</li>
+              <li data-revealId="print-by-date" appTabView appPermitted [table]="'fee_payment'" [operation]="'select'">
+                Print</li>
             </ol>
             <div class="tabs__content tabs__content--vertical">
-              <div data-revealId="all-payments">
+              <div data-revealId="all-payments" appPermitted [table]="'fee_payment'" [operation]="'select'">
                 <app-normal-pagination *ngIf="allPayments" [total]="totalPayments" (options)="onPaymentOptions($event)"
                   [sorts]="['id', 'receiptNo','paidBy','adm','student','datePaid','amount']">
                 </app-normal-pagination>
                 <app-loader *ngIf="isGettingAllPayments"></app-loader>
-                <table *ngIf="!isGettingAllPayments">
+                <table *ngIf="!isGettingAllPayments" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Receipt No.</th>
@@ -153,8 +246,38 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="!isGettingAllPayments" class="mobile-only" (click)="viewStudent(payment.studentId)">
+                  <tbody>
+                    <tr *ngFor="let payment of allPayments" class="clickable" (click)="viewStudent(payment.studentId)">
+                      <div>
+                        <span>Rcpt No.</span>
+                        <span>{{payment.receiptNo}}</span>
+                      </div>
+                      <div>
+                        <span>Paid by</span>
+                        <span>{{payment.paidBy}}</span>
+                      </div>
+                      <div>
+                        <span>Adm No.</span>
+                        <span>{{payment.adm}}</span>
+                      </div>
+                      <div>
+                        <span>Student</span>
+                        <span>{{payment.student}}</span>
+                      </div>
+                      <div>
+                        <span>Date</span>
+                        <span>{{payment.datePaid | date}}</span>
+                      </div>
+                      <div>
+                        <span>Amount</span>
+                        <span>{{payment.amount | currency: 'Kshs. '}}</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div data-revealId="payment-by-date">
+              <div data-revealId="payment-by-date" appPermitted [table]="'fee_payment'" [operation]="'select'">
                 <form #byDateForm="ngForm" (ngSubmit)="viewByDate(byDateForm.value)" ngNativeValidate>
                   <span></span>
                   <div class="cat-selector">
@@ -166,7 +289,7 @@
                   </div>
                 </form>
                 <app-loader *ngIf="isGettingAllPayments"></app-loader>
-                <table *ngIf="!isGettingAllPayments">
+                <table *ngIf="!isGettingAllPayments" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Receipt No.</th>
@@ -188,8 +311,38 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="!isGettingAllPayments" class="mobile-only">
+                  <tbody>
+                    <tr *ngFor="let payment of allPayments" class="clickable" (click)="viewStudent(payment.studentId)">
+                      <div>
+                        <span>Rcpt No.</span>
+                        <span>{{payment.receiptNo}}</span>
+                      </div>
+                      <div>
+                        <span>Paid by</span>
+                        <span>{{payment.paidBy}}</span>
+                      </div>
+                      <div>
+                        <span>Adm No.</span>
+                        <span>{{payment.adm}}</span>
+                      </div>
+                      <div>
+                        <span>Student</span>
+                        <span>{{payment.student}}</span>
+                      </div>
+                      <div>
+                        <span>Date</span>
+                        <span>{{payment.datePaid | date}}</span>
+                      </div>
+                      <div>
+                        <span>Amount</span>
+                        <span>{{payment.amount | currency: 'Kshs. '}}</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div data-revealId="new-payments">
+              <div data-revealId="new-payments" appPermitted [table]="'fee_payment'" [operation]="'create'">
                 <form #newPayment="ngForm" (ngSubmit)="pay(newPayment)" ngNativeValidate>
                   <span>Enter payment details</span>
                   <div class="input">
@@ -231,7 +384,7 @@
                   </div>
                 </form>
               </div>
-              <div data-revealId="print-by-date">
+              <div data-revealId="print-by-date" appPermitted [table]="'fee_payment'" [operation]="'select'">
                 <form #printPaymentsForm="ngForm" (ngSubmit)="printPayments(printPaymentsForm.value)" ngNativeValidate>
                   <span></span>
                   <div class="inputs">
@@ -257,8 +410,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-fee-dash></app-fee-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

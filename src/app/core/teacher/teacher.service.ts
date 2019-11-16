@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { API } from 'src/app/constants';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { createQuery } from 'src/app/utilities';
+import { Http } from 'src/app/http/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,29 +10,29 @@ import { createQuery } from 'src/app/utilities';
 export class TeacherService {
   api: string = `${API}/teachers`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: Http) { }
 
   getTeachers(options): Observable<any> {
-    return this.http.get(`${this.api}?${createQuery(options)}`);
+    return this.http._get(`${this.api}?${createQuery(options)}`);
   }
 
   add(employee): Observable<any> {
-    return this.http.post(this.api, { employee });
+    return this.http._post(this.api, { employee });
   }
 
   getTeacher(id): Observable<any> {
-    return this.http.get(`${this.api}?id=${id}`);
+    return this.http._get(`${this.api}?id=${id}`);
   }
 
   addRole(form): Observable<any> {
-    return this.http.post(`${this.api}/roles`, form);
+    return this.http._post(`${this.api}/roles`, form);
   }
 
   getTeacherRoles(teacherId): Observable<any> {
-    return this.http.get(`${this.api}/roles?teacher=${teacherId}`);
+    return this.http._get(`${this.api}/roles?teacher=${teacherId}`);
   }
 
   removeRole(id): Observable<any> {
-    return this.http.delete(`${this.api}/roles?id=${id}`);
+    return this.http._delete(`${this.api}/roles?id=${id}`);
   }
 }

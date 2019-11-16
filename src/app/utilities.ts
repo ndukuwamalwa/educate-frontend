@@ -1,3 +1,5 @@
+import { PRINT } from './constants';
+
 export function createQuery(options = {}): string {
     const keys = Object.keys(options);
     let query: string[] = [];
@@ -128,4 +130,18 @@ export function getDatesBetween(startDateString: string, endDateString: string):
     }
 
     return dates;
+}
+
+export function printUrlWithToken(urlPart: string): string {
+    if (!urlPart.startsWith('/')) {
+        urlPart = `/${urlPart}`;
+    }
+    const token = window.sessionStorage.getItem('token');
+    let url: string = `${PRINT}${urlPart}`;
+    if (url.includes('?')) {
+        url = `${url}&token=${token}`;
+    } else {
+        url = `${url}?token=${token}`;
+    }
+    return url;
 }

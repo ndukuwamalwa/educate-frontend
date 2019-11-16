@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { HrService } from '../../hr/hr.service';
 import { Router } from '@angular/router';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { PRINT } from 'src/app/constants';
+import { printUrlWithToken } from 'src/app/utilities';
 
 @Component({
   selector: 'app-teacher',
@@ -93,7 +93,7 @@ export class TeacherComponent implements OnInit {
 
   print() {
     if (this.printUrl) return;
-    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/teachers`);
+    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/teachers`));
   }
 
 }

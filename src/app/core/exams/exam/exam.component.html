@@ -2,11 +2,11 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="create-exam" data-default="true" appTabView>Create</li>
+        <li data-revealId="create-exam" data-default="true" appTabView appPermitted [table]="'exam'" [operation]="'create'">Create</li>
         <li data-revealId="list-exam" appTabView (click)="getExams()">List</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="create-exam">
+        <div data-revealId="create-exam" appPermitted [table]="'exam'" [operation]="'create'">
           <form #form="ngForm" (ngSubmit)="addExam(form.value)" ngNativeValidate>
             <span>Create exam</span>
             <div class="input">
@@ -53,7 +53,7 @@
           <app-normal-pagination [total]="total" (options)="onOptionsChange($event)"
             [sorts]="['id','name','startDate','endDate','term','status']"></app-normal-pagination>
           <app-loader *ngIf="isGettingExams"></app-loader>
-          <table *ngIf="!isGettingExams">
+          <table *ngIf="!isGettingExams" class="not-mobile">
             <caption>List of exams</caption>
             <thead>
               <tr>
@@ -68,11 +68,41 @@
             <tbody>
               <tr *ngFor="let exam of exams" class="clickable" (click)="viewDetails(exam.id)">
                 <td>{{exam.name}}</td>
-                <td>{{exam.startDate}}</td>
-                <td>{{exam.endDate}}</td>
+                <td>{{exam.startDate | date}}</td>
+                <td>{{exam.endDate | date}}</td>
                 <td>{{exam.term}}</td>
                 <td>{{exam.grading}}</td>
                 <td>{{exam.status}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table *ngIf="!isGettingExams" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let exam of exams" class="clickable" (click)="viewDetails(exam.id)">
+                <div>
+                  <span>Title</span>
+                  <span>{{exam.name}}</span>
+                </div>
+                <div>
+                  <span>Start</span>
+                  <span>{{exam.startDate | date}}</span>
+                </div>
+                <div>
+                  <span>End</span>
+                  <span>{{exam.endDate | date}}</span>
+                </div>
+                <div>
+                  <span>Term</span>
+                  <span>{{exam.term}}</span>
+                </div>
+                <div>
+                  <span>Grading</span>
+                  <span>{{exam.grading}}</span>
+                </div>
+                <div>
+                  <span>Status</span>
+                  <span>{{exam.status}}</span>
+                </div>
               </tr>
             </tbody>
           </table>
@@ -80,8 +110,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-exam-dash></app-exam-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

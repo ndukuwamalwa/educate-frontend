@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { BatchService } from '../../batch/batch.service';
 import { NgForm } from '@angular/forms';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { PRINT } from 'src/app/constants';
+import { printUrlWithToken } from 'src/app/utilities';
 
 @Component({
   selector: 'app-finance',
@@ -161,7 +161,7 @@ export class FinanceComponent implements OnInit {
   }
 
   printPayments({ startDate, endDate }) {
-    const url = `${PRINT}/payments?startDate=${startDate}&endDate=${endDate}`;
+    const url = printUrlWithToken(`/payments?startDate=${startDate}&endDate=${endDate}`);
     this.printPaymentsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

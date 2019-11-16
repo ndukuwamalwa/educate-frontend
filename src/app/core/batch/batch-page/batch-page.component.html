@@ -7,11 +7,12 @@
     <div class="tabs tabs--vertical">
       <ol class="tabs__links tabs__links--vertical">
         <li data-revealId="details" data-default="true" appTabView>Details</li>
-        <li data-revealId="update" appTabView>Update details</li>
-        <li data-revealId="add-students" appTabView>Add students</li>
+        <li data-revealId="update" appTabView appPermitted [table]="'batch'" [operation]="'update'">Update details</li>
+        <li data-revealId="add-students" appTabView appPermitted [table]="'student_batch'" [operation]="'create'">Add
+          students</li>
         <li data-revealId="view-students" appTabView (click)="viewStudents()">View students</li>
         <li data-revealId="print-students" appTabView (click)="printStudents()">Print students</li>
-        <li data-revealId="danger" appTabView>Danger zone</li>
+        <li data-revealId="danger" appTabView appPermitted [table]="'batch'" [operation]="'delete'">Danger zone</li>
       </ol>
       <div class="tabs__content tabs__content--vertical">
         <div data-revealId="details">
@@ -37,7 +38,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="update">
+        <div data-revealId="update" appPermitted [table]="'batch'" [operation]="'update'">
           <form #batchForm="ngForm" (ngSubmit)="updateBatch(batchForm.value)">
             <span></span>
             <div class="input">
@@ -68,7 +69,7 @@
             </div>
           </form>
         </div>
-        <div data-revealId="add-students">
+        <div data-revealId="add-students" appPermitted [table]="'student_batch'" [operation]="'create'">
           <form #addStudentsForm="ngForm" (ngSubmit)="addStudents(addStudentsForm.value)" ngNativeValidate>
             <span>Add students to {{batch?.name}}</span>
             <div class="inputs">
@@ -109,7 +110,7 @@
         </div>
         <div data-revealId="view-students">
           <app-loader *ngIf="isGettingStudents"></app-loader>
-          <table *ngIf="!isGettingStudents && students">
+          <table *ngIf="!isGettingStudents && students" class="not-mobile">
             <caption>Showing all {{students.length}} students</caption>
             <thead>
               <tr>
@@ -130,6 +131,33 @@
               </tr>
             </tbody>
           </table>
+          <table *ngIf="!isGettingStudents && students" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let student of students">
+                <div>
+                  <span>Adm</span>
+                  <span>{{student.adm | uppercase}}</span>
+                </div>
+                <div>
+                  <span>Name</span>
+                  <span>{{student.student | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Class</span>
+                  <span>{{student.batch | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Academic year</span>
+                  <span>{{batch?.academic_year}}</span>
+                </div>
+                <div>
+                  <span>Action</span>
+                  <span style="color: red;cursor: pointer;" class="bold"
+                    (click)="removeStudent(student.id)">Remove</span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div data-revealId="print-students">
           <iframe [src]="printUrl" *ngIf="printUrl" frameborder="0"></iframe>
@@ -138,8 +166,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-batch-dash></app-batch-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

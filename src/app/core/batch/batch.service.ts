@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { API } from 'src/app/constants';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { createQuery } from 'src/app/utilities';
+import { Http } from 'src/app/http/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,45 +10,45 @@ import { createQuery } from 'src/app/utilities';
 export class BatchService {
   api: string = `${API}/batches`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: Http) { }
 
   getBatches(options = {}): Observable<any> {
-    return this.http.get(`${this.api}?${createQuery(options)}`);
+    return this.http._get(`${this.api}?${createQuery(options)}`);
   }
 
   getBatch(id): Observable<any> {
-    return this.http.get(`${this.api}?id=${id}`);
+    return this.http._get(`${this.api}?id=${id}`);
   }
 
   addStudent(data): Observable<any> {
-    return this.http.post(`${this.api}/students`, data);
+    return this.http._post(`${this.api}/students`, data);
   }
 
   getStudentBatches(student: string | number): Observable<any> {
-    return this.http.get(`${this.api}/students?student=${student}`);
+    return this.http._get(`${this.api}/students?student=${student}`);
   }
 
   removeStudent(studentBatchId: number | string): Observable<any> {
-    return this.http.delete(`${this.api}/students?id=${studentBatchId}`);
+    return this.http._delete(`${this.api}/students?id=${studentBatchId}`);
   }
 
   getStudents(batch): Observable<any> {
-    return this.http.get(`${this.api}/students?batch=${batch}`);
+    return this.http._get(`${this.api}/students?batch=${batch}`);
   }
 
   add(data): Observable<any> {
-    return this.http.post(this.api, data);
+    return this.http._post(this.api, data);
   }
 
   update(data): Observable<any> {
-    return this.http.put(`${this.api}?id=${data.id}`, data);
+    return this.http._put(`${this.api}?id=${data.id}`, data);
   }
 
   addStudentByAdm(adm: string, batch): Observable<any> {
-    return this.http.post(`${this.api}/students?byAdm=true`, { adm, batch });
+    return this.http._post(`${this.api}/students?byAdm=true`, { adm, batch });
   }
 
   addFromAnotherBatch(oldBatch, batch): Observable<any> {
-    return this.http.post(`${this.api}/students?byBatch=true`, { oldBatch, batch });
+    return this.http._post(`${this.api}/students?byBatch=true`, { oldBatch, batch });
   }
 }

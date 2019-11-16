@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../student.service';
 import { Student } from 'src/app/models/student.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { back, getDatesBetween, getDayOfTheWeek } from 'src/app/utilities';
-import { counties, PRINT } from 'src/app/constants';
+import { back, getDatesBetween, getDayOfTheWeek, printUrlWithToken } from 'src/app/utilities';
+import { counties } from 'src/app/constants';
 import { NgForm } from '@angular/forms';
 import { BatchService } from '../../batch/batch.service';
 import { SubjectService } from '../../subject/subject.service';
@@ -86,8 +86,8 @@ export class StudentPageComponent implements OnInit {
             this.isGettingBasicInfo = false;
           });
       });
-    this.printChargesUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/student/invoice?id=${this.id}`);
-    this.printPaymentsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/payments?student=${this.id}`);
+    this.printChargesUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/student/invoice?id=${this.id}`));
+    this.printPaymentsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/payments?student=${this.id}`));
   }
 
   calculateTotalCharge() {

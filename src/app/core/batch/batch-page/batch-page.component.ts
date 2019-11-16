@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { back } from 'src/app/utilities';
+import { back, printUrlWithToken } from 'src/app/utilities';
 import { ActivatedRoute } from '@angular/router';
 import { BatchService } from '../batch.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { InstituteService } from '../../institute/institute.service';
 import { Subscribable } from 'rxjs';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { PRINT } from 'src/app/constants';
 
 @Component({
   selector: 'app-batch-page',
@@ -124,7 +123,7 @@ export class BatchPageComponent implements OnInit {
 
   printStudents() {
     if (this.printUrl) return;
-    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/batch/students?id=${this.id}`);
+    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/batch/students?id=${this.id}`));
   }
 
 }

@@ -16,6 +16,7 @@ import { FinanceService } from '../finance/finance.service';
 import { InstituteService } from '../institute/institute.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { LoaderModule } from 'src/app/loader/loader.module';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [StudentComponent, StudentPageComponent],
@@ -40,7 +41,8 @@ import { LoaderModule } from 'src/app/loader/loader.module';
     ExamService,
     FinanceService,
     InstituteService,
-    ToastrService
+    ToastrService,
+    Http
   ]
 })
 export class StudentModule { }

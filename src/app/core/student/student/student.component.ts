@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { counties, PRINT } from 'src/app/constants';
+import { counties } from 'src/app/constants';
 import { Student } from 'src/app/models/student.model';
 import { StudentService } from '../student.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'src/app/toastr.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { printUrlWithToken } from 'src/app/utilities';
 
 @Component({
   selector: 'app-student',
@@ -87,11 +88,11 @@ export class StudentComponent implements OnInit {
 
   printAll() {
     if (this.printAllUrl) return;
-    this.printAllUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/students`);
+    this.printAllUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/students`));
   }
 
   printByDate({ startDate, endDate, gender }) {
-    let url: string = `${PRINT}/students?startDate=${startDate}&endDate=${endDate}`;
+    let url: string = printUrlWithToken(`/students?startDate=${startDate}&endDate=${endDate}`);
     if (gender.toLowerCase() !== 'all') {
       url = `${url}&gender=${gender}`;
     }
@@ -99,7 +100,7 @@ export class StudentComponent implements OnInit {
   }
 
   printByCounty({ county, gender }) {
-    let url: string = `${PRINT}/students?county=${county}`;
+    let url: string = printUrlWithToken(`/students?county=${county}`);
     if (gender.toLowerCase() !== 'all') {
       url = `${url}&gender=${gender}`;
     }
@@ -109,7 +110,7 @@ export class StudentComponent implements OnInit {
   printContacts(printFor: string) {
     if (printFor === 'students' && this.studentContactsUrl) return;
     if (printFor === 'parents' && this.parentContactsUrl) return;
-    const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/${printFor}/contacts`);
+    const url: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/${printFor}/contacts`));
     if (printFor === 'students') {
       this.studentContactsUrl = url;
     } else {

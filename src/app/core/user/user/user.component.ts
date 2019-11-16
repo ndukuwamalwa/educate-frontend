@@ -1,11 +1,10 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { User } from 'src/app/models/user.model';
-import { HttpResponse } from '@angular/common/http';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'src/app/toastr.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { PRINT } from 'src/app/constants';
+import { printUrlWithToken } from 'src/app/utilities';
 
 @Component({
   selector: 'app-user',
@@ -82,7 +81,7 @@ export class UserComponent implements OnInit {
   }
 
   print(category: string) {
-    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/users?${category}=true`);
+    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/users?${category}=true`));
   }
 
 }

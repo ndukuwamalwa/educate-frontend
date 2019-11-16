@@ -7,19 +7,28 @@
     <div class="tabs tabs--vertical">
       <ol class="tabs__links tabs__links--vertical">
         <li data-revealId="details" data-default="true" appTabView>Details</li>
-        <li data-revealId="update" appTabView>Update details</li>
-        <li data-revealId="add-contact" appTabView>Add contacts</li>
+        <li data-revealId="update" appTabView appTabView appPermitted [table]="'student'" [operation]="'update'">Update
+          details</li>
+        <li data-revealId="add-contact" appTabView appTabView appPermitted [table]="'student_contact'"
+          [operation]="'create'">Add contacts</li>
         <li data-revealId="view-contact" appTabView (click)="getContacts()">Contacts</li>
         <li data-revealId="attendance" appTabView>Class attendance</li>
-        <li data-revealId="add-to-batch" appTabView (click)="getBaches()">Add to batch</li>
+        <li data-revealId="add-to-batch" appTabView (click)="getBaches()" appTabView appPermitted
+          [table]="'student_batch'" [operation]="'create'">Add to batch</li>
         <li data-revealId="view-batches" appTabView (click)="viewBatches()">Batches</li>
-        <li data-revealId="view-charges" appTabView (click)="viewBatches()">Charges</li>
-        <li data-revealId="register-subject" appTabView (click)="getSubjects()">Register subject</li>
-        <li data-revealId="view-subjects" appTabView (click)="getBaches()">View subjects</li>
-        <li data-revealId="view-results" appTabView (click)="getExams()">Exam results</li>
-        <li data-revealId="view-payments" appTabView (click)="getPayments()">Payments</li>
+        <li data-revealId="view-charges" appTabView (click)="viewBatches()" appTabView appPermitted
+          [table]="'student_charge'" [operation]="'select'">Charges</li>
+        <li data-revealId="register-subject" appTabView (click)="getSubjects()" appTabView appPermitted
+          [table]="'subject'" [operation]="'select'">Register subject</li>
+        <li data-revealId="view-subjects" appTabView (click)="getBaches()" appTabView appPermitted
+          [table]="'student_subject'" [operation]="'select'">View subjects</li>
+        <li data-revealId="view-results" appTabView (click)="getExams()" appTabView appPermitted [table]="'exam_result'"
+          [operation]="'select'">Exam results</li>
+        <li data-revealId="view-payments" appTabView (click)="getPayments()" appTabView appPermitted
+          [table]="'fee_payment'" [operation]="'select'">Payments</li>
         <li data-revealId="view-hostel" appTabView (click)="getHostels()">Hostel</li>
-        <li data-revealId="danger" appTabView>Danger zone</li>
+        <li data-revealId="danger" appTabView appTabView appPermitted [table]="'student'" [operation]="'delete'">Danger
+          zone</li>
       </ol>
       <div class="tabs__content tabs__content--vertical">
         <div data-revealId="details">
@@ -61,7 +70,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="update">
+        <div data-revealId="update" appTabView appPermitted [table]="'student'" [operation]="'update'">
           <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="updateStudent(studentForm.value)">
             <div class="inputs">
               <fieldset>
@@ -121,7 +130,7 @@
             </div>
           </form>
         </div>
-        <div data-revealId="add-contact">
+        <div data-revealId="add-contact" appTabView appPermitted [table]="'student_contact'" [operation]="'create'">
           <form #contactForm="ngForm" (ngSubmit)="addContact(contactForm)" ngNativeValidate>
             <span>Add student contact</span>
             <div class="input">
@@ -170,7 +179,7 @@
         </div>
         <div data-revealId="view-contact">
           <app-loader *ngIf="isGettingContacts"></app-loader>
-          <table *ngIf="!isGettingContacts">
+          <table *ngIf="!isGettingContacts" class="not-mobile">
             <thead>
               <tr>
                 <th>Type of contact</th>
@@ -186,16 +195,41 @@
               </tr>
             </tbody>
           </table>
+          <table *ngIf="!isGettingContacts" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let contact of contacts">
+                <div>
+                  <span>Type</span>
+                  <span>{{contact.type | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Contact</span>
+                  <span>{{contact.contact | lowercase}}</span>
+                </div>
+                <div>
+                  <span>Person</span>
+                  <span>{{contact.person | titlecase}}</span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div data-revealId="attendance">
           <form #atteForm="ngForm" (ngSubmit)="getAttendance(atteForm.value.startDate, atteForm.value.endDate)">
             <span></span>
-            <div class="cat-selector">
-              <label for="startDate">Start date</label>
-              <input type="date" name="startDate" id="startDate" ngModel required>
-              <label for="endDate">End date</label>
-              <input type="date" name="endDate" id="endDate" ngModel required>
-              <button class="btn btn--blue" [disabled]="isGettingAttendance">View</button>
+            <div class="inputs">
+              <fieldset>
+                <label for="startDate">Start date</label>
+                <input type="date" name="startDate" id="startDate" ngModel required>
+              </fieldset>
+              <fieldset>
+                <label for="endDate">End date</label>
+                <input type="date" name="endDate" id="endDate" ngModel required>
+              </fieldset>
+              <fieldset>
+                <label for="" style="color: transparent;">.</label>
+                <button class="btn btn--blue" [disabled]="isGettingAttendance">View</button>
+              </fieldset>
             </div>
           </form>
           <app-loader *ngIf="isGettingAttendance"></app-loader>
@@ -219,19 +253,28 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="add-to-batch">
+        <div data-revealId="add-to-batch" appTabView appPermitted [table]="'student_batch'" [operation]="'create'">
           <form #addToBatchForm="ngForm" (ngSubmit)="addToBatch(addToBatchForm.value)" ngNativeValidate>
             <span>Add to batch/class</span>
-            <div class="cat-selector">
-              <select name="batch" id="batch" ngModel required (change)="onBatchChange($event.target.value)">
-                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
-              </select>
+            <div class="inputs">
+              <fieldset>
+                <select name="batch" id="batch" ngModel required (change)="onBatchChange($event.target.value)">
+                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
+                  </option>
+                </select>
+              </fieldset>
               <app-loader *ngIf="isGettingBatches"></app-loader>
-              <span style="white-space: nowrap;" *ngIf="feeToAdd">
-                Additional fee: <strong>{{feeToAdd | currency: 'KES '}}</strong>
-              </span>
+              <fieldset>
+                <label for=""></label>
+                <span style="white-space: nowrap;" *ngIf="feeToAdd">
+                  Additional fee: <strong>{{feeToAdd | currency: 'KES '}}</strong>
+                </span>
+              </fieldset>
               <app-loader *ngIf="isAddingBatch"></app-loader>
-              <button class="btn btn--blue" [disabled]="isGettingBatches || isAddingBatch">Add student</button>
+              <fieldset>
+                <label for="" style="color: transparent;">.</label>
+                <button class="btn btn--blue" [disabled]="isGettingBatches || isAddingBatch">Add student</button>
+              </fieldset>
             </div>
           </form>
         </div>
@@ -254,7 +297,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="view-charges">
+        <div data-revealId="view-charges" appTabView appPermitted [table]="'student_charge'" [operation]="'select'">
           <app-loader *ngIf="isGettingStudentBatches"></app-loader>
           <button class="btn btn--blue" (click)="toggleView('isViewingPrintableCharges')">
             <span *ngIf="isViewingPrintableCharges">Normal view</span>
@@ -265,8 +308,8 @@
             <thead>
               <tr>
                 <th>Batch</th>
-                <th>Academic year</th>
-                <th>Amount charged</th>
+                <th>Year</th>
+                <th>Amount</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -296,7 +339,8 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="register-subject">
+        <div data-revealId="register-subject" appTabView appPermitted [table]="'student_subject'"
+          [operation]="'create'">
           <form #subjectForm="ngForm" (ngSubmit)="addSubject(subjectForm)" ngNativeValidate>
             <span></span>
             <div class="cat-selector">
@@ -326,12 +370,18 @@
         <div data-revealId="view-subjects">
           <form #subjectViewForm="ngForm" (ngSubmit)="viewStudentSubjects(subjectViewForm.value)" ngNativeValidate>
             <span></span>
-            <div class="cat-selector">
-              <label for="batch">Select batch</label>
-              <select name="batch" id="batch" required ngModel>
-                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
-              </select>
-              <button class="btn btn--blue">View subjects</button>
+            <div class="inputs">
+              <fieldset>
+                <label for="batch">Select batch</label>
+                <select name="batch" id="batch" required ngModel>
+                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
+                  </option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label for="" style="color: transparent;">.</label>
+                <button class="btn btn--blue">View subjects</button>
+              </fieldset>
             </div>
           </form>
           <app-loader *ngIf="isGettingStudentSubjects"></app-loader>
@@ -352,16 +402,21 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="view-results">
+        <div data-revealId="view-results" appTabView appPermitted [table]="'exam_result'" [operation]="'select'">
           <form #examSelectForm="ngForm" (ngSubmit)="viewResults(examSelectForm.value)">
             <span></span>
-            <div class="cat-selector">
-              <label for="exam">Select examination</label>
-              <select name="exam" id="exam" required ngModel>
-                <option [value]="exam.id" *ngFor="let exam of exams">{{exam.name}}-Term {{exam.term}}</option>
-              </select>
+            <div class="inputs">
+              <fieldset>
+                <label for="exam">Select examination</label>
+                <select name="exam" id="exam" required ngModel>
+                  <option [value]="exam.id" *ngFor="let exam of exams">{{exam.name}}-Term {{exam.term}}</option>
+                </select>
+              </fieldset>
               <app-loader *ngIf="isGettingExams"></app-loader>
-              <button class="btn btn--blue" [disabled]="isGettingExams || isGettingResults">View results</button>
+              <fieldset>
+                <label for="" style="color: transparent;">.</label>
+                <button class="btn btn--blue" [disabled]="isGettingExams || isGettingResults">View results</button>
+              </fieldset>
             </div>
           </form>
           <app-loader *ngIf="isGettingResults"></app-loader>
@@ -385,14 +440,15 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="view-payments">
+        <div data-revealId="view-payments" appTabView appPermitted [table]="'fee_payment'" [operation]="'select'">
           <app-loader *ngIf="isGettingPayments"></app-loader>
           <button class="btn btn--blue" (click)="toggleView('isViewingPrintablePayments')">
             <span *ngIf="isViewingPrintablePayments">Normal view</span>
             <span *ngIf="!isViewingPrintablePayments">Print view</span>
           </button>
-          <iframe [src]="printPaymentsUrl" *ngIf="printChargesUrl && isViewingPrintablePayments" frameborder="0"></iframe>
-          <table *ngIf="payments && !isGettingPayments && !isViewingPrintablePayments">
+          <iframe [src]="printPaymentsUrl" *ngIf="printChargesUrl && isViewingPrintablePayments"
+            frameborder="0"></iframe>
+          <table *ngIf="payments && !isGettingPayments && !isViewingPrintablePayments" class="not-mobile">
             <thead>
               <tr>
                 <th>Receipt No.</th>
@@ -426,6 +482,28 @@
               </tr>
             </tbody>
           </table>
+          <table *ngIf="payments && !isGettingPayments && !isViewingPrintablePayments" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let payment of payments">
+                <div>
+                  <span>Receipt No.</span>
+                  <span>{{payment.receiptNo}}</span>
+                </div>
+                <div>
+                  <span>Paid by</span>
+                  <span>{{payment.paidBy}}</span>
+                </div>
+                <div>
+                  <span>Date</span>
+                  <span>{{payment.datePaid | date}}</span>
+                </div>
+                <div>
+                  <span>Amount</span>
+                  <span>{{payment.amount | currency: 'KES '}}</span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div data-revealId="view-hostel">
           <app-loader *ngIf="isGettingHostels"></app-loader>
@@ -442,26 +520,31 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="danger">
+        <div data-revealId="danger" appTabView appPermitted [table]="'student'" [operation]="'delete'">
           <form>
             <span>Actions here have permanent effects</span>
             <app-loader *ngIf="isDeletingStudent"></app-loader>
-            <div class="cat-selector">
-              <button class="btn btn--red" (click)="delete()" [disabled]="isDeletingStudent">
-                Delete {{student?.fname | titlecase}} {{student?.lname | titlecase}}
-              </button>
-              <button class="btn btn--red" (click)="delete()" *ngIf="!isOld" [disabled]="isDeletingStudent">Close and
-                Archive record</button>
-              <button class="btn btn--red" (click)="restore()" *ngIf="isOld" [disabled]="isDeletingStudent">Restore
-                student</button>
+            <div class="inputs">
+              <fieldset>
+                <label for=""></label>
+                <button class="btn btn--red" (click)="delete()" [disabled]="isDeletingStudent">
+                  Delete {{student?.fname | titlecase}} {{student?.lname | titlecase}}
+                </button>
+              </fieldset>
+              <fieldset>
+                <label for=""></label>
+                <button class="btn btn--red" (click)="delete()" *ngIf="!isOld" [disabled]="isDeletingStudent">Close and
+                  Archive record</button>
+              </fieldset>
+              <fieldset>
+                <label for=""></label>
+                <button class="btn btn--red" (click)="restore()" *ngIf="isOld" [disabled]="isDeletingStudent">Restore
+                  student</button>
+              </fieldset>
             </div>
           </form>
         </div>
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-student-dash></app-student-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

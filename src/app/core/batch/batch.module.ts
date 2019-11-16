@@ -11,6 +11,7 @@ import { ToastrService } from 'src/app/toastr.service';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { PaginationModule } from '../pagination/pagination.module';
 import { FormsModule } from '@angular/forms';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FormsModule } from '@angular/forms';
   providers: [
     BatchService,
     InstituteService,
-    ToastrService
+    ToastrService,
+    Http
   ]
 })
 export class BatchModule { }

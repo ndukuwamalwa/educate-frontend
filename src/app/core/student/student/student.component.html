@@ -2,12 +2,15 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="student-add" data-default="true" appTabView>Add student</li>
-        <li data-revealId="student-list" appTabView (click)="viewStudents()">View students</li>
-        <li data-revealId="printing" appTabView (click)="printAll()">Printing</li>
+        <li data-revealId="student-add" data-default="true" appTabView appPermitted [table]="'student'"
+          [operation]="'create'">Add student</li>
+        <li data-revealId="student-list" appTabView (click)="viewStudents()" appTabView appPermitted [table]="'student'"
+          [operation]="'select'">View students</li>
+        <li data-revealId="printing" appTabView (click)="printAll()" appTabView appPermitted [table]="'student'"
+          [operation]="'select'">Printing</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="student-add">
+        <div data-revealId="student-add" appTabView appPermitted [table]="'student'" [operation]="'create'">
           <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="addStudent(studentForm.value)">
             <span>New student</span>
             <div class="inputs">
@@ -67,11 +70,11 @@
             </div>
           </form>
         </div>
-        <div data-revealId="student-list">
+        <div data-revealId="student-list" appTabView appPermitted [table]="'student'" [operation]="'select'">
           <app-normal-pagination [total]="total" [sorts]="sortingKeys" *ngIf="students"
             (options)="onOptionsChange($event)"></app-normal-pagination>
           <app-loader *ngIf="isFindingStudents"></app-loader>
-          <table *ngIf="!isFindingStudents">
+          <table *ngIf="!isFindingStudents" class="not-mobile">
             <caption>List of students</caption>
             <thead>
               <tr>
@@ -94,14 +97,45 @@
               </tr>
             </tbody>
           </table>
+          <table *ngIf="!isFindingStudents" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.id)">
+                <div>
+                  <span>Adm No.</span>
+                  <span>{{student.adm}}</span>
+                </div>
+                <div>
+                  <span>Name</span>
+                  <span>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</span>
+                </div>
+                <div>
+                  <span>D.O.B</span>
+                  <span>{{student.dob | date}}</span>
+                </div>
+                <div>
+                  <span>Gender</span>
+                  <span>{{student.gender | titlecase}}</span>
+                </div>
+                <div>
+                  <span>County</span>
+                  <span>{{student.county | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Admitted</span>
+                  <span>{{student.admitted | date}}</span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div data-revealId="printing">
+        <div data-revealId="printing" appTabView appPermitted [table]="'student'" [operation]="'select'">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
               <li data-revealId="print-all" data-default="true" appTabView>Print all</li>
               <li data-revealId="print-by-admitted" appTabView>By admission date</li>
               <li data-revealId="print-by-county" appTabView>By county</li>
-              <li data-revealId="student-contacts" appTabView (click)="printContacts('students')">Students' contacts</li>
+              <li data-revealId="student-contacts" appTabView (click)="printContacts('students')">Students' contacts
+              </li>
               <li data-revealId="parent-contacts" appTabView (click)="printContacts('parents')">Parents' contacts</li>
             </ol>
             <div class="tabs__content tabs__content--vertical">
@@ -174,8 +208,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-student-dash></app-student-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

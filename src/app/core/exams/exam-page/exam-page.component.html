@@ -12,7 +12,7 @@
         <li data-revealId="view-results" appTabView>View results</li>
         <li data-revealId="danger" appTabView>Danger zone</li>
       </ol>
-      <div class="tabs__content tabs__content--vertical">
+      <div class="tabs__content tabs__content--vertical" style="overflow: auto;">
         <div data-revealId="details">
           <app-loader *ngIf="isGettingDetails"></app-loader>
           <table *ngIf="!isGettingDetails" class="details-table">
@@ -114,7 +114,7 @@
           <app-loader *ngIf="isLoadingStudents"></app-loader>
           <form #marksForm="ngForm" (ngSubmit)="addResults(marksForm.value)" ngNativeValidate *ngIf="selectedStudents">
             <span></span>
-            <table>
+            <table class="not-mobile">
               <thead>
                 <tr>
                   <th>Adm</th>
@@ -133,6 +133,25 @@
                     <input type="number" [id]="student.studentId" [name]="'student_' + student.studentId"
                       [ngModel]="student.marks" min="0" max="100" maxlength="2">
                   </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="mobile-only">
+              <tbody>
+                <tr *ngFor="let student of selectedStudents">
+                  <div>
+                    <span>Adm</span>
+                    <span>{{student.adm}}</span>
+                  </div>
+                  <div>
+                    <span>Name</span>
+                    <span>{{student.student}}</span>
+                  </div>
+                  <div>
+                    <span>Marks</span>
+                    <input type="number" [id]="student.studentId" [name]="'student_' + student.studentId"
+                      [ngModel]="student.marks" min="0" max="100" maxlength="2" style="width: 85px;margin-left: 10px;">
+                  </div>
                 </tr>
               </tbody>
             </table>
@@ -184,5 +203,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

@@ -10,6 +10,7 @@ import { LoaderModule } from 'src/app/loader/loader.module';
 import { ToastrService } from 'src/app/toastr.service';
 import { FormsModule } from '@angular/forms';
 import { BatchService } from '../batch/batch.service';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { BatchService } from '../batch/batch.service';
   providers: [
     FinanceService,
     ToastrService,
-    BatchService
+    BatchService,
+    Http
   ]
 })
 export class FinanceModule { }

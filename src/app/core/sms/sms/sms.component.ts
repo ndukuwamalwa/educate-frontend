@@ -100,6 +100,7 @@ export class SmsComponent implements OnInit {
         break;
       }
     }
+    this.getMessages({}, true);
   }
 
   getMessages(options = {}, force: boolean = false) {

@@ -7,10 +7,12 @@
     <div class="tabs tabs--vertical">
       <ol class="tabs__links tabs__links--vertical">
         <li data-revealId="details" data-default="true" appTabView>Details</li>
-        <li data-revealId="update" appTabView>Update details</li>
-        <li data-revealId="add-modules" appTabView>Add modules</li>
-        <li data-revealId="view-modules" appTabView>View modules</li>
-        <li data-revealId="danger" appTabView>Danger zone</li>
+        <li data-revealId="update" appTabView appPermitted [table]="'user'" [operation]="'update'">Update details</li>
+        <li data-revealId="add-modules" appTabView appPermitted [table]="'user_module'" [operation]="'create'">Add
+          modules</li>
+        <li data-revealId="view-modules" appTabView appPermitted [table]="'user_module'" [operation]="'select'">View
+          modules</li>
+        <li data-revealId="danger" appTabView appPermitted [table]="'user'" [operation]="'delete'">Danger zone</li>
       </ol>
       <div class="tabs__content tabs__content--vertical">
         <div data-revealId="details">
@@ -40,7 +42,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="update">
+        <div data-revealId="update" appPermitted [table]="'user'" [operation]="'update'">
           <form #userForm="ngForm" (ngSubmit)="updateUser(userForm.value)" ngNativeValidate>
             <div class="input">
               <fieldset>
@@ -80,14 +82,10 @@
             </div>
           </form>
         </div>
-        <div data-revealId="add-modules">Add modules</div>
-        <div data-revealId="view-modules">View modules</div>
-        <div data-revealId="danger">Danger zone</div>
+        <div data-revealId="add-modules" appPermitted [table]="'user_module'" [operation]="'create'">Add modules</div>
+        <div data-revealId="view-modules" appPermitted [table]="'user'" [operation]="'select'">View modules</div>
+        <div data-revealId="danger" appPermitted [table]="'user'" [operation]="'delete'">Danger zone</div>
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-user-dash></app-user-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

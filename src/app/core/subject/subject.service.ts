@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { API } from 'src/app/constants';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Http } from 'src/app/http/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,29 +9,29 @@ import { Observable } from 'rxjs';
 export class SubjectService {
   api: string = `${API}/subjects`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: Http) { }
 
   getSubjects(): Observable<any> {
-    return this.http.get(this.api);
+    return this.http._get(this.api);
   }
 
   registerBulk(items): Observable<any> {
-    return this.http.post(`${this.api}/register?bulk=true`, items);
+    return this.http._post(`${this.api}/register?bulk=true`, items);
   }
 
   getStudentSubjects(batchId, studentId): Observable<any> {
-    return this.http.get(`${this.api}/register?batch=${batchId}&student=${studentId}`);
+    return this.http._get(`${this.api}/register?batch=${batchId}&student=${studentId}`);
   }
 
   deregister(regId): Observable<any> {
-    return this.http.delete(`${this.api}/register?id=${regId}`);
+    return this.http._delete(`${this.api}/register?id=${regId}`);
   }
 
   add(name): Observable<any> {
-    return this.http.post(this.api, { name });
+    return this.http._post(this.api, { name });
   }
 
   delete(id): Observable<any> {
-    return this.http.delete(`${this.api}?id=${id}`);
+    return this.http._delete(`${this.api}?id=${id}`);
   }
 }

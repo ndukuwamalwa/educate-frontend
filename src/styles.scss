@@ -107,7 +107,7 @@ input[type=radio] {
 .clickable {
     cursor: pointer !important;
     &:hover {
-        color: #fff;
+        color: #fff !important;
         background-color: rgb(112, 179, 223);
     }
 }
@@ -167,7 +167,7 @@ button, .btn {
         &--vertical {
             display: flex;
             flex-direction: column;
-            width: 16%;
+            width: 20%;
             position: fixed;
             float: left;
 
@@ -211,7 +211,7 @@ button, .btn {
         &--vertical {
             background-color: #fff;
             padding: 10px 20px;
-            width: 75%;
+            width: 77%;
             float: right;
             table {
                 margin-top: 0;
@@ -292,6 +292,39 @@ table {
     tfoot {
         padding: 20px 5px;
     }
+
+    &.mobile-only {
+        tr {
+            div {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 1px;
+
+                &:first-child {
+                    margin-top: 15px;
+                }
+
+                &:last-child {
+                    margin-bottom: 15px;
+                }
+        
+                span {
+                    text-overflow: ellipsis;
+                    padding: 3px;
+
+                    &:first-child {
+                        flex-basis: 30%;
+                        text-align: right;
+                    }
+
+                    &:last-child {
+                        flex-basis: 70%;
+                        color: $theme-color;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .green {
@@ -337,11 +370,11 @@ table {
 }
 
 iframe {
-    height: 800px;
+    height: 100vh;
     width: 100%;
 }
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 1050px) {
     label {
         white-space: nowrap;
     }
@@ -370,44 +403,127 @@ iframe {
             }
         }
     }
-}
 
-@media all and (max-width: 809px) and (min-width: 479px) {
+    .mobile-only {
+        display: none !important;
+    }
+
     .tabs {
-    
         &__links {
-    
-            li {
-                margin: 0 10px;
-                font-size: 12px;
+            position: fixed;
+            top: 10.2vh;
+            z-index: 150;
+            width: 93%;
+
+            &--vertical {
+                width: 20% !important;
+                margin-top: 50px;
+                z-index: 80;
             }
         }
     }
-    table {
-        min-width: 75%;
+}
+
+@media all and (max-width: 1050px) and (min-width: 501px) {
+    .tabs {
+        &__links {
+            position: fixed;
+            z-index: 150;
+            top: 11vh;
+            width: 94%;
+            left: 6vw;
+
+            &--vertical {
+                display: flex;
+                flex-direction: row;
+                left: auto;
+                top: auto;
+                flex-wrap: wrap;
+                width: 100%;
+                z-index: 80;
+                position: relative !important;
+                margin-top: 15px;
+            }
+        }
+
+        &__content {
+            margin-top: 20px;
+            width: 100% !important;
+        }
+    }
+    .not-tab {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: none !important;
     }
 }
  
- @media all and (max-width: 480px) {
+ @media all and (max-width: 501px) {
     button, .btn {
         width: 100%;
     }
 
     .tabs {
+        z-index: 299;
     
         &__links {
-    
             li {
                 margin: 0 6px;
                 font-size: 10px;
             }
+
+            &--vertical {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+        }
+
+        &--vertical {
+            display: flex;
+            flex-direction: column;
+            z-index: 150;
+            margin: 0;
+            margin-top: 10px;
+
+            ol {
+                width: 100%;
+            }
+        }
+
+        &__content {
+            padding: 0;
+            margin: 30px 0 !important;
+
+            &--vertical {
+                width: 100%;
+            }
         }
     }
     .not-mobile {
-        display: none;
+        display: none !important;
     }
 
     table {
         width: 100%;
+    }
+
+    #container {
+        .tabs__links {
+            position: fixed;
+            z-index: 300;
+
+            &--vertical {
+                position: relative !important;
+                z-index: 80 !important;
+            }
+        }
+        .tabs__content {
+            margin-top: 5px;
+            background-color: transparent;
+        }
     }
  }

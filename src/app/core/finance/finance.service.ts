@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { API } from 'src/app/constants';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { createQuery } from 'src/app/utilities';
+import { Http } from 'src/app/http/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,29 +10,29 @@ import { createQuery } from 'src/app/utilities';
 export class FinanceService {
   api: string = `${API}/finance`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: Http) { }
 
   getStudentPayments(studentId): Observable<any> {
-    return this.http.get(`${this.api}/payments?student=${studentId}`);
+    return this.http._get(`${this.api}/payments?student=${studentId}`);
   }
 
   balances(options): Observable<any> {
-    return this.http.get(`${this.api}/balances?${createQuery(options)}`);
+    return this.http._get(`${this.api}/balances?${createQuery(options)}`);
   }
 
   getStudentBalanceByAdm(adm): Observable<any> {
-    return this.http.get(`${this.api}/balances?adm=${adm}`);
+    return this.http._get(`${this.api}/balances?adm=${adm}`);
   }
 
   getBatchBalance(id, options = {}): Observable<any> {
-    return this.http.get(`${this.api}/balances?batch=${id}&${createQuery(options)}`);
+    return this.http._get(`${this.api}/balances?batch=${id}&${createQuery(options)}`);
   }
 
   getPayments(options): Observable<any> {
-    return this.http.get(`${this.api}/payments?${createQuery(options)}`);
+    return this.http._get(`${this.api}/payments?${createQuery(options)}`);
   }
 
   pay(formData): Observable<any> {
-    return this.http.post(`${this.api}/payments`, formData);
+    return this.http._post(`${this.api}/payments`, formData);
   }
 }

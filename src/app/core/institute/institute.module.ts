@@ -8,6 +8,7 @@ import { InstituteService } from './institute.service';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'src/app/toastr.service';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [InstituteComponent],
@@ -24,7 +25,8 @@ import { ToastrService } from 'src/app/toastr.service';
   ],
   providers: [
     InstituteService,
-    ToastrService
+    ToastrService,
+    Http
   ]
 })
 export class InstituteModule { }

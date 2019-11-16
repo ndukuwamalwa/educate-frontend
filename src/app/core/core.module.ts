@@ -12,6 +12,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { SubjectModule } from './subject/subject.module';
 import { SmsModule } from './sms/sms.module';
 import { SettingsModule } from './settings/settings.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,8 @@ import { SettingsModule } from './settings/settings.module';
     TeacherModule,
     SubjectModule,
     SmsModule,
-    SettingsModule
+    SettingsModule,
+    AuthModule
   ],
   exports: [
     

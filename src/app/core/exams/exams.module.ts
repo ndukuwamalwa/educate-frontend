@@ -12,6 +12,7 @@ import { PaginationModule } from '../pagination/pagination.module';
 import { ExamPageComponent } from './exam-page/exam-page.component';
 import { SubjectService } from '../subject/subject.service';
 import { BatchService } from '../batch/batch.service';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { BatchService } from '../batch/batch.service';
     ExamService,
     ToastrService,
     SubjectService,
-    BatchService
+    BatchService,
+    Http
   ]
 })
 export class ExamsModule { }

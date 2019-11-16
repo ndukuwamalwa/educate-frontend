@@ -9,11 +9,12 @@
         <div data-revealId="calender">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
-              <li data-revealId="add-year" data-default="true" appTabView>Set academic year</li>
+              <li data-revealId="add-year" data-default="true" appTabView appPermitted [table]="'academic_year'"
+                [operation]="'select'">Set academic year</li>
               <li data-revealId="view-years" appTabView (click)="getAcademicYears()">View academic years</li>
             </ol>
             <div class="tabs__content tabs__content--vertical">
-              <div data-revealId="add-year">
+              <div data-revealId="add-year" appPermitted [table]="'academic_year'" [operation]="'select'">
                 <form #setAcademicYear="ngForm" (ngSubmit)="addAcademicYear(setAcademicYear.value)" ngNativeValidate>
                   <span>Set new academic year</span>
                   <div class="input">
@@ -69,13 +70,15 @@
         <div data-revealId="hostels">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
-              <li data-revealId="new-hostel" data-default="true" appTabView>New hostel</li>
+              <li data-revealId="new-hostel" data-default="true" appTabView appPermitted [table]="'hostel'"
+                [operation]="'create'">New hostel</li>
               <li data-revealId="view-hostels" appTabView (click)="getHostels()">View hostels</li>
-              <li data-revealId="add-students" appTabView (click)="getHostels()">Add students</li>
+              <li data-revealId="add-students" appTabView (click)="getHostels()" appPermitted [table]="'student_hostel'"
+                [operation]="'create'">Add students</li>
               <li data-revealId="view-students" appTabView>View students</li>
             </ol>
             <div class="tabs__content tabs__content--vertical">
-              <div data-revealId="new-hostel">
+              <div data-revealId="new-hostel" appPermitted [table]="'hostel'" [operation]="'create'">
                 <form #hostelForm="ngForm" (ngSubmit)="addHostel(hostelForm.value)" ngNativeValidate>
                   <span>Ne hostel</span>
                   <div class="input">
@@ -119,7 +122,7 @@
               </div>
               <div data-revealId="view-hostels">
                 <app-loader *ngIf="isGettingHostels"></app-loader>
-                <table *ngIf="!isGettingHostels && hostels">
+                <table *ngIf="!isGettingHostels && hostels" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Name</th>
@@ -141,8 +144,39 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="!isGettingHostels && hostels" class="mobile-only">
+                  <tbody>
+                    <tr *ngFor="let hostel of hostels">
+                      <div>
+                        <span>Name</span>
+                        <span>{{hostel.name | titlecase}}</span>
+                      </div>
+                      <div>
+                        <span>Capacity</span>
+                        <span>{{hostel.capacity | number}}</span>
+                      </div>
+                      <div>
+                        <span>Type</span>
+                        <span>{{hostel.type | titlecase}}</span>
+                      </div>
+                      <div>
+                        <span>Year</span>
+                        <span>{{hostel.academicYear}}</span>
+                      </div>
+                      <div>
+                        <span>Students</span>
+                        <span>{{hostel.occupants | number}}</span>
+                      </div>
+                      <div>
+                        <span>Action</span>
+                        <span class="danger" style="color: red;cursor: pointer;" class="bold"
+                          (click)="deleteHostel(hostel.id)">Delete</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div data-revealId="add-students">
+              <div data-revealId="add-students" appPermitted [table]="'student_hostel'" [operation]="'create'">
                 <form #loadStudentsForm="ngForm" (ngSubmit)="loadStudents(loadStudentsForm.value)" ngNativeValidate>
                   <span>Add students to hostel</span>
                   <div class="inputs">
@@ -181,7 +215,7 @@
                       <tr>
                         <th>Adm No.</th>
                         <th>Name</th>
-                        <th>Gender</th>
+                        <th class="not-mobile">Gender</th>
                         <th>Add?</th>
                       </tr>
                     </thead>
@@ -189,7 +223,7 @@
                       <tr *ngFor="let studentToAdd of loadedStudents">
                         <td>{{studentToAdd.adm}}</td>
                         <td>{{studentToAdd.name}}</td>
-                        <td>{{studentToAdd.gender}}</td>
+                        <td class="not-mobile">{{studentToAdd.gender}}</td>
                         <td><input type="checkbox" [name]="'_'+studentToAdd.adm" [id]="'_'+studentToAdd.adm"
                             (change)="addStateChange($event, studentToAdd.id)"></td>
                       </tr>
@@ -228,7 +262,7 @@
                     </fieldset>
                   </div>
                 </form>
-                <table *ngIf="hostelStudents">
+                <table *ngIf="hostelStudents" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Adm</th>
@@ -250,6 +284,37 @@
                     </tr>
                   </tbody>
                 </table>
+                <table *ngIf="hostelStudents" class="mobile-only">
+                  <tbody>
+                    <tr *ngFor="let hostelStudent of hostelStudents">
+                      <div>
+                        <span>Adm No.</span>
+                        <span>{{hostelStudent.adm}}</span>
+                      </div>
+                      <div>
+                        <span>Name</span>
+                        <span>{{hostelStudent.student}}</span>
+                      </div>
+                      <div>
+                        <span>Gender</span>
+                        <span>{{hostelStudent.gender}}</span>
+                      </div>
+                      <div>
+                        <span>Hostel</span>
+                        <span>{{hostelStudent.hostel}}</span>
+                      </div>
+                      <div>
+                        <span>Year</span>
+                        <span>{{hostelStudent.academicYear}}</span>
+                      </div>
+                      <div>
+                        <span>Action</span>
+                        <span class="danger" (click)="removeStudent(hostelStudent.id)"
+                          style="color: red;cursor: pointer;" class="bold">Remove</span>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -257,8 +322,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-hostel-dash></app-hostel-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

@@ -9,6 +9,7 @@ import { ToastrService } from 'src/app/toastr.service';
 import { SmsService } from './sms.service';
 import { BatchService } from '../batch/batch.service';
 import { PaginationModule } from '../pagination/pagination.module';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [SmsComponent],
@@ -26,7 +27,8 @@ import { PaginationModule } from '../pagination/pagination.module';
   providers: [
     ToastrService,
     SmsService,
-    BatchService
+    BatchService,
+    Http
   ]
 })
 export class SmsModule { }

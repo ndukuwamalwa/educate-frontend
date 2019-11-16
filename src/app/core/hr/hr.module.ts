@@ -10,6 +10,7 @@ import { HrPageComponent } from './hr-page/hr-page.component';
 import { FormsModule } from '@angular/forms';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { PaginationModule } from '../pagination/pagination.module';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PaginationModule } from '../pagination/pagination.module';
   ],
   providers: [
     HrService,
-    ToastrService
+    ToastrService,
+    Http
   ]
 })
 export class HrModule { }

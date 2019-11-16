@@ -2,11 +2,13 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="new" data-default="true" appTabView>New SMS</li>
-        <li data-revealId="previous" appTabView (click)="getMessages()">Previous SMS</li>
+        <li data-revealId="new" data-default="true" appTabView appPermitted [table]="'sms'" [operation]="'create'">New
+          SMS</li>
+        <li data-revealId="previous" appTabView (click)="getMessages()" appPermitted [table]="'sms'"
+          [operation]="'select'">Previous SMS</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="new">
+        <div data-revealId="new" appPermitted [table]="'sms'" [operation]="'create'">
           <form #smsForm="ngForm" (ngSubmit)="sendSMS(smsForm.value)" ngNativeValidate>
             <span>Create Message</span>
             <div class="input">
@@ -70,7 +72,7 @@
             </div>
           </form>
         </div>
-        <div data-revealId="previous">
+        <div data-revealId="previous" appPermitted [table]="'sms'" [operation]="'select'">
           <app-normal-pagination [total]="total" [sorts]="['id','message','sent','recipients']"
             (options)="onPaginationChange($event)"></app-normal-pagination>
           <app-loader *ngIf="isGettingSms"></app-loader>
@@ -94,6 +96,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights"></ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

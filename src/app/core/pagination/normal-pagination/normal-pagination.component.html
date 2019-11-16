@@ -1,13 +1,14 @@
 <div class="pagination">
   <form>
-    <span>Configure search</span>
+    <span class="not-mobile">Configure search</span>
+    <span class="mobile-only"></span>
     <div id="search">
       <input type="search" autocomplete="off" placeholder="Enter keyword to search" name="search"
         (change)="onSearch($event.target.value)">
       <button class="btn btn--blue">Search</button>
-      <span><strong>{{total | number}}</strong> results found.</span>
+      <span class="not-mobile"><strong>{{total | number}}</strong> results found.</span>
     </div>
-    <div id="config">
+    <div id="config" class="not-mobile">
       <div id="sizing">
         <select name="size" id="size" (change)="onPageSizeChange($event.target.value)" [ngModel]="size">
           <option value="10">10</option>
@@ -35,7 +36,7 @@
         <button [disabled]="lastPage()" class="btn btn--blue" (click)="next()">Next</button>
       </div>
     </div>
-    <div id="sorting">
+    <div id="sorting" class="not-mobile">
       <label for="sortBy">Sort by</label>
       <select name="sortBy" id="sortBy" [ngModel]="sortBy" (change)="onSortByChange($event.target.value)">
         <option [value]="sort" *ngFor="let sort of sorts">{{sort | titlecase}}</option>

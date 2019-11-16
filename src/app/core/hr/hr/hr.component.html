@@ -2,12 +2,15 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="employee-add" data-default="true" appTabView>Add employee</li>
-        <li data-revealId="employee-list" (click)="getEmployees()" appTabView>View employees</li>
-        <li data-revealId="employee-print" (click)="print()" appTabView>Print</li>
+        <li data-revealId="employee-add" data-default="true" appTabView appPermitted [table]="'employee'"
+          [operation]="'create'">Add employee</li>
+        <li data-revealId="employee-list" (click)="getEmployees()" appTabView appPermitted [table]="'employee'"
+          [operation]="'select'">View employees</li>
+        <li data-revealId="employee-print" (click)="print()" appTabView appPermitted [table]="'employee'"
+          [operation]="'select'">Print</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="employee-add">
+        <div data-revealId="employee-add" appPermitted [table]="'employee'" [operation]="'create'">
           <form #employeeForm="ngForm" (ngSubmit)="addEmployee(employeeForm.value)" ngNativeValidate>
             <span>Employee form</span>
             <div class="inputs">
@@ -119,12 +122,12 @@
             </div>
           </form>
         </div>
-        <div data-revealId="employee-list">
+        <div data-revealId="employee-list" appPermitted [table]="'employee'" [operation]="'select'">
           <app-normal-pagination [total]="total" (options)="onOptionsChange($event)"
             [sorts]="['id','empNo','fname','mname','lname','county','dob','joined','position','email','phone','idNo','qualification']">
           </app-normal-pagination>
           <app-loader *ngIf="isGettingEmployees"></app-loader>
-          <table *ngIf="!isGettingEmployees">
+          <table *ngIf="!isGettingEmployees" class="not-mobile">
             <thead>
               <tr>
                 <th>Emp No.</th>
@@ -146,15 +149,41 @@
               </tr>
             </tbody>
           </table>
+          <table *ngIf="!isGettingEmployees" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let employee of employees" class="clickable" (click)="viewDetails(employee.id)">
+                <div>
+                  <span>Emp No.</span>
+                  <span>{{employee.empNo}}</span>
+                </div>
+                <div>
+                  <span>Name</span>
+                  <span>{{employee.fname | titlecase}} {{employee.lname | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Email</span>
+                  <span>{{employee.email | lowercase}}</span>
+                </div>
+                <div>
+                  <span>Phone</span>
+                  <span>{{employee.phone}}</span>
+                </div>
+                <div>
+                  <span>Position</span>
+                  <span>{{employee.position | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Joined</span>
+                  <span>{{employee.joined | date}}</span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div data-revealId="employee-print">
+        <div data-revealId="employee-print" appPermitted [table]="'employee'" [operation]="'select'">
           <iframe [src]="printUrl" *ngIf="printUrl" frameborder="0"></iframe>
         </div>
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-employee-dash></app-employee-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

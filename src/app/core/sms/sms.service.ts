@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { API } from 'src/app/constants';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { createQuery } from 'src/app/utilities';
+import { Http } from 'src/app/http/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +10,23 @@ import { createQuery } from 'src/app/utilities';
 export class SmsService {
   api: string = `${API}/sms`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: Http) { }
   sendCustom(message: string, recipients: string[]): Observable<any> {
-    return this.http.post(`${this.api}/custom`, { message, recipients })
+    return this.http._post(`${this.api}/custom`, { message, recipients })
   }
   sendToTeachers(message: string): Observable<any> {
-    return this.http.post(`${this.api}/teachers`, { message })
+    return this.http._post(`${this.api}/teachers`, { message })
   }
   sendToEmployees(message: string): Observable<any> {
-    return this.http.post(`${this.api}/employees`, { message })
+    return this.http._post(`${this.api}/employees`, { message })
   }
   sendToParents(message, group): Observable<any> {
-    return this.http.post(`${this.api}/parents`, { message, group })
+    return this.http._post(`${this.api}/parents`, { message, group })
   }
   sendToStudents(message, group): Observable<any> {
-    return this.http.post(`${this.api}/students`, { message, group })
+    return this.http._post(`${this.api}/students`, { message, group })
   }
   getPrevious(options): Observable<any> {
-    return this.http.get(`${this.api}?${createQuery(options)}`);
+    return this.http._get(`${this.api}?${createQuery(options)}`);
   }
 }

@@ -1,5 +1,5 @@
 <main>
-  <div id="top-bar">
+  <div id="top-bar" class="not-mobile">
     <a href="" target="_blank">Twitter</a>
     <a href="" target="_blank">Facebook</a>
     <a href="" target="_blank">LinkedIn</a>
@@ -10,66 +10,72 @@
     </div>
   </div>
   <div id="title-bar">
-    <img src="assets/icons/menu-dots.svg" alt="Menu">
+    <img src="assets/icons/menu-dots.svg" alt="Menu" class="mobile-only" (click)="toggleModules()">
     <div id="account">
       <img src="assets/icons/avatar.svg" alt="User">
       <div>
-        <span>John Joseph Mary Doe</span>
-        <span>System Admin</span>
+        <span>{{user.name}}</span>
+        <span>{{user.title}}</span>
       </div>
     </div>
     <div class="row-end" id="school">
       <img src="favicon.ico" alt="Logo">
-      <span class="not-mobile">St. Mary's Myanga Girls' High School</span>
+      <span class="not-mobile not-tab">St. Mary's Myanga Girls' High School</span>
     </div>
   </div>
   <div id="module-pane">
     <a routerLink="/students" title="Students" routerLinkActive="active-module">
       <img src="assets/icons/school.svg" alt="Students">
+      <span class="mobile-only">Students</span>
     </a>
     <a routerLink="/teachers" title="Teachers" routerLinkActive="active-module">
       <img src="assets/icons/user-group.svg" alt="Teachers">
+      <span class="mobile-only">Teachers</span>
     </a>
     <a routerLink="/finance" title="Finance" routerLinkActive="active-module">
       <img src="assets/icons/coins.svg" alt="Finance">
+      <span class="mobile-only">Finance</span>
     </a>
     <a routerLink="/hr" title="Human Resource" routerLinkActive="active-module">
       <img src="assets/icons/group.svg" alt="HR">
+      <span class="mobile-only">Human Resoure</span>
     </a>
     <a routerLink="/users" title="Users" routerLinkActive="active-module">
       <img src="assets/icons/user.svg" alt="Users">
+      <span class="mobile-only">Users</span>
     </a>
     <a routerLink="/subjects" title="Subjects" routerLinkActive="active-module">
       <img src="assets/icons/book.svg" alt="Subjects">
+      <span class="mobile-only">Subjects</span>
     </a>
     <a routerLink="/exams" title="Exams" routerLinkActive="active-module">
       <img src="assets/icons/paper.svg" alt="Exams">
+      <span class="mobile-only">Exams</span>
     </a>
     <a routerLink="/attendance" title="Class attendance" routerLinkActive="active-module">
       <img src="assets/icons/tick.svg" alt="Attendance">
+      <span class="mobile-only">Attendance</span>
     </a>
     <a routerLink="/batch" title="Batch/Classes" routerLinkActive="active-module">
       <img src="assets/icons/folder.svg" alt="Batch">
+      <span class="mobile-only">Classes</span>
     </a>
     <a routerLink="/sms" title="SMS Service" routerLinkActive="active-module">
       <img src="assets/icons/chat.svg" alt="SMS">
+      <span class="mobile-only">Messagine</span>
     </a>
     <a routerLink="/institute" title="Institute" routerLinkActive="active-module">
       <img src="assets/icons/at.svg" alt="Institute">
+      <span class="mobile-only">Institute</span>
     </a>
-    <a routerLink="/settings" title="Settings" routerLinkActive="active-module" style="margin-top: auto;">
+    <a routerLink="/settings" title="Settings" routerLinkActive="active-module">
       <img src="assets/icons/gear.svg" alt="Settings">
+      <span class="mobile-only">Settings</span>
     </a>
   </div>
   <div id="container">
     <div id="render">
       <ng-content select=".render"></ng-content>
     </div>
-    <div id="insights">
-      <ng-content select=".insights"></ng-content>
-    </div>
-  </div>
-  <div id="quick-actions">
-    <ng-content select=".quick-actions"></ng-content>
   </div>
 </main>

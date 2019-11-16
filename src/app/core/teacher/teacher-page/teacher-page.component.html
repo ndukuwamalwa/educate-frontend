@@ -6,12 +6,14 @@
     </div>
     <div class="tabs tabs--vertical">
       <ol class="tabs__links tabs__links--vertical">
-        <li data-revealId="details" data-default="true" appTabView>Details</li>
-        <li data-revealId="add-role" appTabView (click)="getBatches()">Add role</li>
+        <li data-revealId="details" data-default="true" appTabView appTabView appPermitted [table]="'teacher'"
+          [operation]="'select'">Details</li>
+        <li data-revealId="add-role" appTabView (click)="getBatches()" appTabView appPermitted [table]="'teacher_role'"
+          [operation]="'create'">Add role</li>
         <li data-revealId="view-roles" appTabView (click)="getRoles()">View roles</li>
       </ol>
       <div class="tabs__content tabs__content--vertical">
-        <div data-revealId="details">
+        <div data-revealId="details" appTabView appPermitted [table]="'teacher'" [operation]="'select'">
           <app-loader *ngIf="isGettingDetails"></app-loader>
           <table class="details-table" *ngIf="!isGettingDetails">
             <tbody>
@@ -38,7 +40,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="add-role">
+        <div data-revealId="add-role" appTabView appPermitted [table]="'teacher_role'" [operation]="'create'">
           <form #roleForm="ngForm" (ngSubmit)="addRole(roleForm)" ngNativeValidate>
             <div class="input">
               <fieldset>
@@ -50,14 +52,15 @@
               <fieldset>
                 <label for="batch">Batch/Class</label>
                 <select name="batch" id="batch" required ngModel *ngIf="!isGettingBatches">
-                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
+                  </option>
                 </select>
               </fieldset>
             </div>
             <div class="submit">
               <fieldset>
-                <button class="btn btn--blue" 
-                [disabled]="roleForm.pristine || isAddingRole || isGettingBatches">Update</button>
+                <button class="btn btn--blue"
+                  [disabled]="roleForm.pristine || isAddingRole || isGettingBatches">Update</button>
               </fieldset>
             </div>
           </form>

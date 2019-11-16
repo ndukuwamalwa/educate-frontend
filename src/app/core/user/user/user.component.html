@@ -2,12 +2,14 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="user-add" data-default="true" appTabView>Create user</li>
-        <li data-revealId="user-list" appTabView (click)="onViewUsers()">View users</li>
-        <li data-revealId="user-print" appTabView>Print users</li>
+        <li data-revealId="user-add" data-default="true" appTabView appPermitted [table]="'user'"
+          [operation]="'create'">Create user</li>
+        <li data-revealId="user-list" appTabView (click)="onViewUsers()" appPermitted [table]="'user'"
+          [operation]="'select'">View users</li>
+        <li data-revealId="user-print" appTabView appPermitted [table]="'user'" [operation]="'select'">Print users</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="user-add">
+        <div data-revealId="user-add" appPermitted [table]="'user'" [operation]="'create'">
           <form #userForm="ngForm" (ngSubmit)="addUser(userForm.value)" ngNativeValidate>
             <span>New user</span>
             <div class="input">
@@ -54,14 +56,12 @@
             </div>
           </form>
         </div>
-        <div data-revealId="user-list">
-          <app-normal-pagination [total]="totalUsers" 
-          [sorts]="userSorts" 
-          (options)="onListViewOptions($event)"
-          *ngIf="users">
+        <div data-revealId="user-list" appPermitted [table]="'user'" [operation]="'select'">
+          <app-normal-pagination [total]="totalUsers" [sorts]="userSorts" (options)="onListViewOptions($event)"
+            *ngIf="users">
           </app-normal-pagination>
           <app-loader *ngIf="isGettingUsers"></app-loader>
-          <table *ngIf="!isGettingUsers">
+          <table *ngIf="!isGettingUsers" class="not-mobile">
             <caption>List of users</caption>
             <thead>
               <tr>
@@ -82,8 +82,34 @@
               </tr>
             </tbody>
           </table>
+          <table *ngIf="!isGettingUsers" class="mobile-only">
+            <tbody>
+              <tr *ngFor="let u of users" class="clickable" title="Click for more actions" (click)="viewDetails(u.id)">
+                <div>
+                  <span>Name</span>
+                  <span>{{u.name}}</span>
+                </div>
+                <div>
+                  <span>Title</span>
+                  <span>{{u.title}}</span>
+                </div>
+                <div>
+                  <span>Username</span>
+                  <span>{{u.username}}</span>
+                </div>
+                <div>
+                  <span>Type</span>
+                  <span>{{u.type}}</span>
+                </div>
+                <div>
+                  <span>Status</span>
+                  <span>{{u.state | titlecase}}</span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div data-revealId="user-print">
+        <div data-revealId="user-print" appPermitted [table]="'user'" [operation]="'select'">
           <form #printForm="ngForm" (ngSubmit)="print(printForm.value.category)" ngNativeValidate>
             <span></span>
             <div class="cat-selector">
@@ -102,8 +128,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-user-dash></app-user-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

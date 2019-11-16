@@ -8,6 +8,7 @@ import { SubjectService } from './subject.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { FormsModule } from '@angular/forms';
 import { LoaderModule } from 'src/app/loader/loader.module';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [SubjectComponent],
@@ -21,7 +22,8 @@ import { LoaderModule } from 'src/app/loader/loader.module';
   ],
   providers: [
     SubjectService,
-    ToastrService
+    ToastrService,
+    Http
   ]
 })
 export class SubjectModule { }

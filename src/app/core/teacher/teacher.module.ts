@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { PaginationModule } from '../pagination/pagination.module';
 import { TeacherPageComponent } from './teacher-page/teacher-page.component';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [TeacherComponent, TeacherPageComponent],
@@ -27,7 +28,8 @@ import { TeacherPageComponent } from './teacher-page/teacher-page.component';
   providers: [
     TeacherService,
     ToastrService,
-    HrService
+    HrService,
+    Http
   ]
 })
 export class TeacherModule { }

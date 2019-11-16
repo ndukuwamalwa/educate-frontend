@@ -2,18 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabViewDirective } from './tab-view.directive';
 import { ColorizeDirective } from './colorize.directive';
+import { PermittedDirective } from './permitted.directive';
 
 @NgModule({
   declarations: [
     TabViewDirective,
-    ColorizeDirective
+    ColorizeDirective,
+    PermittedDirective
   ],
   imports: [
     CommonModule
   ],
   exports: [
     TabViewDirective,
-    ColorizeDirective
+    ColorizeDirective,
+    PermittedDirective
   ]
 })
 export class DirectivesModule { }

@@ -1,6 +1,6 @@
 <app-portal>
   <ng-container class="render">
-    <table class="details-table" *ngIf="!updateMode">
+    <table class="details-table" *ngIf="!updateMode" class="not-mobile">
       <tbody>
         <tr>
           <td>Your name</td>
@@ -15,6 +15,37 @@
           <td>{{user?.username | lowercase}}</td>
           <td>{{user?.type | titlecase}}</td>
           <td>{{user?.state | titlecase}}</td>
+        </tr>
+        <tr>
+          <td colspan="5" style="text-align: right;opacity: 1;">
+            <button class="btn btn--blue" (click)="changeMode()">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="mobile-only" *ngIf="!updateMode" >
+      <tbody>
+        <tr>
+          <div>
+            <span>Name</span>
+            <span>{{user?.name | titlecase}}</span>
+          </div>
+          <div>
+            <span>Title</span>
+            <span>{{user?.title | titlecase}}</span>
+          </div>
+          <div>
+            <span>Username</span>
+            <span>{{user?.username | lowercase}}</span>
+          </div>
+          <div>
+            <span>Type</span>
+            <span>{{user?.type | titlecase}}</span>
+          </div>
+          <div>
+            <span>State</span>
+            <span>{{user?.state | titlecase}}</span>
+          </div>
         </tr>
         <tr>
           <td colspan="5" style="text-align: right;opacity: 1;">
@@ -77,6 +108,4 @@
       </div>
     </form>
   </ng-container>
-  <ng-container class="insights"></ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

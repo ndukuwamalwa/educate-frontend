@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HrService } from '../hr.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { Router } from '@angular/router';
-import { counties, PRINT } from 'src/app/constants';
+import { counties } from 'src/app/constants';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { printUrlWithToken } from 'src/app/utilities';
 
 @Component({
   selector: 'app-hr',
@@ -68,7 +69,7 @@ export class HrComponent implements OnInit {
 
   print() {
     if (this.printUrl) return;
-    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${PRINT}/employees`);
+    this.printUrl = this.sanitizer.bypassSecurityTrustResourceUrl(printUrlWithToken(`/employees`));
   }
 
 }

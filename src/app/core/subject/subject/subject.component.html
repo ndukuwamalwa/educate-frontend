@@ -2,11 +2,12 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="subject-add" data-default="true" appTabView>Create subject</li>
+        <li data-revealId="subject-add" data-default="true" appTabView appPermitted [table]="'subject'"
+          [operation]="'create'">Create subject</li>
         <li data-revealId="subject-list" appTabView (click)="getSubjects()">Subjects</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="subject-add">
+        <div data-revealId="subject-add" appPermitted [table]="'subject'" [operation]="'create'">
           <form #addForm="ngForm" (ngSubmit)="addSubject(addForm.value.name)" ngNativeValidate>
             <span>Add new subject</span>
             <div class="input">
@@ -43,8 +44,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-      <app-subject-dash></app-subject-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

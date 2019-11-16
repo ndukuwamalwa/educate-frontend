@@ -2,11 +2,11 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="mark-register" data-default="true" appTabView>Mark Register</li>
+        <li data-revealId="mark-register" data-default="true" appTabView appPermitted [table]="'student_attendance'" [operation]="'create'">Mark Register</li>
         <li data-revealId="view-register" appTabView>View Register</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="mark-register">
+        <div data-revealId="mark-register" appPermitted [table]="'student_attendance'" [operation]="'create'">
           <form #catForm="ngForm" (ngSubmit)="loadStudents(catForm.value.batch)" ngNativeValidate>
             <span>Mark register</span>
             <app-loader *ngIf="isGettingBatches"></app-loader>
@@ -85,8 +85,4 @@
       </div>
     </div>
   </ng-container>
-  <ng-container class="insights">
-    <app-attendance-dash></app-attendance-dash>
-  </ng-container>
-  <ng-container class="quick-actions"></ng-container>
 </app-portal>

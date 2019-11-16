@@ -5,11 +5,11 @@ import { PortalModule } from '../portal/portal.module';
 import { UserComponent } from './user/user.component';
 import { DirectivesModule } from 'src/app/directives/directives.module';
 import { DashboardModule } from '../dashboard/dashboard.module';
-import { HttpResponseModule } from '../http-response/http-response.module';
 import { UserService } from './user.service';
 import { PaginationModule } from '../pagination/pagination.module';
 import { UserPageComponent } from './user-page/user-page.component';
 import { LoaderModule } from 'src/app/loader/loader.module';
+import { Http } from 'src/app/http/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,6 @@ import { LoaderModule } from 'src/app/loader/loader.module';
     DirectivesModule,
     DashboardModule,
     FormsModule,
-    HttpResponseModule,
     PaginationModule,
     LoaderModule
   ],
@@ -30,7 +29,8 @@ import { LoaderModule } from 'src/app/loader/loader.module';
     UserComponent
   ],
   providers: [
-    UserService
+    UserService,
+    Http
   ]
 })
 export class UserModule { }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { UserService } from '../../user/user.service';
 import { ToastrService } from 'src/app/toastr.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-settings',
@@ -13,6 +14,7 @@ export class SettingsComponent implements OnInit {
   isUpdating: boolean = false;
   user: User;
   isUpdatingPassword: boolean = false;
+  jwtHelper = new JwtHelperService();
 
   constructor(
     private userService: UserService,
@@ -20,6 +22,7 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.user = this.jwtHelper.decodeToken(window.sessionStorage.getItem('token'));
   }
 
   changeMode() {
@@ -28,7 +31,15 @@ export class SettingsComponent implements OnInit {
 
   updateDetails(value) {
     this.isUpdating = true;
-    this.userService.updateUser({ ...this.user, ...value })
+    const user: User = {
+      id: this.user.id,
+      name: value.name,
+      username: value.username,
+      title: this.user.title,
+      type: this.user.type,
+      state: this.user.state
+    };
+    this.userService.updateUser(user)
       .subscribe(res => {
         this.user.name = value.name;
         this.user.username = value.username;

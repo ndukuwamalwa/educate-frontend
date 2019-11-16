@@ -17,83 +17,143 @@ import { TeacherPageComponent } from './core/teacher/teacher-page/teacher-page.c
 import { HrPageComponent } from './core/hr/hr-page/hr-page.component';
 import { ExamPageComponent } from './core/exams/exam-page/exam-page.component';
 import { BatchPageComponent } from './core/batch/batch-page/batch-page.component';
+import { LoginComponent } from './core/auth/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
     {
         path: "",
-        component: StudentComponent
+        component: LoginComponent,
+        canActivate: [
+            LoginGuard
+        ]
     },
     {
         path: 'users',
-        component: UserComponent
+        component: UserComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'users/:id',
-        component: UserPageComponent
+        component: UserPageComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'attendance',
         component: AttendanceCreateComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'batch',
-        component: BatchComponent
+        component: BatchComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'batch/:id',
-        component: BatchPageComponent
+        component: BatchPageComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'exams',
-        component: ExamComponent
+        component: ExamComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'exams/:id',
-        component: ExamPageComponent
+        component: ExamPageComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'finance',
-        component: FinanceComponent
+        component: FinanceComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'hr',
-        component: HrComponent
+        component: HrComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'hr/:id',
-        component: HrPageComponent
+        component: HrPageComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'institute',
-        component: InstituteComponent
+        component: InstituteComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'students',
-        component: StudentComponent
+        component: StudentComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'students/:id',
-        component: StudentPageComponent
+        component: StudentPageComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'teachers',
-        component: TeacherComponent
+        component: TeacherComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'teachers/:id',
-        component: TeacherPageComponent
+        component: TeacherPageComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'subjects',
-        component: SubjectComponent
+        component: SubjectComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'sms',
-        component: SmsComponent
+        component: SmsComponent,
+        canActivate: [
+            AuthGuard
+        ]
     },
     {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
+        canActivate: [
+            AuthGuard
+        ]
     }
 ];
