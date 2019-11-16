@@ -10,7 +10,7 @@
           [operation]="'select'">Print</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="teacher-add" appTabView appPermitted [table]="'teacher'" [operation]="'create'">
+        <div data-revealId="teacher-add" appPermitted [table]="'teacher'" [operation]="'create'">
           <form #teacherForm="ngForm" (ngSubmit)="addTeacher(teacherForm)" ngNativeValidate>
             <span>Create teacher</span>
             <div class="inputs">
@@ -31,7 +31,7 @@
             </div>
           </form>
         </div>
-        <div data-revealId="teacher-list" appTabView appPermitted [table]="'teacher'" [operation]="'select'">
+        <div data-revealId="teacher-list" appPermitted [table]="'teacher'" [operation]="'select'">
           <app-normal-pagination [total]="total" [sorts]="sorts" *ngIf="teachers" (options)="onOptionsChange($event)">
           </app-normal-pagination>
           <app-loader *ngIf="isGettingTeachers"></app-loader>
@@ -82,7 +82,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="teacher-print" appTabView appPermitted [table]="'teacher'" [operation]="'select'">
+        <div data-revealId="teacher-print" appPermitted [table]="'teacher'" [operation]="'select'">
           <iframe [src]="printUrl" *ngIf="printUrl" frameborder="0"></iframe>
         </div>
       </div>

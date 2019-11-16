@@ -13,7 +13,7 @@
         <li data-revealId="view-roles" appTabView (click)="getRoles()">View roles</li>
       </ol>
       <div class="tabs__content tabs__content--vertical">
-        <div data-revealId="details" appTabView appPermitted [table]="'teacher'" [operation]="'select'">
+        <div data-revealId="details" appPermitted [table]="'teacher'" [operation]="'select'">
           <app-loader *ngIf="isGettingDetails"></app-loader>
           <table class="details-table" *ngIf="!isGettingDetails">
             <tbody>
@@ -40,7 +40,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="add-role" appTabView appPermitted [table]="'teacher_role'" [operation]="'create'">
+        <div data-revealId="add-role" appPermitted [table]="'teacher_role'" [operation]="'create'">
           <form #roleForm="ngForm" (ngSubmit)="addRole(roleForm)" ngNativeValidate>
             <div class="input">
               <fieldset>

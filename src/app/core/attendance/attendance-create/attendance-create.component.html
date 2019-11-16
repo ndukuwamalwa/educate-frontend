@@ -2,7 +2,8 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="mark-register" data-default="true" appTabView appPermitted [table]="'student_attendance'" [operation]="'create'">Mark Register</li>
+        <li data-revealId="mark-register" data-default="true" appTabView appPermitted [table]="'student_attendance'"
+          [operation]="'create'">Mark Register</li>
         <li data-revealId="view-register" appTabView>View Register</li>
       </ol>
       <div class="tabs__content">
@@ -43,7 +44,9 @@
                 <td colspan="2"></td>
                 <td><button class="btn btn--blue" (click)="sendAttended()" [disabled]="isSendingAttendance">Mark
                     Present</button></td>
-                <td><app-loader *ngIf="isSendingAttendance"></app-loader></td>
+                <td>
+                  <app-loader *ngIf="isSendingAttendance"></app-loader>
+                </td>
               </tr>
             </tfoot>
           </table>

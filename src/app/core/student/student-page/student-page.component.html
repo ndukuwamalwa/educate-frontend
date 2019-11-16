@@ -70,7 +70,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="update" appTabView appPermitted [table]="'student'" [operation]="'update'">
+        <div data-revealId="update" appPermitted [table]="'student'" [operation]="'update'">
           <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="updateStudent(studentForm.value)">
             <div class="inputs">
               <fieldset>
@@ -130,7 +130,7 @@
             </div>
           </form>
         </div>
-        <div data-revealId="add-contact" appTabView appPermitted [table]="'student_contact'" [operation]="'create'">
+        <div data-revealId="add-contact" appPermitted [table]="'student_contact'" [operation]="'create'">
           <form #contactForm="ngForm" (ngSubmit)="addContact(contactForm)" ngNativeValidate>
             <span>Add student contact</span>
             <div class="input">
@@ -253,7 +253,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="add-to-batch" appTabView appPermitted [table]="'student_batch'" [operation]="'create'">
+        <div data-revealId="add-to-batch" appPermitted [table]="'student_batch'" [operation]="'create'">
           <form #addToBatchForm="ngForm" (ngSubmit)="addToBatch(addToBatchForm.value)" ngNativeValidate>
             <span>Add to batch/class</span>
             <div class="inputs">
@@ -297,7 +297,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="view-charges" appTabView appPermitted [table]="'student_charge'" [operation]="'select'">
+        <div data-revealId="view-charges" appPermitted [table]="'student_charge'" [operation]="'select'">
           <app-loader *ngIf="isGettingStudentBatches"></app-loader>
           <button class="btn btn--blue" (click)="toggleView('isViewingPrintableCharges')">
             <span *ngIf="isViewingPrintableCharges">Normal view</span>
@@ -339,7 +339,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="register-subject" appTabView appPermitted [table]="'student_subject'"
+        <div data-revealId="register-subject" appPermitted [table]="'student_subject'"
           [operation]="'create'">
           <form #subjectForm="ngForm" (ngSubmit)="addSubject(subjectForm)" ngNativeValidate>
             <span></span>
@@ -402,7 +402,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="view-results" appTabView appPermitted [table]="'exam_result'" [operation]="'select'">
+        <div data-revealId="view-results" appPermitted [table]="'exam_result'" [operation]="'select'">
           <form #examSelectForm="ngForm" (ngSubmit)="viewResults(examSelectForm.value)">
             <span></span>
             <div class="inputs">
@@ -440,7 +440,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="view-payments" appTabView appPermitted [table]="'fee_payment'" [operation]="'select'">
+        <div data-revealId="view-payments" appPermitted [table]="'fee_payment'" [operation]="'select'">
           <app-loader *ngIf="isGettingPayments"></app-loader>
           <button class="btn btn--blue" (click)="toggleView('isViewingPrintablePayments')">
             <span *ngIf="isViewingPrintablePayments">Normal view</span>
@@ -520,7 +520,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="danger" appTabView appPermitted [table]="'student'" [operation]="'delete'">
+        <div data-revealId="danger" appPermitted [table]="'student'" [operation]="'delete'">
           <form>
             <span>Actions here have permanent effects</span>
             <app-loader *ngIf="isDeletingStudent"></app-loader>

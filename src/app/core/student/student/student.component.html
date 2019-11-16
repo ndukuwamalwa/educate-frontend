@@ -10,7 +10,7 @@
           [operation]="'select'">Printing</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="student-add" appTabView appPermitted [table]="'student'" [operation]="'create'">
+        <div data-revealId="student-add" appPermitted [table]="'student'" [operation]="'create'">
           <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="addStudent(studentForm.value)">
             <span>New student</span>
             <div class="inputs">
@@ -70,7 +70,7 @@
             </div>
           </form>
         </div>
-        <div data-revealId="student-list" appTabView appPermitted [table]="'student'" [operation]="'select'">
+        <div data-revealId="student-list" appPermitted [table]="'student'" [operation]="'select'">
           <app-normal-pagination [total]="total" [sorts]="sortingKeys" *ngIf="students"
             (options)="onOptionsChange($event)"></app-normal-pagination>
           <app-loader *ngIf="isFindingStudents"></app-loader>
@@ -128,7 +128,7 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="printing" appTabView appPermitted [table]="'student'" [operation]="'select'">
+        <div data-revealId="printing" appPermitted [table]="'student'" [operation]="'select'">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
               <li data-revealId="print-all" data-default="true" appTabView>Print all</li>
