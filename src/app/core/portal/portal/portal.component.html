@@ -10,7 +10,8 @@
     </div>
   </div>
   <div id="title-bar">
-    <img src="assets/icons/menu-dots.svg" alt="Menu" class="mobile-only" (click)="toggleModules()">
+    <img src="assets/icons/menu-dots.svg" *ngIf="!hideMenu" alt="Menu" class="mobile-only" (click)="toggleModules(true)">
+    <img src="assets/icons/cross.svg" *ngIf="hideMenu" alt="Menu" class="mobile-only" (click)="toggleModules(false)">
     <div id="account">
       <img src="assets/icons/avatar.svg" alt="User">
       <div>
