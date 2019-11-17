@@ -57,7 +57,10 @@ export class LoginComponent implements OnInit {
     if (!window.sessionStorage.getItem('token')) {
       window.sessionStorage.setItem('token', token);
     }
-    this.router.navigate(['students']);
+    const goTo = window.sessionStorage.getItem('afterLogin');
+    if (!goTo) return this.router.navigate(['students']);
+    this.router.navigateByUrl(goTo);
+    window.sessionStorage.removeItem('afterLogin');
   }
 
   onChangePassword(data) {
