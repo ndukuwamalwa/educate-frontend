@@ -21,6 +21,7 @@ export class LoginGuard implements CanActivate {
       window.sessionStorage.removeItem('userInfo');
       return true;
     }
+    this.router.navigate(['students']);
     return false;
   }
 }
