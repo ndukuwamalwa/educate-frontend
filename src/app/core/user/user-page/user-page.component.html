@@ -8,10 +8,8 @@
       <ol class="tabs__links tabs__links--vertical">
         <li data-revealId="details" data-default="true" appTabView>Details</li>
         <li data-revealId="update" appTabView appPermitted [table]="'user'" [operation]="'update'">Update details</li>
-        <li data-revealId="add-modules" appTabView appPermitted [table]="'user_module'" [operation]="'create'">Add
-          modules</li>
-        <li data-revealId="view-modules" appTabView appPermitted [table]="'user_module'" [operation]="'select'">View
-          modules</li>
+        <li data-revealId="add-modules" appTabView appPermitted [table]="'user_module'" [operation]="'create'"
+          (click)="getModules()">Module access</li>
         <li data-revealId="danger" appTabView appPermitted [table]="'user'" [operation]="'delete'">Danger zone</li>
       </ol>
       <div class="tabs__content tabs__content--vertical">
@@ -82,8 +80,51 @@
             </div>
           </form>
         </div>
-        <div data-revealId="add-modules" appPermitted [table]="'user_module'" [operation]="'create'">Add modules</div>
-        <div data-revealId="view-modules" appPermitted [table]="'user'" [operation]="'select'">View modules</div>
+        <div data-revealId="add-modules" appPermitted [table]="'user_module'" [operation]="'create'">
+          <app-loader *ngIf="isGettingModules"></app-loader>
+          <form #modulesAddForm="ngForm" (ngSubmit)="addModules()" *ngIf="!isGettingModules">
+            <span></span>
+            <table>
+              <thead>
+                <tr>
+                  <th>Section</th>
+                  <th>Create</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let section of sections">
+                  <td>{{section.title}}</td>
+                  <td>
+                    <input type="checkbox" name="{{section.table}}_CREATE" id="{{section.table}}_CREATE"
+                      [ngModel]="section.create" value="CREATE" (change)="onPermChange(section.table, $event.target)">
+                  </td>
+                  <td>
+                    <input type="checkbox" name="{{section.table}}_UPDATE" id="{{section.table}}_UPDATE"
+                      [ngModel]="section.update" value="UPDATE" (change)="onPermChange(section.table, $event.target)">
+                  </td>
+                  <td>
+                    <input type="checkbox" name="{{section.table}}_DELETE" id="{{section.table}}_DELETE"
+                      [ngModel]="section.delete" value="DELETE" (change)="onPermChange(section.table, $event.target)">
+                  </td>
+                  <td>
+                    <input type="checkbox" name="{{section.table}}_SELECT" id="{{section.table}}_SELECT"
+                      [ngModel]="section.select" value="SELECT" (change)="onPermChange(section.table, $event.target)">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue"
+                  [disabled]="this.selectedPermissions.length === 0 || isSavingPermissions">Save</button>
+                <app-loader *ngIf="isSavingPermissions"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
         <div data-revealId="danger" appPermitted [table]="'user'" [operation]="'delete'">Danger zone</div>
       </div>
     </div>
