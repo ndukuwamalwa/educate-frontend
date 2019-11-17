@@ -201,7 +201,7 @@ button, .btn {
 
     &__content {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 30px;
         
         & > div {
             display: none;
@@ -411,7 +411,7 @@ iframe {
     .tabs {
         &__links {
             position: fixed;
-            top: 10.2vh;
+            top: 7.1vh;
             z-index: 150;
             width: 93%;
 
@@ -429,7 +429,7 @@ iframe {
         &__links {
             position: fixed;
             z-index: 150;
-            top: 11vh;
+            top: 7vh;
             width: 94%;
             left: 6vw;
 
