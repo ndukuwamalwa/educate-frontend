@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portal',
@@ -11,7 +12,7 @@ export class PortalComponent implements OnInit {
   user;
   hideMenu: boolean = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.user = this.jwtHelper.decodeToken(window.sessionStorage.getItem('token'));
@@ -26,6 +27,11 @@ export class PortalComponent implements OnInit {
       modulePane.style.display = 'none';
       this.hideMenu = false;
     }
+  }
+
+  logout() {
+    window.sessionStorage.removeItem('token');
+    this.router.navigate(['']);
   }
 
 }
