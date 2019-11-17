@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -12,10 +12,11 @@ export class AuthGuard implements CanActivate {
   jwtHelper = new JwtHelperService();
   constructor(public router: Router) { }
 
-  canActivate(): boolean {
+  canActivate(requested: ActivatedRouteSnapshot, next: RouterStateSnapshot): boolean {
     if (this.isAuthenticated()) {
       return true;
     } else {
+      window.sessionStorage.setItem('afterLogin', next.url);
       this.router.navigateByUrl('');
       return false;
     }
