@@ -1,14 +1,4 @@
 <main>
-  <div id="top-bar" class="not-mobile">
-    <a href="" target="_blank">Twitter</a>
-    <a href="" target="_blank">Facebook</a>
-    <a href="" target="_blank">LinkedIn</a>
-    <a href="" target="_blank">Instagram</a>
-    <div class="row-end">
-      <a href="" target="_blank">Website</a>
-      <a href="" target="_blank">Student Portal</a>
-    </div>
-  </div>
   <div id="title-bar">
     <img src="assets/icons/menu-dots.svg" *ngIf="!hideMenu" alt="Menu" class="mobile-only" (click)="toggleModules(true)">
     <img src="assets/icons/cross.svg" *ngIf="hideMenu" alt="Menu" class="mobile-only" (click)="toggleModules(false)">
@@ -18,6 +8,9 @@
         <span>{{user.name}}</span>
         <span>{{user.title}}</span>
       </div>
+    </div>
+    <div>
+      <button class="btn btn--red" (click)="logout()">Logout</button>
     </div>
     <div class="row-end" id="school">
       <img src="favicon.ico" alt="Logo">
