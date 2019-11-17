@@ -32,4 +32,12 @@ export class UserService {
   changePassword(data): Observable<any> {
     return this.http._post(`${this.api}/password`, data);
   }
+
+  getModules(userId): Observable<any> {
+    return this.http._get(`${this.api}/modules?user=${userId}`);
+  }
+
+  savePermissions(perms: any[]): Observable<any> {
+    return this.http._post(`${this.api}/modules`, perms);
+  }
 }
