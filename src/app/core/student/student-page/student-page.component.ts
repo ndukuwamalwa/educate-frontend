@@ -223,8 +223,9 @@ export class StudentPageComponent implements OnInit {
           this.isAddingBatch = false;
         }, 5000);
       }, err => {
-        this.toastr.error('Failed to add student to batch/class');
         this.isAddingBatch = false;
+        if (err.status === 409) return this.toastr.error("Student exists in the selected class.");
+        this.toastr.error('Failed to add student to batch/class');
       });
   }
 
