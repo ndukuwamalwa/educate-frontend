@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://40.115.122.238/api'
+  apiUrl: 'https://www.vb-dom-teaser.ml/api'
 };
