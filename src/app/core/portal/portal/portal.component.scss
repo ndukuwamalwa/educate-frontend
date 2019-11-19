@@ -85,6 +85,8 @@
     flex-direction: column;
     z-index: 90;
     padding-bottom: 10px;
+    overflow-y: auto;
+    text-overflow: ellipsis;
 
     a {
         width: 100%;
@@ -94,6 +96,12 @@
         border-left: 3px solid transparent;
         transition-property: all;
         transition-duration: 300ms;
+        display: flex;
+        flex-direction: row;
+        white-space: nowrap;
+        text-decoration: none;
+        color: #fff;
+        font-weight: 400;
 
         span {
             text-overflow: ellipsis;
@@ -104,7 +112,8 @@
         }
 
         img {
-            width: 40%;
+            width: 15%;
+            margin-right: 5px;
         }
     }
 }
@@ -132,13 +141,19 @@
     #module-pane {
         top: 7vh;
         height: 93vh;
-        width: 5vw;
+        width: 15vw;
+
+        a {
+            img {
+                width: 10%;
+            }
+        }
     }
     
     #container {
         top: 7vh;
-        width: 93vw;
-        left: 6vw;
+        width: 82vw;
+        left: 16vw;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -147,15 +162,31 @@
     #render {
         min-width: 100%;
     }
+
+    .tab-only {
+        display: none !important;
+    }
 }
+
+@keyframes tabMenuAnimation {
+    0% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+
+    100% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+ }
 
 @media all and (max-width: 1050px) and (min-width: 501px) {
     #container {
         display: flex;
         flex-direction: column;
         padding-top: 10px;
-        width: 92vw;
-        left: 6vw;
+        width: 97vw;
+        left: 0;
         top: 7vh;
 
         & > * {
@@ -167,7 +198,17 @@
     #module-pane {
         top: 7vh;
         height: 93vh;
-        width: 6vw;
+        width: 35vw;
+        z-index: 160;
+        left: 0;
+        display: none;
+        animation: tabMenuAnimation 400ms;
+
+        a {
+            img {
+                width: 8%;
+            }
+        }
     }
      
     #title-bar {
@@ -224,7 +265,7 @@
      
     #container {
         top: 6vh;
-        width: 96vw;
+        width: 100vw;
         display: flex;
         flex-direction: column;
         padding: 0;
@@ -240,6 +281,9 @@
     table {
         width: 100%;
         margin: 1em 20px;
+    }
+    .tab-only {
+        display: none !important;
     }
  }
 
