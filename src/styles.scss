@@ -47,6 +47,8 @@ fieldset {
 input[type=text],
 input[type=password],
 input[type=date],
+input[type=datetime],
+input[type=datetime-local],
 input[type=number],
 input[type=search],
 input[type=tel],
@@ -328,7 +330,7 @@ table {
 }
 
 .green {
-    color: rgb(41, 212, 41);
+    color: rgb(41, 212, 41) !important;
     background-color: #fff;
     &-inverted {
         color: #fff;
@@ -413,10 +415,10 @@ iframe {
             position: fixed;
             top: 7.1vh;
             z-index: 150;
-            width: 93%;
+            width: 84%;
 
             &--vertical {
-                width: 20% !important;
+                width: 18% !important;
                 margin-top: 50px;
                 z-index: 80;
             }
@@ -430,8 +432,8 @@ iframe {
             position: fixed;
             z-index: 150;
             top: 7vh;
-            width: 94%;
-            left: 6vw;
+            width: 100%;
+            left: 0;
 
             &--vertical {
                 display: flex;
