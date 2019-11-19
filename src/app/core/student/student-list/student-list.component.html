@@ -1,0 +1,138 @@
+<table class="not-mobile" *ngIf="normalView">
+  <thead>
+    <tr>
+      <th>Adm</th>
+      <th>Name</th>
+      <th>D.O.B</th>
+      <th>Gender</th>
+      <th>County</th>
+      <th>Date admitted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.id)">
+      <td>{{student.adm}}</td>
+      <td>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</td>
+      <td>{{student.dob | date}}</td>
+      <td>{{student.gender | titlecase}}</td>
+      <td>{{student.county | titlecase}}</td>
+      <td>{{student.admitted | date}}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="mobile-only" *ngIf="normalView">
+  <tbody>
+    <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.id)">
+      <div>
+        <span>Adm No.</span>
+        <span>{{student.adm}}</span>
+      </div>
+      <div>
+        <span>Name</span>
+        <span>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</span>
+      </div>
+      <div>
+        <span>D.O.B</span>
+        <span>{{student.dob | date}}</span>
+      </div>
+      <div>
+        <span>Gender</span>
+        <span>{{student.gender | titlecase}}</span>
+      </div>
+      <div>
+        <span>County</span>
+        <span>{{student.county | titlecase}}</span>
+      </div>
+      <div>
+        <span>Admitted</span>
+        <span>{{student.admitted | date}}</span>
+      </div>
+    </tr>
+  </tbody>
+</table>
+<table class="not-mobile" *ngIf="outView">
+  <thead>
+    <tr>
+      <th>Adm</th>
+      <th>Name</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.studentId)">
+      <td>{{student.adm}}</td>
+      <td>{{student.name | titlecase}}</td>
+      <td>{{student.startDate | date}} at {{student.startDate | date: shortTime}}</td>
+      <td>{{student.endDate | date}} at {{student.endDate | date: 'shortTime'}}</td>
+      <td style="white-space: wrap;">{{student.reason}}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="mobile-only" *ngIf="outView">
+  <tbody>
+    <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.studentId)">
+      <div>
+        <span>Adm No.</span>
+        <span>{{student.adm}}</span>
+      </div>
+      <div>
+        <span>Name</span>
+        <span>{{student.name | titlecase}}</span>
+      </div>
+      <div>
+        <span>From</span>
+        <span>{{student.startDate | date}} at {{student.startDate | date: shortTime}}</span>
+      </div>
+      <div>
+        <span>To</span>
+        <span>{{student.endDate | date}} at {{student.endDate | date: 'shortTime'}}</span>
+      </div>
+      <div>
+        <span>Reason</span>
+        <span style="white-space: normal;">{{student.reason}}</span>
+      </div>
+    </tr>
+  </tbody>
+</table>
+<table class="not-mobile" *ngIf="oldView">
+  <thead>
+    <tr>
+      <th>Adm</th>
+      <th>Name</th>
+      <th>Reason</th>
+      <th>Effective date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.studentId)">
+      <td>{{student.adm}}</td>
+      <td>{{student.name | titlecase}}</td>
+      <td style="white-space: wrap;">{{student.reason}}</td>
+      <td>{{student.dateEffected | date}} at {{student.dateEffected | date: 'shortTime'}}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="mobile-only" *ngIf="oldView">
+  <tbody>
+    <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.studentId)">
+      <div>
+        <span>Adm No.</span>
+        <span>{{student.adm}}</span>
+      </div>
+      <div>
+        <span>Name</span>
+        <span>{{student.name | titlecase}}</span>
+      </div>
+      <div>
+        <span>Reason</span>
+        <span style="white-space: wrap;">{{student.reason}}</span>
+      </div>
+      <div>
+        <span>Effective date</span>
+        <span>{{student.dateEffective | date}} at {{student.dateEffective | date: 'shortTime'}}</span>
+      </div>
+    </tr>
+  </tbody>
+</table>

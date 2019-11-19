@@ -17,9 +17,10 @@ import { InstituteService } from '../institute/institute.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { Http } from 'src/app/http/http';
+import { StudentListComponent } from './student-list/student-list.component';
 
 @NgModule({
-  declarations: [StudentComponent, StudentPageComponent],
+  declarations: [StudentComponent, StudentPageComponent, StudentListComponent],
   imports: [
     CommonModule,
     PortalModule,
