@@ -4,8 +4,8 @@
       <ol class="tabs__links">
         <li data-revealId="student-add" data-default="true" appTabView appPermitted [table]="'student'"
           [operation]="'create'">Add student</li>
-        <li data-revealId="student-list" appTabView (click)="viewStudents()" appTabView appPermitted [table]="'student'"
-          [operation]="'select'">View students</li>
+        <li data-revealId="student-list" appTabView (click)="viewStudents('active')" appTabView appPermitted
+          [table]="'student'" [operation]="'select'">View students</li>
         <li data-revealId="printing" appTabView (click)="printAll()" appTabView appPermitted [table]="'student'"
           [operation]="'select'">Printing</li>
       </ol>
@@ -71,62 +71,52 @@
           </form>
         </div>
         <div data-revealId="student-list" appPermitted [table]="'student'" [operation]="'select'">
-          <app-normal-pagination [total]="total" [sorts]="sortingKeys" *ngIf="students"
-            (options)="onOptionsChange($event)"></app-normal-pagination>
-          <app-loader *ngIf="isFindingStudents"></app-loader>
-          <table *ngIf="!isFindingStudents" class="not-mobile">
-            <caption>List of students</caption>
-            <thead>
-              <tr>
-                <th>Adm</th>
-                <th>Name</th>
-                <th>D.O.B</th>
-                <th>Gender</th>
-                <th>County</th>
-                <th>Date admitted</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.id)">
-                <td>{{student.adm}}</td>
-                <td>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</td>
-                <td>{{student.dob | date}}</td>
-                <td>{{student.gender | titlecase}}</td>
-                <td>{{student.county | titlecase}}</td>
-                <td>{{student.admitted | date}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <table *ngIf="!isFindingStudents" class="mobile-only">
-            <tbody>
-              <tr *ngFor="let student of students" class="clickable" (click)="viewDetails(student.id)">
-                <div>
-                  <span>Adm No.</span>
-                  <span>{{student.adm}}</span>
-                </div>
-                <div>
-                  <span>Name</span>
-                  <span>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</span>
-                </div>
-                <div>
-                  <span>D.O.B</span>
-                  <span>{{student.dob | date}}</span>
-                </div>
-                <div>
-                  <span>Gender</span>
-                  <span>{{student.gender | titlecase}}</span>
-                </div>
-                <div>
-                  <span>County</span>
-                  <span>{{student.county | titlecase}}</span>
-                </div>
-                <div>
-                  <span>Admitted</span>
-                  <span>{{student.admitted | date}}</span>
-                </div>
-              </tr>
-            </tbody>
-          </table>
+          <div class="tabs tabs--vertical">
+            <ol class="tabs__links tabs__links--vertical">
+              <li data-revealId="active-students" data-default="true" appTabView>Active</li>
+              <li data-revealId="on-leave" (click)="viewStudents('leave')" appTabView>On leave</li>
+              <li data-revealId="suspended-students" (click)="viewStudents('suspended')" appTabView>Suspended</li>
+              <li data-revealId="expelled-students" (click)="viewStudents('expelled')" appTabView>Expelled</li>
+              <li data-revealId="archived-students" (click)="viewStudents('archived')" appTabView>Archived</li>
+            </ol>
+            <div class="tabs__content tabs__content--vertical">
+              <div data-revealId="active-students">
+                <app-normal-pagination [total]="totalActive" [sorts]="commonSorts" *ngIf="activeStudents"
+                  (options)="onOptionsChange($event, 'active')">
+                </app-normal-pagination>
+                <app-loader *ngIf="isFindingStudents"></app-loader>
+                <app-student-list [students]="activeStudents" [cat]="'normalview'"></app-student-list>
+              </div>
+              <div data-revealId="on-leave">
+                <app-normal-pagination [total]="totalLeave" [sorts]="leaveSorts" *ngIf="leaveStudents"
+                  (options)="onOptionsChange($event, 'leave')">
+                </app-normal-pagination>
+                <app-loader *ngIf="isFindingStudents"></app-loader>
+                <app-student-list [students]="leaveStudents" [cat]="'outView'"></app-student-list>
+              </div>
+              <div data-revealId="suspended-students">
+                <app-normal-pagination [total]="totalSuspended" [sorts]="suspendedSorts" *ngIf="suspendedStudents"
+                  (options)="onOptionsChange($event, 'suspended')">
+                </app-normal-pagination>
+                <app-loader *ngIf="isFindingStudents"></app-loader>
+                <app-student-list [students]="suspendedStudents" [cat]="'outView'"></app-student-list>
+              </div>
+              <div data-revealId="expelled-students">
+                <app-normal-pagination [total]="totalExpelled" [sorts]="expelledSorts" *ngIf="expelledStudents"
+                  (options)="onOptionsChange($event, 'expelled')">
+                </app-normal-pagination>
+                <app-loader *ngIf="isFindingStudents"></app-loader>
+                <app-student-list [students]="expelledStudents" [cat]="'oldview'"></app-student-list>
+              </div>
+              <div data-revealId="archived-students">
+                <app-normal-pagination [total]="totalArchived" [sorts]="archivedSorts" *ngIf="archivedStudents"
+                  (options)="onOptionsChange($event, 'archived')">
+                </app-normal-pagination>
+                <app-loader *ngIf="isFindingStudents"></app-loader>
+                <app-student-list [students]="archivedStudents" [cat]="'oldview'"></app-student-list>
+              </div>
+            </div>
+          </div>
         </div>
         <div data-revealId="printing" appPermitted [table]="'student'" [operation]="'select'">
           <div class="tabs tabs--vertical">

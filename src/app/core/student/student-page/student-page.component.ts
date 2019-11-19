@@ -20,7 +20,6 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 })
 export class StudentPageComponent implements OnInit {
   student: Student;
-  isOld: boolean;
   id: number;
   back = back;
   counties: string[] = counties;
@@ -53,11 +52,18 @@ export class StudentPageComponent implements OnInit {
   isGettingResults: boolean = false;
   isGettingPayments: boolean = false;
   isGettingHostels: boolean = false;
-  isDeletingStudent: boolean = false;
+  isChangingStudentState: boolean = false;
+  isSavingLeave: boolean = false;
   printChargesUrl: SafeResourceUrl;
   printPaymentsUrl: SafeResourceUrl;
   isViewingPrintableCharges: boolean;
   isViewingPrintablePayments: boolean;
+  oldStudent: boolean = false;
+  leaves: any[];
+  suspensions: any[];
+  isGettingLeaves: boolean = false;
+  isSavingSuspension: boolean = false;
+  isGettingSuspensions: boolean = false;
 
   constructor(
     private studentService: StudentService,
@@ -80,6 +86,11 @@ export class StudentPageComponent implements OnInit {
         this.studentService.getStudent(this.id)
           .subscribe(res => {
             this.student = res;
+            if (this.student.state.toLowerCase() === 'active') {
+              this.oldStudent = false;
+            } else {
+              this.oldStudent = true;
+            }
             this.isGettingBasicInfo = false;
           }, err => {
             this.toastr.error(`Failed to get student's information. Please refresh page.`);
@@ -386,15 +397,64 @@ export class StudentPageComponent implements OnInit {
   delete() {
     const confirm = window.confirm(`Are you sure you want to delete student?`);
     if (!confirm) return;
-    this.isDeletingStudent = true;
+    this.isChangingStudentState = true;
     this.studentService.delete(this.id)
       .subscribe(res => {
         this.router.navigate(['students']);
-        this.isDeletingStudent = false;
+        this.isChangingStudentState = false;
         this.toastr.success('Student deleted successfully.');
       }, err => {
         this.toastr.error('Failed to delete student.');
-        this.isDeletingStudent = false;
+        this.isChangingStudentState = false;
+      });
+  }
+
+  archive() {
+    if (!confirm("Archive this student? This makes the student inactive in the system.")) return;
+    const reason = window.prompt("Reason for archiving student");
+    if (reason.length === 0) return window.alert("You must provide a reason for archiving student record.");
+    this.isChangingStudentState = true;
+    this.studentService.archive(this.id, reason)
+      .subscribe(res => {
+        this.oldStudent = true;
+        this.toastr.success("Student archived successfully.");
+        this.isChangingStudentState = false;
+        this.student.state = "ARCHIVED";
+      }, err => {
+        this.isChangingStudentState = false;
+        this.toastr.error("Failed to archive record.");
+      });
+  }
+
+  expell() {
+    if (!confirm("Expell this student?")) return;
+    const reason = window.prompt("Reason for expelling student");
+    if (reason.length === 0) return window.alert("You must provide a reason for expelling student.");
+    this.isChangingStudentState = true;
+    this.studentService.expell(this.id, reason)
+      .subscribe(res => {
+        this.oldStudent = true;
+        this.toastr.success("Student expelled successfully.");
+        this.isChangingStudentState = false;
+        this.student.state = "EXPELLED";
+      }, err => {
+        this.isChangingStudentState = false;
+        this.toastr.error("Failed to expelled record.");
+      });
+  }
+
+  restore() {
+    if (!confirm("Restore this student? The record will be activated in the system.")) return;
+    this.isChangingStudentState = true;
+    this.studentService.restore(this.id)
+      .subscribe(res => {
+        this.oldStudent = false;
+        this.toastr.success("Student restored successfully.");
+        this.isChangingStudentState = false;
+        this.student.state = "ACTIVE";
+      }, err => {
+        this.isChangingStudentState = false;
+        this.toastr.error("Failed to restore record.");
       });
   }
 
@@ -404,6 +464,88 @@ export class StudentPageComponent implements OnInit {
     } else {
       this[property] = true;
     }
+  }
+
+  grantLeave(data) {
+    data.student = this.id;
+    this.isSavingLeave = true;
+    this.studentService.grantLeave(data)
+      .subscribe(res => {
+        if (this.leaves) {
+          this.leaves.unshift({ id: res.id, ...data });
+        }
+        this.isSavingLeave = false;
+        this.toastr.success("Leave grant was successful.");
+      }, err => {
+        this.isSavingLeave = false;
+        if (err.status === 409) return this.toastr.error(err.error.message);
+        this.toastr.error("Failed to save leave grant.");
+      });
+  }
+
+  getLeaves() {
+    if (this.leaves) return;
+    this.isGettingLeaves = true;
+    this.studentService.getLeaves(this.id)
+    .subscribe(res => {
+      this.leaves = res;
+      this.isGettingLeaves = false;
+    }, err => {
+      this.toastr.error("Failed to load leave outs.");
+      this.isGettingLeaves = false;
+    });
+  }
+
+  suspend(data) {
+    this.isSavingSuspension = true;
+    data.student = this.id;
+    this.studentService.suspend(data)
+      .subscribe(res => {
+        if (this.suspensions) {
+          this.suspensions.unshift({ id: res.id, ...data });
+        }
+        this.isSavingSuspension = false;
+        this.toastr.success("Suspension saved successfully.");
+      }, err => {
+        this.isSavingSuspension = false;
+        if (err.status === 409) return this.toastr.error(err.error.message);
+        this.toastr.error("Failed to save suspension.");
+      });
+  }
+
+  getSuspensions() {
+    if (this.suspensions) return;
+    this.isGettingSuspensions = true;
+    this.studentService.getSuspensions(this.id)
+    .subscribe(res => {
+      this.suspensions = res;
+      this.isGettingSuspensions = false;
+    }, err => {
+      this.toastr.error("Failed to load suspensions.");
+      this.isGettingSuspensions = false;
+    });
+  }
+
+  deleteLeave(id) {
+    if (!window.confirm("Delete item?")) return;
+    this.studentService.deleteLeave(id)
+    .subscribe(res => {
+      const index = this.leaves.indexOf(this.leaves.find(i => +i.id === +id));
+      this.leaves.splice(index, 1);
+    }, err => {
+      this.toastr.error("Failed to delete item.");
+    });
+  }
+
+  deleteSuspension(id) {
+    if (!window.confirm("Delete item?")) return;
+    this.studentService.deleteSuspension(id)
+    .subscribe(res => {
+      const index = this.suspensions.indexOf(this.suspensions.find(i => +i.id === +id));
+      this.suspensions.splice(index, 1);
+    }, err => {
+      this.toastr.error("Failed to delete item.");
+    });
   }
 
 }

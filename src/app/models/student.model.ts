@@ -8,4 +8,5 @@ export interface Student {
     dob: string;
     gender: string;
     county: string;
+    state?: string
 }

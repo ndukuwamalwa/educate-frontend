@@ -14,9 +14,21 @@ import { printUrlWithToken } from 'src/app/utilities';
 })
 export class StudentComponent implements OnInit {
   counties: string[] = counties;
-  total: number;
-  sortingKeys: string[] = ['id', 'adm', 'admitted', 'fname', 'mname', 'lname', 'dob', 'gender', 'county'];
-  students: Student[];
+  commonSorts: string[] = ['id', 'adm', 'admitted', 'fname', 'mname', 'lname', 'dob', 'gender', 'county'];
+  leaveSorts: string[] = ['startDate', 'endDate', ...this.commonSorts];
+  suspendedSorts: string[] = ['startDate', 'endDate', ...this.commonSorts];
+  expelledSorts: string[] = ['dateEffected', ...this.commonSorts];
+  archivedSorts: string[] = ['dateEffected', ...this.commonSorts];
+  activeStudents: Student[];
+  leaveStudents: Student[];
+  suspendedStudents: Student[];
+  expelledStudents: Student[];
+  archivedStudents: Student[];
+  totalActive: number;
+  totalLeave: number;
+  totalSuspended: number;
+  totalExpelled: number;
+  totalArchived: number;
   studentIsAdding: boolean = false;
   isFindingStudents: boolean = false;
   printAllUrl: SafeResourceUrl;
@@ -52,12 +64,21 @@ export class StudentComponent implements OnInit {
       });
   }
 
-  viewDetails(id) {
-    this.router.navigate(['students', id]);
-  }
-
-  viewStudents() {
-    if (this.students) {
+  viewStudents(state: string) {
+    state = state.toLowerCase();
+    if (this.activeStudents && state === 'active') {
+      return;
+    }
+    if (this.leaveStudents && state === 'leave') {
+      return;
+    }
+    if (this.suspendedStudents && state === 'suspended') {
+      return;
+    }
+    if (this.expelledStudents && state === 'expelled') {
+      return;
+    }
+    if (this.archivedStudents && state === 'archived') {
       return;
     }
     const options = {
@@ -66,15 +87,35 @@ export class StudentComponent implements OnInit {
       sort: -1,
       sortBy: 'id'
     };
-    this.getStudents(options);
+    this.getStudents(options, state);
   }
 
-  getStudents(options) {
+  getStudents(options, state: string) {
     this.isFindingStudents = true;
+    state = state.toLowerCase();
+    options.state = state;
     this.studentService.getStudents(options)
       .subscribe(res => {
-        this.total = +res.total;
-        this.students = res.items;
+        if (state === 'active') {
+          this.totalActive = +res.total;
+          this.activeStudents = res.items;
+        }
+        if (state === 'leave') {
+          this.totalLeave = +res.total;
+          this.leaveStudents = res.items;
+        }
+        if (state === 'suspended') {
+          this.totalSuspended = +res.total;
+          this.suspendedStudents = res.items;
+        }
+        if (state === 'expelled') {
+          this.totalExpelled = +res.total;
+          this.expelledStudents = res.items;
+        }
+        if (state === 'archived') {
+          this.totalArchived = +res.total;
+          this.archivedStudents = res.items;
+        }
         this.isFindingStudents = false;
       }, err => {
         this.toastr.error('Problem loading students.');
@@ -82,8 +123,8 @@ export class StudentComponent implements OnInit {
       });
   }
 
-  onOptionsChange(options) {
-    this.getStudents(options);
+  onOptionsChange(options, state: string) {
+    this.getStudents(options, state);
   }
 
   printAll() {

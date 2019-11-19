@@ -2,24 +2,26 @@
   <ng-container class="render">
     <div>
       <button class="btn btn--blue" (click)="back()">Back</button>
-      <span class="item-title">{{student?.fname}} {{student?.mname}} {{student?.lname}} - <span>Student</span></span>
+      <span class="item-title">{{student?.fname}} {{student?.mname}} {{student?.lname}} -
+        <span [ngClass]="{ danger: oldStudent }">Student({{student?.state}})</span></span>
     </div>
     <div class="tabs tabs--vertical">
       <ol class="tabs__links tabs__links--vertical">
         <li data-revealId="details" data-default="true" appTabView>Details</li>
-        <li data-revealId="update" appTabView appTabView appPermitted [table]="'student'" [operation]="'update'">Update
+        <li data-revealId="update" appTabView appTabView appPermitted [table]="'student'" [operation]="'update'"
+          *ngIf="!oldStudent">Update
           details</li>
         <li data-revealId="add-contact" appTabView appTabView appPermitted [table]="'student_contact'"
-          [operation]="'create'">Add contacts</li>
+          [operation]="'create'" *ngIf="!oldStudent">Add contacts</li>
         <li data-revealId="view-contact" appTabView (click)="getContacts()">Contacts</li>
         <li data-revealId="attendance" appTabView>Class attendance</li>
         <li data-revealId="add-to-batch" appTabView (click)="getBaches()" appTabView appPermitted
-          [table]="'student_batch'" [operation]="'create'">Add to batch</li>
+          [table]="'student_batch'" [operation]="'create'" *ngIf="!oldStudent">Add to batch</li>
         <li data-revealId="view-batches" appTabView (click)="viewBatches()">Batches</li>
         <li data-revealId="view-charges" appTabView (click)="viewBatches()" appTabView appPermitted
           [table]="'student_charge'" [operation]="'select'">Charges</li>
         <li data-revealId="register-subject" appTabView (click)="getSubjects()" appTabView appPermitted
-          [table]="'subject'" [operation]="'select'">Register subject</li>
+          [table]="'subject'" [operation]="'select'" *ngIf="!oldStudent">Register subject</li>
         <li data-revealId="view-subjects" appTabView (click)="getBaches()" appTabView appPermitted
           [table]="'student_subject'" [operation]="'select'">View subjects</li>
         <li data-revealId="view-results" appTabView (click)="getExams()" appTabView appPermitted [table]="'exam_result'"
@@ -27,6 +29,10 @@
         <li data-revealId="view-payments" appTabView (click)="getPayments()" appTabView appPermitted
           [table]="'fee_payment'" [operation]="'select'">Payments</li>
         <li data-revealId="view-hostel" appTabView (click)="getHostels()">Hostel</li>
+        <li data-revealId="grant-leave" appTabView>Grant leave</li>
+        <li data-revealId="leaves" appTabView (click)="getLeaves()">Leave outs</li>
+        <li data-revealId="suspend" appTabView>Suspend</li>
+        <li data-revealId="suspensions" appTabView (click)="getSuspensions()">Suspensions</li>
         <li data-revealId="danger" appTabView appTabView appPermitted [table]="'student'" [operation]="'delete'">Danger
           zone</li>
       </ol>
@@ -67,10 +73,17 @@
                 <td>County of Residence</td>
                 <td>{{student?.county}}</td>
               </tr>
+              <tr>
+                <td>State</td>
+                <td [ngClass]="{
+                  green: !oldStudent,
+                  danger: oldStudent
+                }" class="bold">{{student?.state | titlecase}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <div data-revealId="update" appPermitted [table]="'student'" [operation]="'update'">
+        <div data-revealId="update" appPermitted [table]="'student'" [operation]="'update'" *ngIf="!oldStudent">
           <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="updateStudent(studentForm.value)">
             <div class="inputs">
               <fieldset>
@@ -130,7 +143,8 @@
             </div>
           </form>
         </div>
-        <div data-revealId="add-contact" appPermitted [table]="'student_contact'" [operation]="'create'">
+        <div data-revealId="add-contact" appPermitted [table]="'student_contact'" [operation]="'create'"
+          *ngIf="!oldStudent">
           <form #contactForm="ngForm" (ngSubmit)="addContact(contactForm)" ngNativeValidate>
             <span>Add student contact</span>
             <div class="input">
@@ -253,7 +267,8 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="add-to-batch" appPermitted [table]="'student_batch'" [operation]="'create'">
+        <div data-revealId="add-to-batch" appPermitted [table]="'student_batch'" [operation]="'create'"
+          *ngIf="!oldStudent">
           <form #addToBatchForm="ngForm" (ngSubmit)="addToBatch(addToBatchForm.value)" ngNativeValidate>
             <span>Add to batch/class</span>
             <div class="inputs">
@@ -339,8 +354,8 @@
             </tbody>
           </table>
         </div>
-        <div data-revealId="register-subject" appPermitted [table]="'student_subject'"
-          [operation]="'create'">
+        <div data-revealId="register-subject" appPermitted [table]="'student_subject'" [operation]="'create'"
+          *ngIf="oldStudent">
           <form #subjectForm="ngForm" (ngSubmit)="addSubject(subjectForm)" ngNativeValidate>
             <span></span>
             <div class="cat-selector">
@@ -520,25 +535,125 @@
             </tbody>
           </table>
         </div>
+        <div data-revealId="grant-leave">
+          <form #leaveForm="ngForm" (ngSubmit)="grantLeave(leaveForm.value)" ngNativeValidate>
+            <span>Permission to leave</span>
+            <div class="inputs">
+              <fieldset>
+                <label for="startDate">Start date</label>
+                <input type="datetime-local" name="startDate" id="startDate" required ngModel>
+              </fieldset>
+              <fieldset>
+                <label for="endDate">End date</label>
+                <input type="datetime-local" name="endDate" id="endDate" required ngModel>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="reason">Reason</label>
+                <textarea name="reason" id="reason" ngModel required></textarea>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSavingLeave">Save</button>
+                <app-loader *ngIf="isSavingLeave"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="leaves">
+          <app-loader *ngIf="isGettingLeaves"></app-loader>
+          <table *ngIf="!isGettingLeaves">
+            <thead>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Reason</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let leave of leaves">
+                <td>{{leave.startDate | date}} at {{leave.startDate | date: 'shortTime'}}</td>
+                <td>{{leave.endDate | date}} at {{leave.endDate | date: 'shortTime'}}</td>
+                <td style="white-space: wrap;">{{leave.reason}}</td>
+                <td class="danger" (click)="deleteLeave(leave.id)">Delete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div data-revealId="suspend">
+          <form #susForm="ngForm" (ngSubmit)="suspend(susForm.value)" ngNativeValidate>
+            <span>Send on suspension</span>
+            <div class="inputs">
+              <fieldset>
+                <label for="startDate">Start date</label>
+                <input type="datetime-local" name="startDate" id="startDate" required ngModel>
+              </fieldset>
+              <fieldset>
+                <label for="endDate">Return date</label>
+                <input type="datetime-local" name="endDate" id="endDate" required ngModel>
+              </fieldset>
+            </div>
+            <div class="input">
+              <fieldset>
+                <label for="reason">Reason for suspension</label>
+                <textarea name="reason" id="reason" ngModel required></textarea>
+              </fieldset>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" [disabled]="isSavingSuspension">Save</button>
+                <app-loader *ngIf="isSavingSuspension"></app-loader>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+        <div data-revealId="suspensions">
+          <app-loader *ngIf="isGettingSuspensions"></app-loader>
+          <table *ngIf="!isGettingSuspensions">
+            <thead>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Reason</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let suspension of suspensions">
+                <td>{{suspension.startDate | date}} at {{suspension.startDate | date: 'shortTime'}}</td>
+                <td>{{suspension.endDate | date}} at {{suspension.endDate | date: 'shortTime'}}</td>
+                <td style="white-space: wrap;">{{suspension.reason}}</td>
+                <td class="danger" (click)="deleteSuspension(suspension.id)">Delete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div data-revealId="danger" appPermitted [table]="'student'" [operation]="'delete'">
           <form>
-            <span>Actions here have permanent effects</span>
-            <app-loader *ngIf="isDeletingStudent"></app-loader>
+            <span>Be carefull!!</span>
+            <app-loader *ngIf="isChangingStudentState"></app-loader>
             <div class="inputs">
               <fieldset>
                 <label for=""></label>
-                <button class="btn btn--red" (click)="delete()" [disabled]="isDeletingStudent">
+                <button class="btn btn--red" (click)="delete()" [disabled]="isChangingStudentState" *ngIf="oldStudent">
                   Delete {{student?.fname | titlecase}} {{student?.lname | titlecase}}
                 </button>
               </fieldset>
               <fieldset>
                 <label for=""></label>
-                <button class="btn btn--red" (click)="delete()" *ngIf="!isOld" [disabled]="isDeletingStudent">Close and
+                <button class="btn btn--red" (click)="archive()" *ngIf="!oldStudent"
+                  [disabled]="isChangingStudentState">Close and
                   Archive record</button>
               </fieldset>
               <fieldset>
                 <label for=""></label>
-                <button class="btn btn--red" (click)="restore()" *ngIf="isOld" [disabled]="isDeletingStudent">Restore
+                <button class="btn btn--red" *ngIf="!oldStudent" [disabled]="isChangingStudentState"
+                  (click)="expell()">Expell
+                  student</button>
+              </fieldset>
+              <fieldset>
+                <label for=""></label>
+                <button class="btn btn--red" (click)="restore()" *ngIf="oldStudent"
+                  [disabled]="isChangingStudentState">Restore
                   student</button>
               </fieldset>
             </div>

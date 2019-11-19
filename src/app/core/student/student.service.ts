@@ -44,4 +44,40 @@ export class StudentService {
   delete(id): Observable<any> {
     return this.http._delete(`${this.api}/students?id=${id}`);
   }
+
+  archive(id, reason: string): Observable<any> {
+    return this.http._post(`${this.api}/students/archive`, { student: id, reason });
+  }
+
+  restore(id): Observable<any> {
+    return this.http._get(`${this.api}/students/restore?id=${id}`);
+  }
+
+  expell(id, reason: string): Observable<any> {
+    return this.http._post(`${this.api}/students/expell`, { student: id, reason });
+  }
+
+  grantLeave(data): Observable<any> {
+    return this.http._post(`${this.api}/students/leaves`, data);
+  }
+
+  getLeaves(id): Observable<any> {
+    return this.http._get(`${this.api}/students/leaves?id=${id}`);
+  }
+
+  deleteLeave(id): Observable<any> {
+    return this.http._delete(`${this.api}/students/leaves?id=${id}`);
+  }
+
+  suspend(data): Observable<any> {
+    return this.http._post(`${this.api}/students/suspensions`, data);
+  }
+
+  getSuspensions(id): Observable<any> {
+    return this.http._get(`${this.api}/students/suspensions?id=${id}`);
+  }
+
+  deleteSuspension(id): Observable<any> {
+    return this.http._delete(`${this.api}/students/leaves?id=${id}`);
+  }
 }
