@@ -90,6 +90,7 @@
         <div data-revealId="add-results">
           <form #resultsForm="ngForm" (ngSubmit)="getStudents(resultsForm.value)" ngNativeValidate>
             <span>Add results</span>
+            <p class="danger">Only students who are registered for the subject will be listed.</p>
             <div class="inputs">
               <fieldset>
                 <label for="batch">Select class</label>
