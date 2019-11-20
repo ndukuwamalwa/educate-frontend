@@ -5,10 +5,11 @@
         <li data-revealId="subject-add" data-default="true" appTabView appPermitted [table]="'subject'"
           [operation]="'create'">Create subject</li>
         <li data-revealId="subject-list" appTabView (click)="getSubjects()">Subjects</li>
+        <li data-revealId="subject-registration" appTabView (click)="getSubjects()">Registration</li>
       </ol>
       <div class="tabs__content">
         <div data-revealId="subject-add" appPermitted [table]="'subject'" [operation]="'create'">
-          <form #addForm="ngForm" (ngSubmit)="addSubject(addForm.value.name)" ngNativeValidate>
+          <form #addForm="ngForm" (ngSubmit)="addSubject(addForm)" ngNativeValidate>
             <span>Add new subject</span>
             <div class="input">
               <fieldset>
@@ -40,6 +41,145 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div data-revealId="subject-registration">
+          <ol class="tabs__links tabs__links--vertical">
+            <li data-revealId="register-subject" data-default="true" appTabView>Register</li>
+            <li data-revealId="view-registration" appTabView appPermitted>View register</li>
+          </ol>
+          <div class="tabs__content tabs__content--vertical">
+            <div data-revealId="register-subject">
+              <form #regForm="ngForm" (ngSubmit)="loadForRegistration(regForm.value)" ngNativeValidate>
+                <span>Register students for subject</span>
+                <p class="danger">Only students not currently registered will be shown</p>
+                <div class="inputs">
+                  <fieldset>
+                    <label for="subject">Subject</label>
+                    <select name="subject" id="subject" ngModel required>
+                      <option [value]="subject.id" *ngFor="let subject of subjects">{{subject.name | uppercase}}
+                      </option>
+                    </select>
+                  </fieldset>
+                  <fieldset>
+                    <label for="batch">Class</label>
+                    <select name="batch" id="batch" ngModel required>
+                      <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
+                      </option>
+                    </select>
+                  </fieldset>
+                  <fieldset>
+                    <label for="jda" style="color: transparent;">.</label>
+                    <button class="btn btn--blue" [disabled]="isLoadingStudents">Load students</button>
+                    <app-loader *ngIf="isLoadingStudents"></app-loader>
+                  </fieldset>
+                </div>
+              </form>
+              <form #aRegForm="ngForm" (ngSubmit)="register(aRegForm.value)" *ngIf="studentsToRegister">
+                <table>
+                  <thead>
+                    <th>Adm</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="2"></td>
+                      <td>
+                        <label for="all" style="margin-right: 20px;">All</label>
+                        <input type="checkbox" name="all" id="all" (change)="onRegisterAllChange($event.target)">
+                      </td>
+                    </tr>
+                    <tr *ngFor="let stud of studentsToRegister">
+                      <td>{{stud.adm}}</td>
+                      <td>{{stud.student}}</td>
+                      <td>
+                        <input type="checkbox" name="stud_{{stud.studentId}}" id="stud_{{stud.studentId}}"
+                          [value]="stud.studentId" class="items-to-register" ngModel
+                          (change)="onSelectionChange($event.target)">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="submit">
+                  <fieldset>
+                    <button class="btn btn--blue" [disabled]="isRegistering || toRegister.length === 0">Register
+                      selection({{toRegister.length | number}})</button>
+                    <app-loader *ngIf="isRegistering"></app-loader>
+                  </fieldset>
+                </div>
+              </form>
+            </div>
+            <div data-revealId="view-registration">
+              <form #regLForm="ngForm" (ngSubmit)="loadRegister(regLForm.value)" ngNativeValidate>
+                <span>View registered</span>
+                <div class="inputs">
+                  <fieldset>
+                    <label for="subject">Subject</label>
+                    <select name="subject" id="subject" ngModel required>
+                      <option [value]="subject.id" *ngFor="let subject of subjects">{{subject.name | uppercase}}
+                      </option>
+                    </select>
+                  </fieldset>
+                  <fieldset>
+                    <label for="batch">Class</label>
+                    <select name="batch" id="batch" ngModel required>
+                      <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
+                      </option>
+                    </select>
+                  </fieldset>
+                  <fieldset>
+                    <label for="jda" style="color: transparent;">.</label>
+                    <button class="btn btn--blue" [disabled]="isLoadingRegister">Load register</button>
+                    <app-loader *ngIf="isLoadingRegister"></app-loader>
+                  </fieldset>
+                </div>
+              </form>
+              <table *ngIf="registered" class="not-mobile">
+                <thead>
+                  <th>Adm</th>
+                  <th>Name</th>
+                  <th>Subject</th>
+                  <th>Class</th>
+                  <th>Action</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let sub of registered">
+                    <td>{{sub.adm}}</td>
+                    <td>{{sub.student}}</td>
+                    <td>{{sub.subject}}</td>
+                    <td>{{sub.batch}}</td>
+                    <td class="danger" (click)="deregister(sub.id)">Remove</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table *ngIf="registered" class="mobile-only">
+                <tbody>
+                  <tr *ngFor="let sub of registered">
+                    <div>
+                      <span>Adm</span>
+                      <span>{{sub.adm}}</span>
+                    </div>
+                    <div>
+                      <span>Name</span>
+                      <span>{{sub.student}}</span>
+                    </div>
+                    <div>
+                      <span>Subject</span>
+                      <span>{{sub.subject}}</span>
+                    </div>
+                    <div>
+                      <span>Class</span>
+                      <span>{{sub.batch}}</span>
+                    </div>
+                    <div>
+                      <span>Action</span>
+                      <span class="danger" (click)="deregister(sub.id)">Remove</span>
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
