@@ -34,4 +34,12 @@ export class SubjectService {
   delete(id): Observable<any> {
     return this.http._delete(`${this.api}?id=${id}`);
   }
+
+  getRegisteredStudents(subject, batch): Observable<any> {
+    return this.http._get(`${this.api}/register?subject=${subject}&batch=${batch}`);
+  }
+
+  getNotRegistered(subject, batch): Observable<any> {
+    return this.http._get(`${this.api}/unregistered?subject=${subject}&batch=${batch}`);
+  }
 }
