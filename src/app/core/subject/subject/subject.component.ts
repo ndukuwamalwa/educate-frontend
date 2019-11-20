@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SubjectService } from '../subject.service';
 import { ToastrService } from 'src/app/toastr.service';
+import { NgForm } from '@angular/forms';
+import { BatchService } from '../../batch/batch.service';
 
 @Component({
   selector: 'app-subject',
@@ -11,24 +13,41 @@ export class SubjectComponent implements OnInit {
   isSaving: boolean = false;
   subjects: any[];
   isGettingSubjects: boolean = false;
+  batches: Batch[];
+  toRegister: any[] = [];
+  selectedSubject: number;
+  selectedBatch: number;
+  isLoadingStudents: boolean = false;
+  studentsToRegister: any[];
+  isRegistering: boolean = false;
+  isLoadingRegister: boolean = false;
+  registered: any[];
 
   constructor(
     private subjectService: SubjectService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private batchService: BatchService
   ) { }
 
   ngOnInit() {
+    this.batchService.getBatches()
+      .subscribe(res => {
+        this.batches = res.items;
+      }, err => {
+        this.toastr.error("Failed to load classes");
+      });
   }
 
-  addSubject(name) {
+  addSubject(form: NgForm) {
     this.isSaving = true;
-    this.subjectService.add(name)
+    this.subjectService.add(form.value.name)
       .subscribe(res => {
         if (this.subjects) {
-          this.subjects.push({ name, id: res.id });
+          this.subjects.push({ name: form.value.name, id: res.id });
         }
         this.isSaving = false;
         this.toastr.success("Subject added successfully.");
+        form.reset();
       }, err => {
         this.isSaving = false;
         if (err.status === 409) return this.toastr.error("Subject already exists.");
@@ -60,6 +79,85 @@ export class SubjectComponent implements OnInit {
         this.toastr.success("Subject deleted successfully.");
       }, err => {
         this.toastr.error("Failed to delete subject.");
+      });
+  }
+
+  loadForRegistration({ subject, batch }) {
+    this.selectedBatch = +batch;
+    this.selectedSubject = +subject;
+    this.isLoadingStudents = true;
+    this.subjectService.getNotRegistered(subject, batch)
+      .subscribe(res => {
+        this.studentsToRegister = res;
+        this.isLoadingStudents = false;
+      }, err => {
+        this.isLoadingStudents = false;
+        this.toastr.error("Failed to load students.");
+      });
+  }
+
+  register() {
+    this.isRegistering = true;
+    this.subjectService.registerBulk(this.toRegister)
+      .subscribe(res => {
+        this.toastr.success("Registration completed successfully.");
+        this.isRegistering = false;
+        this.toRegister = [];
+      }, err => {
+        this.isRegistering = false;
+        if (err.status === 409) return this.toastr.error("Students have already been registered.");
+        this.toastr.error("Failed to register students for the subject.");
+      });
+  }
+
+  onRegisterAllChange(inp: HTMLInputElement) {
+    const items = document.getElementsByClassName("items-to-register");
+    if (inp.checked) {
+      for (let i = 0; i < items.length; i++) {
+        let elem = items[i] as HTMLInputElement;
+        elem.checked = true;
+        this.onSelectionChange(elem);
+      }
+    } else {
+      for (let i = 0; i < items.length; i++) {
+        let elem = items[i] as HTMLInputElement;
+        elem.checked = false;
+      }
+      this.toRegister = [];
+    }
+  }
+
+  onSelectionChange(elem: HTMLInputElement) {
+    if (elem.checked) {
+      if (!this.toRegister.find(val => +val.student === +elem.value)) {
+        this.toRegister.push({ student: +elem.value, subject: this.selectedSubject, batch: this.selectedBatch });
+      }
+    } else {
+      const item = this.toRegister.find(i => +i.student === +elem.value);
+      this.toRegister.splice(this.toRegister.indexOf(item), 1);
+    }
+  }
+
+  loadRegister({ subject, batch }) {
+    this.isLoadingRegister = true;
+    this.subjectService.getRegisteredStudents(subject, batch)
+      .subscribe(res => {
+        this.registered = res;
+        this.isLoadingRegister = false;
+      }, err => {
+        this.isLoadingRegister = false;
+        this.toastr.error("Failed to load registered students.");
+      });
+  }
+
+  deregister(id) {
+    if (!confirm("Delete registration?")) return;
+    this.subjectService.deregister(id)
+      .subscribe(res => {
+        const index = this.registered.indexOf(this.registered.find(i => +i.id === +id));
+        this.registered.splice(index, 1);
+      }, err => {
+        this.toastr.error("Failed to deregister student.");
       });
   }
 
