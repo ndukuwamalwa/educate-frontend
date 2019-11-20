@@ -46,7 +46,6 @@ export class StudentPageComponent implements OnInit {
   isAddingBatch: boolean = false;
   isGettingStudentBatches: boolean = false;
   isGettingSubjects: boolean = false;
-  isRegisteringSubjects: boolean = false;
   isGettingStudentSubjects: boolean = false;
   isGettingExams: boolean = false;
   isGettingResults: boolean = false;
@@ -280,26 +279,6 @@ export class StudentPageComponent implements OnInit {
       const index = this.subjectBasket.indexOf(+id);
       this.subjectBasket.splice(index, 1);
     }
-  }
-
-  addSubject(form: NgForm) {
-    this.isRegisteringSubjects = true;
-    const batch = +form.value.batch;
-    const body = [];
-    this.subjectBasket.forEach(val => {
-      body.push({ student: this.id, subject: val, batch });
-    });
-    this.subjectService.registerBulk(body)
-      .subscribe(res => {
-        this.viewStudentSubjects({ batch });
-        this.subjectBasket = [];
-        form.reset();
-        this.toastr.success('Subjects added successfully.');
-        this.isRegisteringSubjects = false;
-      }, err => {
-        this.toastr.error('Failed to add subject(s).');
-        this.isRegisteringSubjects = false;
-      });
   }
 
   viewStudentSubjects(formValue) {
