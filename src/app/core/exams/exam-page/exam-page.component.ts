@@ -94,7 +94,7 @@ export class ExamPageComponent implements OnInit {
     this.selectedSubject = subject;
 
     this.isLoadingStudents = true;
-    this.batchService.getStudents(batch)
+    this.subjectService.getRegisteredStudents(subject, batch)
       .subscribe(res => {
         this.selectedStudents = res;
         this.examService.getEnteredMarks(this.id, this.selectedSubject)
@@ -125,6 +125,7 @@ export class ExamPageComponent implements OnInit {
         valid.push({
           student: key.split('_')[1],
           exam: this.id,
+          batch: this.selectedBatch,
           subject: this.selectedSubject,
           marks: +results[key],
           grade: '',
