@@ -98,6 +98,7 @@ input[type=radio] {
 
 .danger {
     color: red;
+    background-color: #fff !important;
     cursor: pointer;
     font-weight: bold;
 
@@ -331,23 +332,23 @@ table {
 
 .green {
     color: rgb(41, 212, 41) !important;
-    background-color: #fff;
+    background-color: #fff !important;
     &-inverted {
         color: #fff;
-        background-color: rgb(41, 212, 41);
+        background-color: rgb(41, 212, 41) !important;
     }
 }
 
 .blue {
     color: $theme-color;
-    background-color: #fff;
+    background-color: #fff !important;
     &-inverted {
-        background-color: $theme-color;
+        background-color: $theme-color !important;
         color: #fff;
     }   
 }
 .bold {
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
 .stat-table {
