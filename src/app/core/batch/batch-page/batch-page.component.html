@@ -117,6 +117,7 @@
                 <th>Adm</th>
                 <th>Name</th>
                 <th>Class</th>
+                <th>Admitted</th>
                 <th>Academic year</th>
                 <th>Action</th>
               </tr>
@@ -126,6 +127,7 @@
                 <td>{{student.adm | uppercase}}</td>
                 <td>{{student.student | titlecase}}</td>
                 <td>{{student.batch | titlecase}}</td>
+                <td>{{student.admitted | date: 'y'}}</td>
                 <td>{{batch?.academic_year}}</td>
                 <td class="danger" (click)="removeStudent(student.id)">Remove</td>
               </tr>
@@ -145,6 +147,10 @@
                 <div>
                   <span>Class</span>
                   <span>{{student.batch | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Admitted</span>
+                  <span>{{student.admitted | date: 'y'}}</span>
                 </div>
                 <div>
                   <span>Academic year</span>
