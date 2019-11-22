@@ -235,6 +235,7 @@ export class StudentPageComponent implements OnInit {
       }, err => {
         this.isAddingBatch = false;
         if (err.status === 409) return this.toastr.error("Student exists in the selected class.");
+        if (err.status === 400) return this.toastr.error(err.error.message);
         this.toastr.error('Failed to add student to batch/class');
       });
   }
@@ -524,6 +525,15 @@ export class StudentPageComponent implements OnInit {
       this.suspensions.splice(index, 1);
     }, err => {
       this.toastr.error("Failed to delete item.");
+    });
+  }
+
+  deleteContact(id) {
+    if (!confirm("Delete contact?")) return;
+    this.studentService.deleteContact(id)
+    .subscribe(res => {
+      const i = this.contacts.indexOf(this.contacts.find(val => +val.id === +id));
+      this.contacts.splice(i, 1);
     });
   }
 
