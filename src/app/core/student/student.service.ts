@@ -80,4 +80,12 @@ export class StudentService {
   deleteSuspension(id): Observable<any> {
     return this.http._delete(`${this.api}/students/leaves?id=${id}`);
   }
+
+  getMisplaced(options): Observable<any> {
+    return this.http._get(`${this.api}/students/misplaced?${createQuery(options)}`);
+  }
+
+  deleteContact(id): Observable<any> {
+    return this.http._delete(`${this.api}/students/contacts?id=${id}`);
+  }
 }
