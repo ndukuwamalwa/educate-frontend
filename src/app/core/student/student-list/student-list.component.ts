@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Student } from 'src/app/models/student.model';
 import { Router } from '@angular/router';
 
@@ -10,9 +10,11 @@ import { Router } from '@angular/router';
 export class StudentListComponent implements OnInit, OnChanges {
   @Input('students') students: Student[];
   @Input('cat') cat: string;
+  @Output('selection') selection: EventEmitter<{ student: number, add: boolean }> = new EventEmitter();
   outView: boolean = false;
   oldView: boolean = false;
   normalView: boolean = false;
+  misplacedView: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -31,11 +33,22 @@ export class StudentListComponent implements OnInit, OnChanges {
       if (this.cat === 'normalview') {
         this.normalView = true;
       }
+      if (this.cat === 'misplacedview') {
+        this.misplacedView = true;
+      }
     }
   }
 
   viewDetails(id) {
     this.router.navigate(['students', id]);
+  }
+
+  onSelectionChange(inp: HTMLInputElement) {
+    if (inp.checked) {
+      this.selection.emit({ student: +inp.value, add: true });
+    } else {
+      this.selection.emit({ student: +inp.value, add: false });
+    }
   }
 
 }
