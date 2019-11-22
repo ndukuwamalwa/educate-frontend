@@ -197,6 +197,7 @@
                 <th>Type of contact</th>
                 <th>Contact</th>
                 <th>Person to contact</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -204,6 +205,7 @@
                 <td>{{contact.type | titlecase}}</td>
                 <td>{{contact.contact | lowercase}}</td>
                 <td>{{contact.person | titlecase}}</td>
+                <td class="danger" (click)="deleteContact(contact.id)">Delete</td>
               </tr>
             </tbody>
           </table>
@@ -221,6 +223,10 @@
                 <div>
                   <span>Person</span>
                   <span>{{contact.person | titlecase}}</span>
+                </div>
+                <div>
+                  <span>Action</span>
+                  <span class="danger" (click)="deleteContact(contact.id)">Delete</span>
                 </div>
               </tr>
             </tbody>
