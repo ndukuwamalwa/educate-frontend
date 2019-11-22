@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'src/app/toastr.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { printUrlWithToken } from 'src/app/utilities';
+import { BatchService } from '../../batch/batch.service';
 
 @Component({
   selector: 'app-student',
@@ -24,6 +25,7 @@ export class StudentComponent implements OnInit {
   suspendedStudents: Student[];
   expelledStudents: Student[];
   archivedStudents: Student[];
+  misplacedStudents: Student[];
   totalActive: number;
   totalLeave: number;
   totalSuspended: number;
@@ -36,15 +38,26 @@ export class StudentComponent implements OnInit {
   byCountyUrl: SafeResourceUrl;
   studentContactsUrl: SafeResourceUrl;
   parentContactsUrl: SafeResourceUrl;
+  totalMisplaced: number;
+  selectedStudents: number[] = [];
+  isAddingToBatch: boolean = false;
+  batches: Batch[];
 
   constructor(
     private studentService: StudentService,
     private router: Router,
     private toastr: ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private batchService: BatchService
   ) { }
 
   ngOnInit() {
+    this.batchService.getBatches()
+      .subscribe(res => {
+        this.batches = res.items;
+      }, err => {
+        this.toastr.error("Failed to get classes. Some operations will be impossible.");
+      });
   }
 
   addStudent(data: Student) {
@@ -157,6 +170,47 @@ export class StudentComponent implements OnInit {
     } else {
       this.parentContactsUrl = url;
     }
+  }
+
+  viewMisplaced(options) {
+    this.isFindingStudents = true;
+    this.studentService.getMisplaced(options)
+      .subscribe(res => {
+        this.totalMisplaced = res.total;
+        this.misplacedStudents = res.items;
+        this.isFindingStudents = false;
+      }, err => {
+        this.toastr.error("Failed to find misplaced students.");
+        this.isFindingStudents = false;
+      });
+  }
+
+  onMisplacedOptionsChange(options) {
+    this.viewMisplaced(options);
+  }
+
+  onSelectedStudents(selection: { student: number, add: boolean }) {
+    if (selection.add) {
+      this.selectedStudents.push(selection.student);
+    } else {
+      const index = this.selectedStudents.indexOf(this.selectedStudents.find(i => i === selection.student));
+      this.selectedStudents.splice(index, 1);
+    }
+  }
+
+  addToBatch({ batch }) {
+    this.isAddingToBatch = true;
+    const items = this.selectedStudents.map(student => { return { student, batch } });
+    this.batchService.addStudent(items, true)
+      .subscribe(res => {
+        this.isAddingToBatch = false;
+        this.toastr.success(`${this.selectedStudents.length} students have been assigned a class successfully.`);
+        this.selectedStudents = [];
+        this.viewMisplaced({ sortBy: "admitted", sort: "1" });
+      }, err => {
+        this.isAddingToBatch = false;
+        this.toastr.error(`Failed to add students to class.`);
+      });
   }
 
 }
