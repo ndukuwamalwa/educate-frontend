@@ -63,12 +63,16 @@
     #school {
         display: flex;
         flex-direction: row;
+        overflow: hidden;
 
         & > * {
             margin: auto 10px;
         }
         & > img {
+            width: 64px;
+            height: 64px;
             margin: 0 !important;
+            padding: 0 !important;
         }
         span {
             font-weight: bold;
