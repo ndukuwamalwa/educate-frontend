@@ -78,6 +78,7 @@
               <li data-revealId="suspended-students" (click)="viewStudents('suspended')" appTabView>Suspended</li>
               <li data-revealId="expelled-students" (click)="viewStudents('expelled')" appTabView>Expelled</li>
               <li data-revealId="archived-students" (click)="viewStudents('archived')" appTabView>Archived</li>
+              <li data-revealId="assign-class" (click)="viewMisplaced()" appTabView>Assign Class</li>
             </ol>
             <div class="tabs__content tabs__content--vertical">
               <div data-revealId="active-students">
@@ -114,6 +115,32 @@
                 </app-normal-pagination>
                 <app-loader *ngIf="isFindingStudents"></app-loader>
                 <app-student-list [students]="archivedStudents" [cat]="'oldview'"></app-student-list>
+              </div>
+              <div data-revealId="assign-class">
+                <app-normal-pagination [total]="totalMisplaced" [sorts]="commonSorts" *ngIf="misplacedStudents"
+                  (options)="onMisplacedOptionsChange($event)">
+                </app-normal-pagination>
+                <app-loader *ngIf="isFindingStudents"></app-loader>
+                <app-student-list [students]="misplacedStudents" [cat]="'misplacedView'"
+                  (selection)="onSelectedStudents($event)"></app-student-list>
+                <form #addToBatchForm="ngForm" (ngSubmit)="addToBatch(addToBatchForm.value)"
+                  *ngIf="selectedStudents.length > 0" ngNativeValidate>
+                  <div class="input">
+                    <fieldset>
+                      <label for="batch">Select class to add {{selectedStudents.length | number}} students</label>
+                      <select name="batch" id="batch" ngModel required>
+                        <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
+                        </option>
+                      </select>
+                    </fieldset>
+                  </div>
+                  <div class="submit">
+                    <fieldset>
+                      <button class="btn btn--blue" [disabled]="isAddingToBatch">Add students</button>
+                      <app-loader *ngIf="isAddingToBatch"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
