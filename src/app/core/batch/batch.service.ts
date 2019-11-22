@@ -20,7 +20,10 @@ export class BatchService {
     return this.http._get(`${this.api}?id=${id}`);
   }
 
-  addStudent(data): Observable<any> {
+  addStudent(data, bulk: boolean = false): Observable<any> {
+    if (bulk) {
+      return this.http._post(`${this.api}/students?bulk=true`, data);
+    }
     return this.http._post(`${this.api}/students`, data);
   }
 
