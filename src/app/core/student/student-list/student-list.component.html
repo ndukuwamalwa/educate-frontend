@@ -136,3 +136,51 @@
     </tr>
   </tbody>
 </table>
+<table class="not-mobile" *ngIf="misplacedView">
+  <thead>
+    <tr>
+      <th>Adm</th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Date admitted</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of students">
+      <td>{{student.adm}}</td>
+      <td>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</td>
+      <td>{{student.gender | titlecase}}</td>
+      <td>{{student.admitted | date}}</td>
+      <td>
+        <input type="checkbox" name="id_{{}student.id}" [value]="student.id" (change)="onSelectionChange($event.target)">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="mobile-only" *ngIf="misplacedView">
+  <tbody>
+    <tr *ngFor="let student of students">
+      <div>
+        <span>Adm No.</span>
+        <span>{{student.adm}}</span>
+      </div>
+      <div>
+        <span>Name</span>
+        <span>{{student.fname | titlecase}} {{student.mname | titlecase}} {{student.lname | titlecase}}</span>
+      </div>
+      <div>
+        <span>Gender</span>
+        <span>{{student.gender | titlecase}}</span>
+      </div>
+      <div>
+        <span>Admitted</span>
+        <span>{{student.admitted | date}}</span>
+      </div>
+      <div>
+        <span>Action</span>
+        <input type=" checkbox" name="id_{{}student.id}" [value]="student.id" (change)="onSelectionChange($event.target)">
+      </div>
+    </tr>
+  </tbody>
+</table>
