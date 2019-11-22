@@ -39,7 +39,11 @@
                       <td>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</td>
                       <td>{{balance.credit | currency: 'Ksh. '}}</td>
                       <td>{{balance.debit | currency: 'Ksh. '}}</td>
-                      <td>{{balance.balance | currency: 'Ksh.'}}</td>
+                      <td [ngClass]="{
+                        blue: balance.balance === 0,
+                        green: balance.balance < 0,
+                        danger: balance.balance > 0
+                      }" class="bold">{{balance.balance | currency: 'Ksh.'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -64,7 +68,11 @@
                       </div>
                       <div>
                         <span>Balance</span>
-                        <span>{{balance.balance | currency: 'Ksh.'}}</span>
+                        <span [ngClass]="{
+                          blue: balance.balance === 0,
+                          green: balance.balance < 0,
+                          danger: balance.balance > 0
+                        }" class="bold">{{balance.balance | currency: 'Ksh.'}}</span>
                       </div>
                     </tr>
                   </tbody>
@@ -172,7 +180,11 @@
                       <td>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</td>
                       <td>{{balance.credit | currency: 'Ksh. '}}</td>
                       <td>{{balance.debit | currency: 'Ksh. '}}</td>
-                      <td>{{balance.balance | currency: 'Ksh.'}}</td>
+                      <td [ngClass]="{
+                        blue: balance.balance === 0,
+                        green: balance.balance < 0,
+                        danger: balance.balance > 0
+                      }" class="bold">{{balance.balance | currency: 'Ksh.'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -197,7 +209,11 @@
                       </div>
                       <div>
                         <span>Balance</span>
-                        <span>{{balance.balance | currency: 'Ksh.'}}</span>
+                        <span [ngClass]="{
+                          blue: balance.balance === 0,
+                          green: balance.balance < 0,
+                          danger: balance.balance > 0
+                        }" class="bold">{{balance.balance | currency: 'Ksh.'}}</span>
                       </div>
                     </tr>
                   </tbody>
