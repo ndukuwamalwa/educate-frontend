@@ -92,6 +92,7 @@ export class BatchPageComponent implements OnInit {
       this.isAddingStudents = false;
       if (err.status === 409) return this.toastr.error("The operation was not successful. Conflicts were encountered.");
       if (err.status === 404) return this.toastr.error("The admission number provided does not match any student.");
+      if (err.status === 400) return this.toastr.error(err.error.message);
       this.toastr.error("Failed to add students to batch.");
     });
   }
