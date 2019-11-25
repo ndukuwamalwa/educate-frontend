@@ -53,6 +53,7 @@ input[type=number],
 input[type=search],
 input[type=tel],
 input[type=email],
+input[type=time],
 select {
     background-color: #fff;
     padding: 5px 8px;
@@ -377,6 +378,12 @@ iframe {
     width: 100%;
 }
 
+.cat-selector {
+    & > * {
+        margin-bottom: 5px;
+    }
+}
+
 @media all and (min-width: 1050px) {
     label {
         white-space: nowrap;
@@ -388,6 +395,7 @@ iframe {
     .cat-selector {
         display: flex !important;
         flex-direction: row;
+        margin-bottom: 5px;
 
         & > * {
             margin-right: 10px;
