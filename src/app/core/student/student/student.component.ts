@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { counties } from 'src/app/constants';
+import { counties, API } from 'src/app/constants';
 import { Student } from 'src/app/models/student.model';
 import { StudentService } from '../student.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { ToastrService } from 'src/app/toastr.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { printUrlWithToken } from 'src/app/utilities';
 import { BatchService } from '../../batch/batch.service';
+import { environment } from 'src/environments/environment';
+import * as xlsx from "xlsx";
 
 @Component({
   selector: 'app-student',
@@ -42,6 +44,11 @@ export class StudentComponent implements OnInit {
   selectedStudents: number[] = [];
   isAddingToBatch: boolean = false;
   batches: Batch[];
+  api: string = API;
+  baseUrl = environment.apiUrl;
+  bulkStudents: Student[];
+  processingFile: boolean = false;
+  isSavingBulk: boolean = false;
 
   constructor(
     private studentService: StudentService,
@@ -211,6 +218,57 @@ export class StudentComponent implements OnInit {
         this.isAddingToBatch = false;
         this.toastr.error(`Failed to add students to class.`);
       });
+  }
+
+  processUploadedTemplate(inp: HTMLInputElement) {
+    const template = inp.files[0];
+    if (!template) return;
+    this.processingFile = true;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = xlsx.read(e.target['result'], { type: "buffer" });
+      const sheet = data.Sheets.Sheet1;
+      if (!sheet) return alert("The file was not filled appropriately or is corrupt.");
+      const students: any[] = [];
+      let count = 1;
+      while (sheet[`A${count}`] !== undefined) {
+        let admitted = sheet[`B${count}`].w.split('/');
+        let dob = sheet[`F${count}`].w.split('/');
+        let student: any = {
+          adm: sheet[`A${count}`].w,
+          admitted: `${admitted[2]}-${admitted[1]}-${admitted[0]}`,
+          fname: sheet[`C${count}`].w,
+          lname: sheet[`E${count}`].w,
+          dob: `${dob[2]}-${dob[1]}-${dob[0]}`,
+          gender: sheet[`G${count}`].w,
+          county: sheet[`H${count}`].w,
+          state: sheet[`I${count}`].w
+        };
+        if (sheet[`D${count}`] && sheet[`D${count}`].w) {
+          student.mname = sheet[`D${count}`].w;
+        } else {
+          student.mname = "";
+        }
+        students.push(student);
+        count++;
+      }
+      this.bulkStudents = students;
+      this.processingFile = false;
+    };
+    reader.readAsArrayBuffer(template);
+  }
+
+  saveBulk() {
+    this.isSavingBulk = true;
+    this.studentService.add(this.bulkStudents, true)
+    .subscribe(res => {
+      this.isSavingBulk = false;
+      this.toastr.success("Students added successfully.");
+      this.bulkStudents = undefined;
+    }, err => {
+      this.isSavingBulk = false;
+      if (err.status === 409) return this.toastr.error(`Cannot add students. Conflicts were encountere`);
+    });
   }
 
 }

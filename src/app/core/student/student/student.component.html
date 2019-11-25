@@ -10,65 +10,121 @@
           [operation]="'select'">Printing</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="student-add" appPermitted [table]="'student'" [operation]="'create'">
-          <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="addStudent(studentForm.value)">
-            <span>New student</span>
-            <div class="inputs">
-              <fieldset>
-                <label for="adm">Admission number</label>
-                <input type="text" name="adm" id="adm" ngModel required autocomplete="off">
-              </fieldset>
-              <fieldset>
-                <label for="admitted">Date of Admission</label>
-                <input type="date" name="admitted" id="admitted" ngModel required autocomplete="off">
-              </fieldset>
-            </div>
-            <div class="inputs">
-              <fieldset>
-                <label for="fname">First name</label>
-                <input type="text" name="fname" id="fname" ngModel required autocomplete="off">
-              </fieldset>
-              <fieldset>
-                <label for="mname">Middle name</label>
-                <input type="text" name="mname" id="mname" ngModel autocomplete="off">
-              </fieldset>
-              <fieldset>
-                <label for="lname">Last name</label>
-                <input type="text" name="lname" id="lname" ngModel required autocomplete="off">
-              </fieldset>
-            </div>
-            <div class="inputs">
-              <fieldset>
-                <label for="dob">Date of Birth</label>
-                <input type="date" name="dob" id="dob" ngModel required autocomplete="off">
-              </fieldset>
-              <fieldset>
-                <label for="gender">Gender</label>
-                <div>
-                  <div>
-                    <input type="radio" id="male" name="gender" ngModel required value="Male">
-                    <label for="male">Male</label>
-                  </div>
-                  <div>
-                    <input type="radio" id="female" name="gender" ngModel required value="Female">
-                    <label for="female">Female</label>
-                  </div>
+        <div data-revealId="student-add" appPermitted [table]="'student'" [operation]="'create'" class="tabs tabs--vertical">
+          <ol class="tabs__links tabs__links--vertical">
+            <li data-revealId="new-single-student" data-default="true" appTabView>New</li>
+            <li data-revealId="new-from-file" appTabView>Bulk import</li>
+          </ol>
+          <div class="tabs__content tabs__content--vertical">
+            <div data-revealId="new-single-student">
+              <form #studentForm="ngForm" ngNativeValidate (ngSubmit)="addStudent(studentForm.value)">
+                <span>New student</span>
+                <div class="inputs">
+                  <fieldset>
+                    <label for="adm">Admission number</label>
+                    <input type="text" name="adm" id="adm" ngModel required autocomplete="off">
+                  </fieldset>
+                  <fieldset>
+                    <label for="admitted">Date of Admission</label>
+                    <input type="date" name="admitted" id="admitted" ngModel required autocomplete="off">
+                  </fieldset>
                 </div>
-              </fieldset>
-              <fieldset>
-                <label for="county">County</label>
-                <select name="county" id="county" required ngModel>
-                  <option [value]="county" *ngFor="let county of counties">{{county | titlecase}}</option>
-                </select>
-              </fieldset>
+                <div class="inputs">
+                  <fieldset>
+                    <label for="fname">First name</label>
+                    <input type="text" name="fname" id="fname" ngModel required autocomplete="off">
+                  </fieldset>
+                  <fieldset>
+                    <label for="mname">Middle name</label>
+                    <input type="text" name="mname" id="mname" ngModel autocomplete="off">
+                  </fieldset>
+                  <fieldset>
+                    <label for="lname">Last name</label>
+                    <input type="text" name="lname" id="lname" ngModel required autocomplete="off">
+                  </fieldset>
+                </div>
+                <div class="inputs">
+                  <fieldset>
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" name="dob" id="dob" ngModel required autocomplete="off">
+                  </fieldset>
+                  <fieldset>
+                    <label for="gender">Gender</label>
+                    <div>
+                      <div>
+                        <input type="radio" id="male" name="gender" ngModel required value="Male">
+                        <label for="male">Male</label>
+                      </div>
+                      <div>
+                        <input type="radio" id="female" name="gender" ngModel required value="Female">
+                        <label for="female">Female</label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <label for="county">County</label>
+                    <select name="county" id="county" required ngModel>
+                      <option [value]="county" *ngFor="let county of counties">{{county | titlecase}}</option>
+                    </select>
+                  </fieldset>
+                </div>
+                <div class="submit">
+                  <fieldset>
+                    <app-loader *ngIf="studentIsAdding"></app-loader>
+                    <button class="btn btn--blue" [disabled]="studentIsAdding">Add student</button>
+                  </fieldset>
+                </div>
+              </form>
             </div>
-            <div class="submit">
-              <fieldset>
-                <app-loader *ngIf="studentIsAdding"></app-loader>
-                <button class="btn btn--blue" [disabled]="studentIsAdding">Add student</button>
-              </fieldset>
+            <div data-revealId="new-from-file">
+              <form #bulkForm="ngForm" enctype="multipart/form-data">
+                <span>Import from file</span>
+                <p><a [href]="baseUrl + '/student-template.xlsx'" download>Download template</a> then fill the file and
+                  upload it here.</p>
+                <div class="input">
+                  <fieldset>
+                    <label for="template">Select filled template file</label>
+                    <input type="file" name="template" id="template" required ngModel accept=".xlsx"
+                      (change)="processUploadedTemplate($event.target)">
+                  </fieldset>
+                </div>
+              </form>
+              <app-loader *ngIf="processingFile"></app-loader>
+              <table *ngIf="bulkStudents">
+                <thead>
+                  <th>Adm</th>
+                  <th>Admitted</th>
+                  <th>Fname</th>
+                  <th>Mname</th>
+                  <th>Lname</th>
+                  <th>D.o.B</th>
+                  <th>Gender</th>
+                  <th>County</th>
+                  <th>State</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let student of bulkStudents">
+                    <td>{{student.adm}}</td>
+                    <td>{{student.admitted}}</td>
+                    <td>{{student.fname}}</td>
+                    <td>{{student.mname}}</td>
+                    <td>{{student.lname}}</td>
+                    <td>{{student.dob}}</td>
+                    <td>{{student.gender}}</td>
+                    <td>{{student.county}}</td>
+                    <td>{{student.state}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="7"></td>
+                    <td colspan="2">
+                      <button class="btn btn--blue" [disabled]="bulkStudents.length === 0 || isSavingBulk"
+                        (click)="saveBulk()">Add {{bulkStudents.length | number}} students</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </form>
+          </div>
         </div>
         <div data-revealId="student-list" appPermitted [table]="'student'" [operation]="'select'">
           <div class="tabs tabs--vertical">
