@@ -179,7 +179,7 @@ export class StudentComponent implements OnInit {
     }
   }
 
-  viewMisplaced(options) {
+  viewMisplaced(options = {}) {
     this.isFindingStudents = true;
     this.studentService.getMisplaced(options)
       .subscribe(res => {
