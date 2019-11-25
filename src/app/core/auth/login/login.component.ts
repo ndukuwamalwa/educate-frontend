@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
+    alert("Test username: admin, Test password: @admin#2019");
   }
 
   login(credentials) {
