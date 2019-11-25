@@ -1,6 +1,6 @@
 import { environment } from 'src/environments/environment';
 
-export const API: string = environment.apiUrl;
+export const API: string = environment.apiUrl + '/api';
 export const PRINT: string = `${API}/printer`;
 export const counties: string[] = [
     "Baringo", "Bomet", "Bungoma", "Busia", "Elgeyo-Marakwet", "Embu", "Garissa", "Homa Bay", "Isiolo", "Kajiado", "Kakamega", "Kericho",
