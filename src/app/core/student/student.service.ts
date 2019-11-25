@@ -13,8 +13,12 @@ export class StudentService {
 
   constructor(private http: Http) { }
 
-  add(student: Student): Observable<any> {
-    return this.http._post(`${this.api}/students`, student);
+  add(student: Student | Student[], bulk: boolean = false): Observable<any> {
+    if (bulk) {
+      return this.http._post(`${this.api}/students?bulk=true`, student);
+    } else {
+      return this.http._post(`${this.api}/students`, student);
+    }
   }
 
   getStudent(id): Observable<any> {
