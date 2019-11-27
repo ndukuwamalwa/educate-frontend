@@ -20,6 +20,7 @@ import { BatchPageComponent } from './core/batch/batch-page/batch-page.component
 import { LoginComponent } from './core/auth/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
+import { DashboardComponent } from './core/dashboard/dashboard/dashboard.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,13 @@ export const routes: Routes = [
         component: LoginComponent,
         canActivate: [
             LoginGuard
+        ]
+    },
+    {
+        path: 'home',
+        component: DashboardComponent,
+        canActivate: [
+            AuthGuard
         ]
     },
     {
