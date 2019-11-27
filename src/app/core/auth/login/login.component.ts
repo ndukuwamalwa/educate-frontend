@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
       window.sessionStorage.setItem('token', token);
     }
     const goTo = window.sessionStorage.getItem('afterLogin');
-    if (!goTo) return this.router.navigate(['students']);
+    if (!goTo) return this.router.navigate(['home']);
     this.router.navigateByUrl(goTo);
     window.sessionStorage.removeItem('afterLogin');
   }
