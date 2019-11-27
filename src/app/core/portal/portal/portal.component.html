@@ -1,7 +1,9 @@
 <main>
   <div id="title-bar">
-    <img src="assets/icons/menu-dots.svg" *ngIf="!hideMenu" alt="Show Menu" class="mobile-only" (click)="toggleModules(true)">
-    <img src="assets/icons/cross.svg" *ngIf="hideMenu" alt="Hide Menu" class="mobile-only" (click)="toggleModules(false)">
+    <img src="assets/icons/menu-dots.svg" *ngIf="!hideMenu" alt="Show Menu" class="mobile-only"
+      (click)="toggleModules(true)">
+    <img src="assets/icons/cross.svg" *ngIf="hideMenu" alt="Hide Menu" class="mobile-only"
+      (click)="toggleModules(false)">
     <img src="assets/icons/menu.svg" alt="Show Menu" *ngIf="!hideMenu" class="tab-only" (click)="toggleModules(true)">
     <img src="assets/icons/cross.svg" alt="Hide Menu" *ngIf="hideMenu" class="tab-only" (click)="toggleModules(false)">
     <div id="account">
@@ -20,6 +22,10 @@
     </div>
   </div>
   <div id="module-pane">
+    <a routerLink="/home" title="Home" routerLinkActive="active-module">
+      <img src="assets/icons/home.svg" alt="Home">
+      <span>Home</span>
+    </a>
     <a routerLink="/students" title="Students" routerLinkActive="active-module">
       <img src="assets/icons/school.svg" alt="Students">
       <span>Students</span>
