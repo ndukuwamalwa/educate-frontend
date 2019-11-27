@@ -1,0 +1,60 @@
+$blue: rgb(27, 155, 240);
+
+#stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .stat {
+        margin-top: 5px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+        & > span {
+            font-size: 18px;
+            opacity: .8;
+            color: $blue;
+            width: 100%;
+            text-align: left;
+            text-transform: uppercase;
+            padding: 10px 5px;
+        }
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+
+            & > article {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin: 10px 0;
+                padding: 10px;
+                background-color: #fcfcfc;
+
+                & > div {
+                    flex: 1 0 auto;
+                    align-items: center;
+                    display: flex;
+                    flex-direction: column;
+
+                    span {
+                        white-space: nowrap;
+                        text-align: center;
+
+                        &:first-child {
+                            font-size: 48px;
+                        }
+
+                        &:last-child {
+                            font-size: 20px;
+                            color: #000;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -7,10 +7,10 @@ import { Http } from 'src/app/http/http';
   providedIn: 'root'
 })
 export class DashboardService {
-  api: string = `${API}/dashboards`;
+  api: string = `${API}/statistics`;
 
   constructor(private http: Http) { }
-  getDashboard(url: string): Observable<any> {
-    return this.http.get(this.api + url);
+  getStatistics(): Observable<any> {
+    return this.http._get(this.api);
   }
 }
