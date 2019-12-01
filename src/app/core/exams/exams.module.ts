@@ -11,7 +11,7 @@ import { LoaderModule } from 'src/app/loader/loader.module';
 import { PaginationModule } from '../pagination/pagination.module';
 import { ExamPageComponent } from './exam-page/exam-page.component';
 import { SubjectService } from '../subject/subject.service';
-import { BatchService } from '../batch/batch.service';
+import { ClassService } from '../class/class.service';
 import { Http } from 'src/app/http/http';
 
 @NgModule({
@@ -36,7 +36,7 @@ import { Http } from 'src/app/http/http';
     ExamService,
     ToastrService,
     SubjectService,
-    BatchService,
+    ClassService,
     Http
   ]
 })

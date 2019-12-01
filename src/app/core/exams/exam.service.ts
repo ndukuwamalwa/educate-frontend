@@ -44,7 +44,7 @@ export class ExamService {
     return this.http._get(`${this.api}/marks?exam=${exam}&subject=${subject}`);
   }
 
-  getBatchResults(batch, examId): Observable<any> {
-    return this.http._get(`${this.api}/results?batch=${batch}&exam=${examId}`);
+  getClassResults(clas, stream, examId): Observable<any> {
+    return this.http._get(`${this.api}/results?class=${clas}&stream=${stream}&exam=${examId}`);
   }
 }
