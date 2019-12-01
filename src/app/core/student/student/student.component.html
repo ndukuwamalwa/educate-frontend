@@ -2,15 +2,16 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="student-add" data-default="true" appTabView appPermitted [table]="'student'"
-          [operation]="'create'">Add student</li>
-        <li data-revealId="student-list" appTabView (click)="viewStudents('active')" appTabView appPermitted
-          [table]="'student'" [operation]="'select'">View students</li>
+        <li data-revealId="student-add" appTabView appPermitted [table]="'student'" [operation]="'create'">Add student
+        </li>
+        <li data-revealId="student-list" appTabView data-default="true" appTabView appPermitted [table]="'student'"
+          [operation]="'select'">View students</li>
         <li data-revealId="printing" appTabView (click)="printAll()" appTabView appPermitted [table]="'student'"
           [operation]="'select'">Printing</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="student-add" appPermitted [table]="'student'" [operation]="'create'" class="tabs tabs--vertical">
+        <div data-revealId="student-add" appPermitted [table]="'student'" [operation]="'create'"
+          class="tabs tabs--vertical">
           <ol class="tabs__links tabs__links--vertical">
             <li data-revealId="new-single-student" data-default="true" appTabView>New</li>
             <li data-revealId="new-from-file" appTabView>Bulk import</li>
@@ -179,21 +180,21 @@
                 <app-loader *ngIf="isFindingStudents"></app-loader>
                 <app-student-list [students]="misplacedStudents" [cat]="'misplacedView'"
                   (selection)="onSelectedStudents($event)"></app-student-list>
-                <form #addToBatchForm="ngForm" (ngSubmit)="addToBatch(addToBatchForm.value)"
+                <form #addToClassForm="ngForm" (ngSubmit)="addToClass(addToClassForm.value)"
                   *ngIf="selectedStudents.length > 0" ngNativeValidate>
                   <div class="input">
                     <fieldset>
-                      <label for="batch">Select class to add {{selectedStudents.length | number}} students</label>
-                      <select name="batch" id="batch" ngModel required>
-                        <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
-                        </option>
+                      <label for="clas">Select class to add {{selectedStudents.length | number}} students</label>
+                      <select name="clas" id="clas" ngModel required>
+                        <option [value]="class.id" *ngFor="let class of classes">Form
+                          {{class.level}}({{class.students | number}} students)</option>
                       </select>
                     </fieldset>
                   </div>
                   <div class="submit">
                     <fieldset>
-                      <button class="btn btn--blue" [disabled]="isAddingToBatch">Add students</button>
-                      <app-loader *ngIf="isAddingToBatch"></app-loader>
+                      <button class="btn btn--blue" [disabled]="isAddingToClass">Add students</button>
+                      <app-loader *ngIf="isAddingToClass"></app-loader>
                     </fieldset>
                   </div>
                 </form>
