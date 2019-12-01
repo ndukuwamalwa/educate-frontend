@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'src/app/toastr.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { printUrlWithToken } from 'src/app/utilities';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { environment } from 'src/environments/environment';
 import * as xlsx from "xlsx";
 
@@ -42,8 +42,8 @@ export class StudentComponent implements OnInit {
   parentContactsUrl: SafeResourceUrl;
   totalMisplaced: number;
   selectedStudents: number[] = [];
-  isAddingToBatch: boolean = false;
-  batches: Batch[];
+  isAddingToClass: boolean = false;
+  classes: Class[];
   api: string = API;
   baseUrl = environment.apiUrl;
   bulkStudents: Student[];
@@ -55,13 +55,14 @@ export class StudentComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private sanitizer: DomSanitizer,
-    private batchService: BatchService
+    private classService: ClassService
   ) { }
 
   ngOnInit() {
-    this.batchService.getBatches()
+    this.viewStudents('active');
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
+        this.classes = res.items;
       }, err => {
         this.toastr.error("Failed to get classes. Some operations will be impossible.");
       });
@@ -205,17 +206,17 @@ export class StudentComponent implements OnInit {
     }
   }
 
-  addToBatch({ batch }) {
-    this.isAddingToBatch = true;
-    const items = this.selectedStudents.map(student => { return { student, batch } });
-    this.batchService.addStudent(items, true)
+  addToClass({ clas }) {
+    this.isAddingToClass = true;
+    const items = this.selectedStudents.map(student => { return { student, class: +clas } });
+    this.classService.addStudent(items, true)
       .subscribe(res => {
-        this.isAddingToBatch = false;
+        this.isAddingToClass = false;
         this.toastr.success(`${this.selectedStudents.length} students have been assigned a class successfully.`);
         this.selectedStudents = [];
         this.viewMisplaced({ sortBy: "admitted", sort: "1" });
       }, err => {
-        this.isAddingToBatch = false;
+        this.isAddingToClass = false;
         this.toastr.error(`Failed to add students to class.`);
       });
   }
