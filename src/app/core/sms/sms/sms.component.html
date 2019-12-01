@@ -49,8 +49,7 @@
                 <label for="group">Group</label>
                 <select name="group" id="group" required ngModel>
                   <option value="All">All</option>
-                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
-                    Parents</option>
+                  <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}} - Parents</option>
                 </select>
               </fieldset>
             </div>
@@ -59,8 +58,7 @@
                 <label for="group">Group</label>
                 <select name="group" id="group" required ngModel>
                   <option value="All">All</option>
-                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
-                    Students</option>
+                  <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}} - Students</option>
                 </select>
               </fieldset>
             </div>

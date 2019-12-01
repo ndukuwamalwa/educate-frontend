@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { ToastrService } from 'src/app/toastr.service';
 import { SmsService } from './sms.service';
-import { BatchService } from '../batch/batch.service';
+import { ClassService } from '../class/class.service';
 import { PaginationModule } from '../pagination/pagination.module';
 import { Http } from 'src/app/http/http';
 
@@ -27,7 +27,7 @@ import { Http } from 'src/app/http/http';
   providers: [
     ToastrService,
     SmsService,
-    BatchService,
+    ClassService,
     Http
   ]
 })

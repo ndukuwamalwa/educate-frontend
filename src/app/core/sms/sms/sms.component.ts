@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'src/app/toastr.service';
 import { SmsService } from '../sms.service';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 
 @Component({
   selector: 'app-sms',
@@ -13,7 +13,7 @@ export class SmsComponent implements OnInit {
   pages: number = 0;
   disableMessage: boolean = false;
   isSendingSMS: boolean = false;
-  batches: Batch[];
+  classes: Class[];
   isGettingSms: boolean = false;
   messages: any[];
   total: number;
@@ -21,13 +21,13 @@ export class SmsComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private smsService: SmsService,
-    private batchService: BatchService
+    private classService: ClassService
   ) { }
 
   ngOnInit() {
-    this.batchService.getBatches()
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
+        this.classes = res.items;
       }, err => {
         this.toastr.error("Failed to load required resources. Module might not function as expected.");
       });
