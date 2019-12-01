@@ -36,7 +36,7 @@ export class TabViewDirective implements OnInit {
   changeView() {
     const li = this.el.nativeElement as HTMLElement;
     //Show content if tab is default tab
-    if (li.dataset['default']) {
+    if (li.dataset['default'] && li.dataset['default'] === 'true') {
       const data = li.dataset['revealid'];
       li.classList.add('tabs__links--active');
       const div = document.querySelector(`.tabs__content > div[data-revealId=${data}]`);
