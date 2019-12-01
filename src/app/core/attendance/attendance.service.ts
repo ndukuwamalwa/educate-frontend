@@ -15,8 +15,8 @@ export class AttendanceService {
     return this.http._post(`${this.api}?bulk=true`, studentIds);
   }
 
-  getRegister(batch, date): Observable<any> {
-    return this.http._get(`${this.api}?batch=${batch}&date=${date}`);
+  getRegister(stream, date): Observable<any> {
+    return this.http._get(`${this.api}?stream=${stream}&date=${date}`);
   }
 
   delete(id): Observable<any> {
