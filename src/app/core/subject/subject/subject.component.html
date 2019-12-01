@@ -61,10 +61,9 @@
                     </select>
                   </fieldset>
                   <fieldset>
-                    <label for="batch">Class</label>
-                    <select name="batch" id="batch" ngModel required>
-                      <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
-                      </option>
+                    <label for="clas">Class</label>
+                    <select name="clas" id="clas" ngModel required>
+                      <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
                     </select>
                   </fieldset>
                   <fieldset>
@@ -121,10 +120,9 @@
                     </select>
                   </fieldset>
                   <fieldset>
-                    <label for="batch">Class</label>
-                    <select name="batch" id="batch" ngModel required>
-                      <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}
-                      </option>
+                    <label for="clas">Class</label>
+                    <select name="clas" id="clas" ngModel required>
+                      <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
                     </select>
                   </fieldset>
                   <fieldset>
@@ -147,7 +145,7 @@
                     <td>{{sub.adm}}</td>
                     <td>{{sub.student}}</td>
                     <td>{{sub.subject}}</td>
-                    <td>{{sub.batch}}</td>
+                    <td>{{sub.class}}</td>
                     <td class="danger" (click)="deregister(sub.id)">Remove</td>
                   </tr>
                 </tbody>
@@ -169,7 +167,7 @@
                     </div>
                     <div>
                       <span>Class</span>
-                      <span>{{sub.batch}}</span>
+                      <span>{{sub.class}}</span>
                     </div>
                     <div>
                       <span>Action</span>

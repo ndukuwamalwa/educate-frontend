@@ -19,8 +19,8 @@ export class SubjectService {
     return this.http._post(`${this.api}/register?bulk=true`, items);
   }
 
-  getStudentSubjects(batchId, studentId): Observable<any> {
-    return this.http._get(`${this.api}/register?batch=${batchId}&student=${studentId}`);
+  getStudentSubjects(classId, studentId): Observable<any> {
+    return this.http._get(`${this.api}/register?class=${classId}&student=${studentId}`);
   }
 
   deregister(regId): Observable<any> {
@@ -35,11 +35,11 @@ export class SubjectService {
     return this.http._delete(`${this.api}?id=${id}`);
   }
 
-  getRegisteredStudents(subject, batch): Observable<any> {
-    return this.http._get(`${this.api}/register?subject=${subject}&batch=${batch}`);
+  getRegisteredStudents(subject, clas): Observable<any> {
+    return this.http._get(`${this.api}/register?subject=${subject}&class=${clas}`);
   }
 
-  getNotRegistered(subject, batch): Observable<any> {
-    return this.http._get(`${this.api}/unregistered?subject=${subject}&batch=${batch}`);
+  getNotRegistered(subject, clas): Observable<any> {
+    return this.http._get(`${this.api}/unregistered?subject=${subject}&class=${clas}`);
   }
 }

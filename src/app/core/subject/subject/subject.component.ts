@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SubjectService } from '../subject.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { NgForm } from '@angular/forms';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 
 @Component({
   selector: 'app-subject',
@@ -13,10 +13,10 @@ export class SubjectComponent implements OnInit {
   isSaving: boolean = false;
   subjects: any[];
   isGettingSubjects: boolean = false;
-  batches: Batch[];
+  classes: Class[];
   toRegister: any[] = [];
   selectedSubject: number;
-  selectedBatch: number;
+  selectedClass: number;
   isLoadingStudents: boolean = false;
   studentsToRegister: any[];
   isRegistering: boolean = false;
@@ -26,13 +26,13 @@ export class SubjectComponent implements OnInit {
   constructor(
     private subjectService: SubjectService,
     private toastr: ToastrService,
-    private batchService: BatchService
+    private classService: ClassService
   ) { }
 
   ngOnInit() {
-    this.batchService.getBatches()
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
+        this.classes = res.items;
       }, err => {
         this.toastr.error("Failed to load classes");
       });
@@ -82,11 +82,11 @@ export class SubjectComponent implements OnInit {
       });
   }
 
-  loadForRegistration({ subject, batch }) {
-    this.selectedBatch = +batch;
+  loadForRegistration({ subject, clas }) {
+    this.selectedClass = +clas;
     this.selectedSubject = +subject;
     this.isLoadingStudents = true;
-    this.subjectService.getNotRegistered(subject, batch)
+    this.subjectService.getNotRegistered(subject, clas)
       .subscribe(res => {
         this.studentsToRegister = res;
         this.isLoadingStudents = false;
@@ -130,7 +130,7 @@ export class SubjectComponent implements OnInit {
   onSelectionChange(elem: HTMLInputElement) {
     if (elem.checked) {
       if (!this.toRegister.find(val => +val.student === +elem.value)) {
-        this.toRegister.push({ student: +elem.value, subject: this.selectedSubject, batch: this.selectedBatch });
+        this.toRegister.push({ student: +elem.value, subject: this.selectedSubject, class: this.selectedClass });
       }
     } else {
       const item = this.toRegister.find(i => +i.student === +elem.value);
@@ -138,9 +138,9 @@ export class SubjectComponent implements OnInit {
     }
   }
 
-  loadRegister({ subject, batch }) {
+  loadRegister({ subject, clas }) {
     this.isLoadingRegister = true;
-    this.subjectService.getRegisteredStudents(subject, batch)
+    this.subjectService.getRegisteredStudents(subject, clas)
       .subscribe(res => {
         this.registered = res;
         this.isLoadingRegister = false;
