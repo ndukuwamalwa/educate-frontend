@@ -3,7 +3,7 @@ import { ExamService } from '../exam.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from '../../subject/subject.service';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { back } from 'src/app/utilities';
 
 @Component({
@@ -18,9 +18,9 @@ export class ExamPageComponent implements OnInit {
   exam: any;
   gradings: any[];
   isSaving: boolean = false;
-  batches: Batch[];
+  classes: Class[];
   subjects: any[];
-  selectedBatch: number | string;
+  selectedClass: number | string;
   selectedSubject: number | string;
   isLoadingStudents: boolean = false;
   selectedStudents: any[];
@@ -28,13 +28,15 @@ export class ExamPageComponent implements OnInit {
   results: any[];
   isGettingResults: boolean = false;
   shortSubjectNames: any[];
+  streams: any[];
+  classStreams: any[];
 
   constructor(
     private examService: ExamService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private subjectService: SubjectService,
-    private batchService: BatchService
+    private classService: ClassService
   ) { }
 
   ngOnInit() {
@@ -66,12 +68,23 @@ export class ExamPageComponent implements OnInit {
       }, er => {
         this.toastr.error("Failed to load subjects");
       });
-    this.batchService.getBatches()
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
+        this.classes = res.items;
       }, er => {
-        this.toastr.error("Failed to get batches.");
+        this.toastr.error("Failed to get classes.");
       });
+    this.classService.getStreams()
+      .subscribe(res => {
+        this.streams = res.items;
+      }, er => {
+        this.toastr.error("Failed to load streams");
+      });
+  }
+
+  getClassStreams(classId) {
+    const streams = this.streams.filter(val => +val.classId === +classId);
+    this.classStreams = streams;
   }
 
   updateExam(data) {
@@ -89,12 +102,12 @@ export class ExamPageComponent implements OnInit {
       });
   }
 
-  getStudents({ batch, subject }) {
-    this.selectedBatch = batch;
+  getStudents({ clas, subject }) {
+    this.selectedClass = clas;
     this.selectedSubject = subject;
 
     this.isLoadingStudents = true;
-    this.subjectService.getRegisteredStudents(subject, batch)
+    this.subjectService.getRegisteredStudents(subject, clas)
       .subscribe(res => {
         this.selectedStudents = res;
         this.examService.getEnteredMarks(this.id, this.selectedSubject)
@@ -125,7 +138,7 @@ export class ExamPageComponent implements OnInit {
         valid.push({
           student: key.split('_')[1],
           exam: this.id,
-          batch: this.selectedBatch,
+          class: this.selectedClass,
           subject: this.selectedSubject,
           marks: +results[key],
           grade: '',
@@ -143,28 +156,28 @@ export class ExamPageComponent implements OnInit {
       });
   }
 
-  viewResults(batch) {
+  viewResults(clas, stream) {
     this.isGettingResults = true;
-    this.examService.getBatchResults(batch, this.id)
-    .subscribe(res => {
-      for (let result of res) {
-        let subjects = [];
-        for (let sub of this.shortSubjectNames) {
-          let exists = result.subjects.find(val => +val.subject === +sub.id);
-          if (exists) {
-            subjects.push(exists);
-          } else {
-            subjects.push({ marks: '-', subject: sub.id, name: sub.name });
+    this.examService.getClassResults(clas, stream, this.id)
+      .subscribe(res => {
+        for (let result of res) {
+          let subjects = [];
+          for (let sub of this.shortSubjectNames) {
+            let exists = result.subjects.find(val => +val.subject === +sub.id);
+            if (exists) {
+              subjects.push(exists);
+            } else {
+              subjects.push({ marks: '-', subject: sub.id, name: sub.name });
+            }
           }
+          result.subjects = subjects;
         }
-        result.subjects = subjects;
-      }
-      this.results = res;
-      this.isGettingResults = false;
-    }, err => {
-      this.toastr.error("Failed to get results.");
-      this.isGettingResults = false;
-    });
+        this.results = res;
+        this.isGettingResults = false;
+      }, err => {
+        this.toastr.error("Failed to get results.");
+        this.isGettingResults = false;
+      });
   }
 
 }

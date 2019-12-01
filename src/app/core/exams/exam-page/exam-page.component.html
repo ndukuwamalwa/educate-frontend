@@ -93,10 +93,9 @@
             <p class="danger">Only students who are registered for the subject will be listed.</p>
             <div class="inputs">
               <fieldset>
-                <label for="batch">Select class</label>
-                <select name="batch" id="batch" ngModel required>
-                  <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name | titlecase}} -
-                    {{batch.academic_year}}</option>
+                <label for="clas">Select class</label>
+                <select name="clas" id="clas" ngModel required>
+                  <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
                 </select>
               </fieldset>
               <fieldset>
@@ -165,13 +164,18 @@
           </form>
         </div>
         <div data-revealId="view-results">
-          <form #viewResultsForm="ngForm" (ngSubmit)="viewResults(viewResultsForm.value.batch)" ngNativeValidate>
+          <form #viewResultsForm="ngForm"
+            (ngSubmit)="viewResults(viewResultsForm.value.class, viewResultsForm.value.stream)" ngNativeValidate>
             <span></span>
             <div class="cat-selector">
-              <label for="batch">Select class</label>
-              <select name="batch" id="batch" ngModel required>
-                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name | titlecase}} -
-                  {{batch.academic_year}}</option>
+              <label for="class">Select class</label>
+              <select name="class" id="class" ngModel required (change)="getClassStreams($event.target.value)">
+                <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
+              </select>
+              <label for="stream">Stream</label>
+              <select name="stream" id="stream" ngModel="all" required>
+                <option value="all">All</option>
+                <option [value]="stream.id" *ngFor="let stream of classStreams">{{stream.name}}</option>
               </select>
               <button class="btn btn--blue">View</button>
             </div>
