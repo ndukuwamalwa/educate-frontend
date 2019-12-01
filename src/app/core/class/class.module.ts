@@ -1,22 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BatchComponent } from './batch/batch.component';
+import { ClassComponent } from './class/class.component';
 import { PortalModule } from '../portal/portal.module';
 import { DirectivesModule } from 'src/app/directives/directives.module';
 import { DashboardModule } from '../dashboard/dashboard.module';
-import { BatchService } from './batch.service';
-import { BatchPageComponent } from './batch-page/batch-page.component';
-import { InstituteService } from '../institute/institute.service';
+import { ClassService } from './class.service';
+import { ClassPageComponent } from './class-page/class-page.component';
 import { ToastrService } from 'src/app/toastr.service';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { PaginationModule } from '../pagination/pagination.module';
 import { FormsModule } from '@angular/forms';
 import { Http } from 'src/app/http/http';
+import { RouterModule } from '@angular/router';
+import { StreamPageComponent } from './stream-page/stream-page.component';
 
 @NgModule({
   declarations: [
-    BatchComponent,
-    BatchPageComponent
+    ClassComponent,
+    ClassPageComponent,
+    StreamPageComponent
   ],
   imports: [
     CommonModule,
@@ -25,14 +27,14 @@ import { Http } from 'src/app/http/http';
     DashboardModule,
     LoaderModule,
     PaginationModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   exports: [
-    BatchComponent
+    ClassComponent
   ],
   providers: [
-    BatchService,
-    InstituteService,
+    ClassService,
     ToastrService,
     Http
   ]

@@ -1,0 +1,174 @@
+<app-portal>
+  <ng-container class="render">
+    <div class="tabs">
+      <ol class="tabs__links">
+        <li data-revealId="create-class" appTabView appPermitted [table]="'class'"
+          [operation]="'create'">Create</li>
+        <li data-revealId="list-class" appTabView data-default="true">List</li>
+        <li data-revealId="promote" appTabView>Promote</li>
+      </ol>
+      <div class="tabs__content">
+        <div data-revealId="create-class" class="tabs tabs--vertical" appPermitted [table]="'class'"
+          [operation]="'create'">
+          <ol class="tabs__links tabs__links--vertical">
+            <li data-revealId="add-series" data-default="true" appTabView>Add multiple</li>
+            <li data-revealId="add-one" appTabView appPermitted [table]="'class'" [operation]="'create'">Add one</li>
+          </ol>
+          <div class="tabs__content tabs__content--vertical">
+            <div data-revealId="add-series">
+              <form #levelForm="ngForm" (ngSubmit)="createLevels(levelForm.value)" ngNativeValidate>
+                <div class="inputs">
+                  <fieldset>
+                    <label for="start">Start from</label>
+                    <input type="number" name="start" id="start" required min="1" ngModel>
+                  </fieldset>
+                  <fieldset>
+                    <label for="end">To level</label>
+                    <input type="number" name="end" id="end" required min="1" ngModel>
+                  </fieldset>
+                  <fieldset>
+                    <label for="vccfa" style="color: transparent;">.</label>
+                    <button class="btn btn--blue">Create</button>
+                  </fieldset>
+                </div>
+              </form>
+              <form #classesForm="ngForm" (ngSubmit)="createClasses(classesForm.value)" ngNativeValidate
+                *ngIf="levels.length > 0">
+                <span>Fees</span>
+                <div class="input" *ngFor="let level of levels">
+                  <fieldset>
+                    <label for="form_{{level}}">Form {{level}} annual fees</label>
+                    <input type="number" name="form_{{level}}" id="form_{{level}}" ngModel required min="0">
+                  </fieldset>
+                </div>
+                <div class="submit">
+                  <fieldset>
+                    <button class="btn btn--blue" [disabled]="isSavingClass">Save classes</button>
+                    <app-loader *ngIf="isSavingClass"></app-loader>
+                  </fieldset>
+                </div>
+              </form>
+            </div>
+            <div data-revealId="add-one">
+              <form #classForm="ngForm" (ngSubmit)="addClass(classForm.value)" ngNativeValidate>
+                <span>Create new class</span>
+                <div class="input">
+                  <fieldset>
+                    <label for="level">Class level</label>
+                    <input type="number" required name="level" autocomplete="off" id="level" ngModel min="1">
+                  </fieldset>
+                </div>
+                <div class="input">
+                  <fieldset>
+                    <label for="fees">Fee payable</label>
+                    <input type="number" required name="fees" id="fees" ngModel>
+                  </fieldset>
+                </div>
+                <div class="submit">
+                  <fieldset>
+                    <button class="btn btn--blue" [disabled]="isSavingClass">Save class</button>
+                  </fieldset>
+                  <app-loader *ngIf="isSavingClass"></app-loader>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div data-revealId="list-class" class="tabs tabs--vertical">
+          <ol class="tabs__links tabs__links--vertical">
+            <li data-revealId="only-classes" data-default="true" appTabView>Classes</li>
+            <li data-revealId="only-streams" appTabView (click)="getStreams()">Streams</li>
+          </ol>
+          <div class="tabs__content tabs__content--vertical">
+            <div data-revealId="only-classes">
+              <app-normal-pagination [total]="total" [sorts]="['id', 'level', 'streams', 'students', 'fees']"
+                (options)="onOptionsChange($event)"></app-normal-pagination>
+              <app-loader *ngIf="isGettingClasses"></app-loader>
+              <table *ngIf="!isGettingClasses && classes" class="not-mobile">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Fees</th>
+                    <th>No. of streams</th>
+                    <th>No. of students</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let class of classes" class="clickable" (click)="viewDetails(class.id)">
+                    <td>Form {{class.level}}</td>
+                    <td>{{class.fees | currency: 'KES '}}</td>
+                    <td>{{class.streams | number}}</td>
+                    <td>{{class.students | number}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table *ngIf="!isGettingClasses && classes" class="mobile-only">
+                <tbody>
+                  <tr *ngFor="let class of classes" class="clickable" (click)="viewDetails(class.id)">
+                    <div>
+                      <span>Name</span>
+                      <span>{{class.name | titlecase}}</span>
+                    </div>
+                    <div>
+                      <span>Fee</span>
+                      <span>{{class.fees | currency: 'KES '}}</span>
+                    </div>
+                    <div>
+                      <span>Streams</span>
+                      <span>{{class.streams | number}}</span>
+                    </div>
+                    <div>
+                      <span>Students</span>
+                      <span>{{class.students | number}}</span>
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div data-revealId="only-streams">
+              <app-loader *ngIf="isGettingStreams"></app-loader>
+              <table *ngIf="!isGettingStreams && streams">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Students</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let stream of streams" (click)="viewStream(stream.id)" class="clickable">
+                    <td>Form {{stream.level}} {{stream.name}}</td>
+                    <td>Form {{stream.level}}</td>
+                    <td>{{stream.students | number}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div data-revealId="promote">
+          <form>
+            <span>Class promotion</span>
+            <div class="input" id="note">
+              <span>NOTE</span>
+              <ol>
+                <li>All students will be moved to their respective next classes</li>
+                <li>Students who do not have a next class will be archived.</li>
+                <li>The system will attempt to add students to the matching streams. If a matching stream is not found,
+                  the student will be added to the class but not to a stream.</li>
+                <li>Fees will be automatically charged.</li>
+                <li>If you wish, please update the fees before performing this operation.</li>
+                <li>After this operation, all current hostel allocations will be deleted.</li>
+              </ol>
+            </div>
+            <div class="submit">
+              <fieldset>
+                <button class="btn btn--blue" (click)="promote()">Promote students</button>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-portal>
