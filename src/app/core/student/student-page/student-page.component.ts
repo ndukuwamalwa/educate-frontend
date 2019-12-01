@@ -5,11 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { back, getDatesBetween, getDayOfTheWeek, printUrlWithToken } from 'src/app/utilities';
 import { counties } from 'src/app/constants';
 import { NgForm } from '@angular/forms';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { SubjectService } from '../../subject/subject.service';
 import { ExamService } from '../../exams/exam.service';
 import { FinanceService } from '../../finance/finance.service';
-import { InstituteService } from '../../institute/institute.service';
+import { HostelsService } from '../../hostels/hostels.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
@@ -25,9 +25,9 @@ export class StudentPageComponent implements OnInit {
   counties: string[] = counties;
   contacts: any[];
   attendances: any[];
-  batches: Batch[];
+  classes: Class[];
   feeToAdd: number;
-  studentBatches: any[];
+  studentClasses: any[];
   totalCharge: number;
   subjects: any[];
   subjectBasket: number[] = [];
@@ -42,9 +42,8 @@ export class StudentPageComponent implements OnInit {
   isAddingContact: boolean = false;
   isGettingContacts: boolean = false;
   isGettingAttendance: boolean = false;
-  isGettingBatches: boolean = false;
-  isAddingBatch: boolean = false;
-  isGettingStudentBatches: boolean = false;
+  isGettingClasses: boolean = false;
+  isGettingStudentClasses: boolean = false;
   isGettingSubjects: boolean = false;
   isGettingStudentSubjects: boolean = false;
   isGettingExams: boolean = false;
@@ -68,11 +67,11 @@ export class StudentPageComponent implements OnInit {
     private studentService: StudentService,
     private route: ActivatedRoute,
     private router: Router,
-    private batchService: BatchService,
+    private classService: ClassService,
     private subjectService: SubjectService,
     private examService: ExamService,
     private financeService: FinanceService,
-    private instituteService: InstituteService,
+    private hostelsService: HostelsService,
     private toastr: ToastrService,
     private sanitizer: DomSanitizer
   ) { }
@@ -101,14 +100,14 @@ export class StudentPageComponent implements OnInit {
   }
 
   calculateTotalCharge() {
-    if (this.studentBatches) {
-      if (this.studentBatches.length === 0) {
+    if (this.studentClasses) {
+      if (this.studentClasses.length === 0) {
         this.totalCharge = 0;
         return;
       };
       let sum = 0;
-      for (let studentBatch of this.studentBatches) {
-        sum += studentBatch.amount;
+      for (let studentClass of this.studentClasses) {
+        sum += studentClass.amount;
       }
       this.totalCharge = sum;
     }
@@ -199,76 +198,55 @@ export class StudentPageComponent implements OnInit {
   }
 
   getBaches() {
-    if (this.batches) {
+    if (this.classes) {
       return;
     }
-    this.isGettingBatches = true;
-    this.batchService.getBatches()
+    this.isGettingClasses = true;
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
-        this.isGettingBatches = false;
+        this.classes = res.items;
+        this.isGettingClasses = false;
       }, err => {
-        this.toastr.error('Failed get batches/classes.');
-        this.isGettingBatches = false;
+        this.toastr.error('Failed get classes.');
+        this.isGettingClasses = false;
       });
   }
 
-  onBatchChange(id) {
+  onClassChange(id) {
     id = +id;
-    const batch = this.batches.find(b => b.id === id);
-    this.feeToAdd = batch.fees;
+    const clas = this.classes.find(b => b.id === id);
+    this.feeToAdd = clas.fees;
   }
 
-  addToBatch(data) {
-    this.isAddingBatch = true;
-    data.student = this.id;
-    this.batchService.addStudent(data)
-      .subscribe(res => {
-        setTimeout(() => {
-          if (this.studentBatches && this.batches) {
-            this.studentBatches = undefined;
-            this.viewBatches(true);
-          }
-          this.toastr.success('Student added to batch/class successfully.');
-          this.isAddingBatch = false;
-        }, 5000);
-      }, err => {
-        this.isAddingBatch = false;
-        if (err.status === 409) return this.toastr.error("Student exists in the selected class.");
-        if (err.status === 400) return this.toastr.error(err.error.message);
-        this.toastr.error('Failed to add student to batch/class');
-      });
-  }
-
-  viewBatches(force: boolean = false) {
-    if (this.studentBatches && !force) {
+  viewClasses(force: boolean = false) {
+    if (this.studentClasses && !force) {
       return;
     }
-    this.isGettingStudentBatches = true;
-    this.batchService.getStudentBatches(this.id)
+    this.isGettingStudentClasses = true;
+    this.classService.getStudentClasses(this.id)
       .subscribe(res => {
-        this.studentBatches = res;
+        this.studentClasses = res;
         this.calculateTotalCharge();
         if (!this.payments) {
           this.getPayments();
         }
-        this.isGettingStudentBatches = false;
+        this.isGettingStudentClasses = false;
       }, err => {
-        this.toastr.error('Failed to get classes/batches associated with the student.');
-        this.isGettingStudentBatches = false;
+        this.toastr.error('Failed to get classes associated with the student.');
+        this.isGettingStudentClasses = false;
       });
   }
 
 
-  removeBatch(id) {
-    const confirm = window.confirm('Are you sure you want to remove batch and the associated fee?');
+  removeClass(id) {
+    const confirm = window.confirm('Are you sure you want to remove class and the associated fee?');
     if (confirm) {
-      this.batchService.removeStudent(id)
+      this.classService.removeCharge(id)
         .subscribe(res => {
-          const removed = this.studentBatches.find(val => +val.id === +id);
-          this.studentBatches.splice(this.studentBatches.indexOf(removed), 1);
+          const removed = this.studentClasses.find(val => +val.id === +id);
+          this.studentClasses.splice(this.studentClasses.indexOf(removed), 1);
           this.calculateTotalCharge();
-          this.toastr.success('Batch/Class removed successfully.');
+          this.toastr.success('Class removed successfully.');
         });
     }
   }
@@ -284,8 +262,8 @@ export class StudentPageComponent implements OnInit {
 
   viewStudentSubjects(formValue) {
     this.isGettingStudentSubjects = true;
-    const batch = formValue.batch;
-    this.subjectService.getStudentSubjects(batch, this.id)
+    const clas = formValue.class;
+    this.subjectService.getStudentSubjects(clas, this.id)
       .subscribe(res => {
         this.registeredSubjects = res;
         this.isGettingStudentSubjects = false;
@@ -341,7 +319,7 @@ export class StudentPageComponent implements OnInit {
       return;
     }
     if (!this.totalCharge) {
-      this.viewBatches();
+      this.viewClasses();
     }
     this.isGettingPayments = true;
     this.financeService.getStudentPayments(this.id)
@@ -364,7 +342,7 @@ export class StudentPageComponent implements OnInit {
       return;
     }
     this.isGettingHostels = true;
-    this.instituteService.getStudentHostels(this.id)
+    this.hostelsService.getStudentHostels(this.id)
       .subscribe(res => {
         this.hostels = res;
         this.isGettingHostels = false;
