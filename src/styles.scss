@@ -108,11 +108,15 @@ input[type=radio] {
     }
 }
 
+a:visited {
+    color: $theme-color;
+}
+
 .clickable {
     cursor: pointer !important;
     &:hover {
         color: #fff !important;
-        background-color: rgb(112, 179, 223);
+        background-color: rgb(2, 46, 75);
     }
 }
 
@@ -261,7 +265,6 @@ form {
         font-size: 20px;
         padding: 10px 0;
         width: 100%;
-        text-transform: capitalize;
         opacity: .6;
     }
 }
