@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { UserComponent } from './core/user/user/user.component';
 import { AttendanceCreateComponent } from './core/attendance/attendance-create/attendance-create.component';
-import { BatchComponent } from './core/batch/batch/batch.component';
+import { ClassComponent } from './core/class/class/class.component';
 import { ExamComponent } from './core/exams/exam/exam.component';
 import { FinanceComponent } from './core/finance/finance/finance.component';
 import { HrComponent } from './core/hr/hr/hr.component';
-import { InstituteComponent } from './core/institute/institute/institute.component';
+import { HostelsComponent } from './core/hostels/hostels/hostels.component';
 import { StudentComponent } from './core/student/student/student.component';
 import { TeacherComponent } from './core/teacher/teacher/teacher.component';
 import { SubjectComponent } from './core/subject/subject/subject.component';
@@ -16,11 +16,12 @@ import { StudentPageComponent } from './core/student/student-page/student-page.c
 import { TeacherPageComponent } from './core/teacher/teacher-page/teacher-page.component';
 import { HrPageComponent } from './core/hr/hr-page/hr-page.component';
 import { ExamPageComponent } from './core/exams/exam-page/exam-page.component';
-import { BatchPageComponent } from './core/batch/batch-page/batch-page.component';
+import { ClassPageComponent } from './core/class/class-page/class-page.component';
 import { LoginComponent } from './core/auth/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { DashboardComponent } from './core/dashboard/dashboard/dashboard.component';
+import { StreamPageComponent } from './core/class/stream-page/stream-page.component';
 
 export const routes: Routes = [
     {
@@ -60,15 +61,19 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'batch',
-        component: BatchComponent,
+        path: 'class',
+        component: ClassComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'batch/:id',
-        component: BatchPageComponent,
+        path: "class/stream/:id",
+        component: StreamPageComponent
+    },
+    {
+        path: 'class/:id',
+        component: ClassPageComponent,
         canActivate: [
             AuthGuard
         ]
@@ -109,8 +114,8 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'institute',
-        component: InstituteComponent,
+        path: 'hostels',
+        component: HostelsComponent,
         canActivate: [
             AuthGuard
         ]
