@@ -9,7 +9,7 @@ import { PaginationModule } from '../pagination/pagination.module';
 import { LoaderModule } from 'src/app/loader/loader.module';
 import { ToastrService } from 'src/app/toastr.service';
 import { FormsModule } from '@angular/forms';
-import { BatchService } from '../batch/batch.service';
+import { ClassService } from '../class/class.service';
 import { Http } from 'src/app/http/http';
 
 @NgModule({
@@ -31,7 +31,7 @@ import { Http } from 'src/app/http/http';
   providers: [
     FinanceService,
     ToastrService,
-    BatchService,
+    ClassService,
     Http
   ]
 })

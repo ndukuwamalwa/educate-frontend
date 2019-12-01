@@ -13,8 +13,8 @@
             <ol class="tabs__links tabs__links--vertical">
               <li data-revealId="all" data-default="true" appTabView appPermitted [table]="'fee_payment'"
                 [operation]="'select'">All balances</li>
-              <li data-revealId="batch-balance" appTabView (click)="getBatches()" appPermitted
-                [table]="'student_charge'" [operation]="'select'">Batch balance</li>
+              <li data-revealId="class-balance" appTabView (click)="getClasses()" appPermitted
+                [table]="'student_charge'" [operation]="'select'">Class balance</li>
               <li data-revealId="student" appTabView appPermitted [table]="'student_charge'" [operation]="'select'">
                 Student balance</li>
             </ol>
@@ -145,26 +145,24 @@
                   </tbody>
                 </table>
               </div>
-              <div data-revealId="batch-balance" appPermitted [table]="'student_charge'" [operation]="'select'">
-                <form #batchForm="ngForm" (ngSubmit)="getBatchBalance(batchForm.value.batch)" ngNativeValidate>
+              <div data-revealId="class-balance" appPermitted [table]="'student_charge'" [operation]="'select'">
+                <form #classForm="ngForm" (ngSubmit)="getClassBalance(classForm.value.class)" ngNativeValidate>
                   <span></span>
                   <div class="cat-selector">
-                    <label for="batch">Select batch</label>
-                    <app-loader *ngIf="isGettingBatches"></app-loader>
-                    <select name="batch" id="batch" ngModel required *ngIf="!isGettingBatches">
-                      <option [value]="batch.id" *ngFor="let batch of batches">
-                        {{batch.name}}-{{batch.academic_year}}
-                      </option>
+                    <label for="class">Select class</label>
+                    <app-loader *ngIf="isGettingClasses"></app-loader>
+                    <select name="class" id="class" ngModel required *ngIf="!isGettingClasses">
+                      <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
                     </select>
-                    <button class="btn btn--blue" [disabled]="isGettingBatches || isGettingBatchBalances">View
+                    <button class="btn btn--blue" [disabled]="isGettingClasses || isGettingClassBalances">View
                       balances</button>
                   </div>
                 </form>
-                <app-loader *ngIf="isGettingBatchBalances"></app-loader>
-                <app-normal-pagination [total]="batchTotal"
-                  [sorts]="['id', 'adm', 'fname', 'lname', 'balance', 'credit', 'debit']" *ngIf="batchBalances"
-                  (options)="onBatchOptionsChange($event)"></app-normal-pagination>
-                <table *ngIf="!isGettingBatchBalances && batchBalances" class="not-mobile">
+                <app-loader *ngIf="isGettingClassBalances"></app-loader>
+                <app-normal-pagination [total]="classTotal"
+                  [sorts]="['id', 'adm', 'name', 'balance', 'credit', 'debit']" *ngIf="classBalances"
+                  (options)="onClassOptionsChange($event)"></app-normal-pagination>
+                <table *ngIf="!isGettingClassBalances && classBalances" class="not-mobile">
                   <thead>
                     <tr>
                       <th>Adm</th>
@@ -175,9 +173,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let balance of batchBalances" class="clickable" (click)="viewStudent(balance.id)">
+                    <tr *ngFor="let balance of classBalances" class="clickable" (click)="viewStudent(balance.id)">
                       <td>{{balance.adm}}</td>
-                      <td>{{balance.fname | titlecase}} {{balance.lname | titlecase}}</td>
+                      <td>{{balance.name | titlecase}}</td>
                       <td>{{balance.credit | currency: 'Ksh. '}}</td>
                       <td>{{balance.debit | currency: 'Ksh. '}}</td>
                       <td [ngClass]="{
@@ -188,9 +186,9 @@
                     </tr>
                   </tbody>
                 </table>
-                <table *ngIf="!isGettingBatchBalances && batchBalances" class="mobile-only">
+                <table *ngIf="!isGettingClassBalances && classBalances" class="mobile-only">
                   <tbody>
-                    <tr *ngFor="let balance of batchBalances" class="clickable" (click)="viewStudent(balance.id)">
+                    <tr *ngFor="let balance of classBalances" class="clickable" (click)="viewStudent(balance.id)">
                       <div>
                         <span>Adm No.</span>
                         <span>{{balance.adm}}</span>

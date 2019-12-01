@@ -24,8 +24,8 @@ export class FinanceService {
     return this.http._get(`${this.api}/balances?adm=${adm}`);
   }
 
-  getBatchBalance(id, options = {}): Observable<any> {
-    return this.http._get(`${this.api}/balances?batch=${id}&${createQuery(options)}`);
+  getClassBalance(id, options = {}): Observable<any> {
+    return this.http._get(`${this.api}/balances?class=${id}&${createQuery(options)}`);
   }
 
   getPayments(options): Observable<any> {

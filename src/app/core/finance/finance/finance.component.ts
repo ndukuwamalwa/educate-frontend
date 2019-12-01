@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FinanceService } from '../finance.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { Router } from '@angular/router';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { NgForm } from '@angular/forms';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { printUrlWithToken } from 'src/app/utilities';
@@ -16,17 +16,17 @@ export class FinanceComponent implements OnInit {
   balances: any[];
   sorts: string[] = ['adm', 'balance', 'fname', 'lname', 'credit', 'debit'];
   total: number;
-  batchTotal: number;
-  batches: any;
+  classTotal: number;
+  classes: any;
   studentBalance: any;
-  batchBalances: any[];
-  selectedBatch: string;
+  classBalances: any[];
+  selectedClass: string;
   allPayments: any[];
   totalPayments: number;
   isGettingAllBalances: boolean = false;
   isGettingStudentBalance: boolean = false;
-  isGettingBatches: boolean = false;
-  isGettingBatchBalances: boolean = false;
+  isGettingClasses: boolean = false;
+  isGettingClassBalances: boolean = false;
   isGettingAllPayments: boolean;
   startDate: string;
   endDate: string;
@@ -37,7 +37,7 @@ export class FinanceComponent implements OnInit {
     private financeService: FinanceService,
     private toastr: ToastrService,
     private router: Router,
-    private batchService: BatchService,
+    private clasService: ClassService,
     private sanitizer: DomSanitizer
   ) { }
 
@@ -101,35 +101,35 @@ export class FinanceComponent implements OnInit {
       });
   }
 
-  getBatches() {
-    if (this.batches) return;
-    this.isGettingBatches = true;
-    this.batchService.getBatches()
+  getClasses() {
+    if (this.classes) return;
+    this.isGettingClasses = true;
+    this.clasService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
-        this.isGettingBatches = false;
+        this.classes = res.items;
+        this.isGettingClasses = false;
       }, err => {
-        this.toastr.error('Failed to get batches');
-        this.isGettingBatches = false;
+        this.toastr.error('Failed to get clases');
+        this.isGettingClasses = false;
       });
   }
 
-  getBatchBalance(batch, options = {}) {
-    this.selectedBatch = batch;
-    this.isGettingBatchBalances = true;
-    this.financeService.getBatchBalance(batch, options)
+  getClassBalance(clas, options = {}) {
+    this.selectedClass = clas;
+    this.isGettingClassBalances = true;
+    this.financeService.getClassBalance(clas, options)
       .subscribe(res => {
-        this.batchBalances = res.items;
-        this.batchTotal = res.total;
-        this.isGettingBatchBalances = false;
+        this.classBalances = res.items;
+        this.classTotal = res.total;
+        this.isGettingClassBalances = false;
       }, err => {
         this.toastr.error(`Failed to get balances`);
-        this.isGettingBatchBalances = false;
+        this.isGettingClassBalances = false;
       });
   }
 
-  onBatchOptionsChange(options) {
-    this.getBatchBalance(this.selectedBatch, options);
+  onClassOptionsChange(options) {
+    this.getClassBalance(this.selectedClass, options);
   }
 
   getPayments(options = {}, force: boolean = false) {
