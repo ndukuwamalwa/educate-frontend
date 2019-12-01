@@ -2,71 +2,9 @@
   <ng-container class="render">
     <div class="tabs">
       <ol class="tabs__links">
-        <li data-revealId="calender" data-default="true" appTabView>Calendar</li>
-        <li data-revealId="hostels" appTabView>Hostels</li>
+        <li data-revealId="hostels" data-default="true" appTabView>Hostels</li>
       </ol>
       <div class="tabs__content">
-        <div data-revealId="calender">
-          <div class="tabs tabs--vertical">
-            <ol class="tabs__links tabs__links--vertical">
-              <li data-revealId="add-year" data-default="true" appTabView appPermitted [table]="'academic_year'"
-                [operation]="'select'">Set academic year</li>
-              <li data-revealId="view-years" appTabView (click)="getAcademicYears()">View academic years</li>
-            </ol>
-            <div class="tabs__content tabs__content--vertical">
-              <div data-revealId="add-year" appPermitted [table]="'academic_year'" [operation]="'select'">
-                <form #setAcademicYear="ngForm" (ngSubmit)="addAcademicYear(setAcademicYear.value)" ngNativeValidate>
-                  <span>Set new academic year</span>
-                  <div class="input">
-                    <fieldset>
-                      <label for="label">Label/Name</label>
-                      <input type="text" id="label" name="label" ngModel required autocomplete="off">
-                    </fieldset>
-                  </div>
-                  <div class="input">
-                    <fieldset>
-                      <label for="startDate">Starts on</label>
-                      <input type="date" name="startDate" id="startDate" ngModel required>
-                    </fieldset>
-                  </div>
-                  <div class="input">
-                    <fieldset>
-                      <label for="endDate">Ends on</label>
-                      <input type="date" name="endDate" id="endDate" ngModel required>
-                    </fieldset>
-                  </div>
-                  <div class="submit">
-                    <fieldset>
-                      <button class="btn btn--blue" [disabled]="isAddingAcademicYear">Save</button>
-                      <app-loader *ngIf="isAddingAcademicYear"></app-loader>
-                    </fieldset>
-                  </div>
-                </form>
-              </div>
-              <div data-revealId="view-years">
-                <app-loader *ngIf="isGettingAcademicYears"></app-loader>
-                <table *ngIf="!isGettingAcademicYears && academicYears">
-                  <thead>
-                    <tr>
-                      <th>Label</th>
-                      <th>Start date</th>
-                      <th>End date</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let academicYear of academicYears">
-                      <td>{{academicYear.label | titlecase}}</td>
-                      <td>{{academicYear.startDate | date}}</td>
-                      <td>{{academicYear.endDate | date}}</td>
-                      <td class="danger" (click)="deleteAcademicYear(academicYear.id)">Delete</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
         <div data-revealId="hostels">
           <div class="tabs tabs--vertical">
             <ol class="tabs__links tabs__links--vertical">
@@ -128,7 +66,6 @@
                       <th>Name</th>
                       <th>Capacity</th>
                       <th>Type</th>
-                      <th>Academic year</th>
                       <th>Students</th>
                       <th>Action</th>
                     </tr>
@@ -138,7 +75,6 @@
                       <td>{{hostel.name | titlecase}}</td>
                       <td>{{hostel.capacity | number}}</td>
                       <td>{{hostel.type | titlecase}}</td>
-                      <td>{{hostel.academicYear}}</td>
                       <td>{{hostel.occupants | number}}</td>
                       <td class="danger" (click)="deleteHostel(hostel.id)">Delete</td>
                     </tr>
@@ -158,10 +94,6 @@
                       <div>
                         <span>Type</span>
                         <span>{{hostel.type | titlecase}}</span>
-                      </div>
-                      <div>
-                        <span>Year</span>
-                        <span>{{hostel.academicYear}}</span>
                       </div>
                       <div>
                         <span>Students</span>
@@ -187,17 +119,15 @@
                       </select>
                     </fieldset>
                     <fieldset>
-                      <label for="academicYear">Academic year</label>
-                      <select name="academicYear" id="academicYear" required ngModel>
-                        <option [value]="academicYear.id" *ngFor="let academicYear of academicYears">
-                          {{academicYear.label}}</option>
+                      <label for="class">Load students from</label>
+                      <select name="class" id="class" required ngModel (change)="getClassStreams($event.target.value)">
+                        <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
                       </select>
                     </fieldset>
                     <fieldset>
-                      <label for="batch">Load students from</label>
-                      <select name="batch" id="batch" required ngModel>
-                        <option [value]="batch.id" *ngFor="let batch of batches">
-                          {{batch.name | titlecase}}-{{batch.academic_year}}</option>
+                      <label for="stream">Stream</label>
+                      <select name="stream" id="stream" ngModel required>
+                        <option [value]="stream.id" *ngFor="let stream of classStreams">{{stream.name}}</option>
                       </select>
                     </fieldset>
                     <fieldset>
@@ -249,13 +179,6 @@
                       </select>
                     </fieldset>
                     <fieldset>
-                      <label for="academicYear">Academic year</label>
-                      <select name="academicYear" id="academicYear" required ngModel>
-                        <option [value]="academicYear.id" *ngFor="let academicYear of academicYears">
-                          {{academicYear.label}}</option>
-                      </select>
-                    </fieldset>
-                    <fieldset>
                       <label for="" style="color: transparent;">.</label>
                       <button class="btn btn--blue" [disabled]="isGettingHostelStudents">View Students</button>
                       <app-loader *ngIf="isGettingHostelStudents"></app-loader>
@@ -269,7 +192,6 @@
                       <th>Name</th>
                       <th>Gender</th>
                       <th>Hostel</th>
-                      <th>Academic year</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -279,7 +201,6 @@
                       <td>{{hostelStudent.student}}</td>
                       <td>{{hostelStudent.gender}}</td>
                       <td>{{hostelStudent.hostel}}</td>
-                      <td>{{hostelStudent.academicYear}}</td>
                       <td class="danger" (click)="removeStudent(hostelStudent.id)">Remove</td>
                     </tr>
                   </tbody>
@@ -302,10 +223,6 @@
                       <div>
                         <span>Hostel</span>
                         <span>{{hostelStudent.hostel}}</span>
-                      </div>
-                      <div>
-                        <span>Year</span>
-                        <span>{{hostelStudent.academicYear}}</span>
                       </div>
                       <div>
                         <span>Action</span>

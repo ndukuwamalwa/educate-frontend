@@ -1,97 +1,64 @@
 import { Component, OnInit } from '@angular/core';
-import { InstituteService } from '../institute.service';
+import { HostelsService } from '../hostels.service';
 import { ToastrService } from 'src/app/toastr.service';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { Student } from 'src/app/models/student.model';
 
 @Component({
-  selector: 'app-institute',
-  templateUrl: './institute.component.html',
-  styleUrls: ['./institute.component.scss']
+  selector: 'app-hostels',
+  templateUrl: './hostels.component.html',
+  styleUrls: ['./hostels.component.scss']
 })
-export class InstituteComponent implements OnInit {
-  isAddingAcademicYear: boolean = false;
-  academicYears: any[];
-  isGettingAcademicYears: boolean = false;
+export class HostelsComponent implements OnInit {
   isSavingHostel: boolean = false;
   hostels: any[];
   isGettingHostels: boolean = false;
-  batches: Batch[];
+  classes: Class[];
   loadedStudents: Student[];
   studentsToAdd: number[] = [];
   isGettingStudentsToAdd: boolean = false;
   selectedHostel: string;
-  selectedYear: string;
   isAddingToHostel: boolean = false;
   isGettingHostelStudents: boolean = false;
   hostelStudents: any[];
+  streams: any[];
+  classStreams: any[];
 
   constructor(
-    private instituteService: InstituteService,
+    private hostelsService: HostelsService,
     private toastr: ToastrService,
-    private batchService: BatchService
+    private classService: ClassService
   ) { }
 
   ngOnInit() {
-    this.getAcademicYears();
-    this.getBatches();
+    this.getClasses();
     this.getHostels();
+    this.classService.getStreams()
+    .subscribe(res => {
+      this.streams = res.items;
+    }, e => {
+      this.toastr.error("Failed to load streams.");
+    });
   }
 
-  getBatches() {
-    if (this.batches) return;
-    this.batchService.getBatches()
+  getClassStreams(id) {
+    const streams = this.streams.filter(val => +val.classId === +id);
+    this.classStreams = streams;
+  }
+
+  getClasses() {
+    if (this.classes) return;
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
+        this.classes = res.items;
       }, err => {
         this.toastr.error(`Failed to load classes. Some operations may not function expected.`);
       });
   }
 
-  addAcademicYear(data) {
-    this.isAddingAcademicYear = true;
-    this.instituteService.addYear(data)
-      .subscribe(res => {
-        this.isAddingAcademicYear = false;
-        if (this.academicYears) {
-          this.academicYears.push({ id: res.id, startDate: data.startDate, endDate: data.endDate, label: data.label });
-        }
-        this.toastr.success("Academic year created successfully.");
-      }, err => {
-        this.isAddingAcademicYear = false;
-        if (err.status === 409) return this.toastr.error("Similar academic year exists.");
-        this.toastr.error("Failed to add academic year.");
-      });
-  }
-
-  getAcademicYears() {
-    if (this.academicYears) return;
-    this.isGettingAcademicYears = true;
-    this.instituteService.getAcademicYears()
-      .subscribe(res => {
-        this.academicYears = res.items;
-        this.isGettingAcademicYears = false;
-      }, err => {
-        this.isGettingAcademicYears = false;
-        this.toastr.error("Failed to get academic years.");
-      });
-  }
-
-  deleteAcademicYear(id) {
-    if (!confirm('Are you sure you want to delete academic year?')) return;
-    this.instituteService.deleteAcademicYear(id)
-      .subscribe(res => {
-        const a_year = this.academicYears.find(val => +val.id === +id);
-        const index = this.academicYears.indexOf(a_year);
-        this.academicYears.splice(index, 1);
-      }, err => {
-        this.toastr.error("Failed to delete academic year.");
-      });
-  }
-
   addHostel(data) {
     this.isSavingHostel = true;
-    this.instituteService.addHostel(data)
+    this.hostelsService.addHostel(data)
       .subscribe(res => {
         if (this.hostels) {
           this.hostels.push({ id: res.id, ...data, occupants: 0 });
@@ -108,7 +75,7 @@ export class InstituteComponent implements OnInit {
   getHostels() {
     if (this.hostels) return;
     this.isGettingHostels = true;
-    this.instituteService.getHostels()
+    this.hostelsService.getHostels()
       .subscribe(res => {
         this.hostels = res.items;
         this.isGettingHostels = false;
@@ -120,7 +87,7 @@ export class InstituteComponent implements OnInit {
 
   deleteHostel(id) {
     if (!confirm("Are you sure you want to delete hostel?")) return;
-    this.instituteService.deleteHostel(id)
+    this.hostelsService.deleteHostel(id)
       .subscribe(res => {
         const hostel = this.hostels.find(v => +v.id === +id);
         const index = this.hostels.indexOf(hostel);
@@ -140,14 +107,13 @@ export class InstituteComponent implements OnInit {
     }
   }
 
-  loadStudents({ hostel, academicYear, batch }) {
+  loadStudents({ hostel, stream }) {
     this.isGettingStudentsToAdd = true;
-    this.instituteService.getStudentsNotInHostel(hostel, academicYear, batch)
+    this.hostelsService.getStudentsNotInHostel(hostel, stream)
       .subscribe(res => {
         this.studentsToAdd = [];
         this.loadedStudents = res;
         this.selectedHostel = hostel;
-        this.selectedYear = academicYear;
         this.isGettingStudentsToAdd = false;
       }, err => {
         this.isGettingStudentsToAdd = false;
@@ -159,9 +125,9 @@ export class InstituteComponent implements OnInit {
     this.isAddingToHostel = true;
     const studentHostels = [];
     this.studentsToAdd.forEach(val => {
-      studentHostels.push({ student: val, hostel: +this.selectedHostel, academicYear: +this.selectedYear });
+      studentHostels.push({ student: val, hostel: +this.selectedHostel });
     });
-    this.instituteService.addStudentsToHostel(studentHostels)
+    this.hostelsService.addStudentsToHostel(studentHostels)
       .subscribe(res => {
         this.isAddingToHostel = false;
         this.toastr.success(`Added ${studentHostels.length} to the selected hostel. You can remove by selecting 'View students'`);
@@ -174,9 +140,9 @@ export class InstituteComponent implements OnInit {
       });
   }
 
-  viewStudents({ hostel, academicYear }) {
+  viewStudents({ hostel }) {
     this.isGettingHostelStudents = true;
-    this.instituteService.getHostelStudents(hostel, academicYear)
+    this.hostelsService.getHostelStudents(hostel)
       .subscribe(res => {
         this.hostelStudents = res;
         this.isGettingHostelStudents = false;
@@ -188,7 +154,7 @@ export class InstituteComponent implements OnInit {
 
   removeStudent(id) {
     if (!confirm("Are you sure you want to remove student from the hostel.")) return;
-    this.instituteService.deleteStudent(id)
+    this.hostelsService.deleteStudent(id)
     .subscribe(res => {
       this.toastr.success("Student removed successfully.");
       const item = this.hostelStudents.find(val => +val.id === +id);
