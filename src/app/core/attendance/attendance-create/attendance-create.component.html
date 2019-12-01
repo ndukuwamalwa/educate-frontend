@@ -8,13 +8,17 @@
       </ol>
       <div class="tabs__content">
         <div data-revealId="mark-register" appPermitted [table]="'student_attendance'" [operation]="'create'">
-          <form #catForm="ngForm" (ngSubmit)="loadStudents(catForm.value.batch)" ngNativeValidate>
+          <form #catForm="ngForm" (ngSubmit)="loadStudents(catForm.value.stream)" ngNativeValidate>
             <span>Mark register</span>
-            <app-loader *ngIf="isGettingBatches"></app-loader>
-            <div class="cat-selector" *ngIf="!isGettingBatches">
-              <label for="batch">Select class</label>
-              <select name="batch" id="batch" required ngModel>
-                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+            <app-loader *ngIf="isGettingClasses"></app-loader>
+            <div class="cat-selector" *ngIf="!isGettingClasses">
+              <label for="class">Select class</label>
+              <select name="class" id="class" required ngModel (change)="getClassStreams($event.target.value)">
+                <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
+              </select>
+              <label for="stream">Stream</label>
+              <select name="stream" id="stream" ngModel required>
+                <option [value]="stream.id" *ngFor="let stream of classStreams">{{stream.name}}</option>
               </select>
               <button class="btn btn--blue" [disabled]="isLoadingStudents">Load students</button>
             </div>
@@ -26,15 +30,15 @@
               <tr>
                 <th>Adm</th>
                 <th>Name</th>
-                <th class="not-mobile">Category</th>
+                <th class="not-mobile">Stream</th>
                 <th>Present?</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let student of students" [id]="student.adm" style="cursor: pointer;">
                 <td><label [for]="'_' + student.adm">{{student.adm}}</label></td>
-                <td><label [for]="'_' + student.adm">{{student.student | titlecase}}</label></td>
-                <td class="not-mobile"><label [for]="'_' + student.adm">{{student.batch}}</label></td>
+                <td><label [for]="'_' + student.adm">{{student.name | titlecase}}</label></td>
+                <td class="not-mobile"><label [for]="'_' + student.adm">{{student.stream}}</label></td>
                 <td><input type="checkbox" name="{{student.adm}}" [id]="'_' + student.adm"
                     (change)="onPresentChange($event, student.studentId)"></td>
               </tr>
@@ -55,9 +59,13 @@
           <form #attViewForm="ngForm" ngNativeValidate (ngSubmit)="viewAttendance(attViewForm.value)">
             <span>View register</span>
             <div class="cat-selector">
-              <label for="batch">Category</label>
-              <select name="batch" id="batch" required ngModel>
-                <option [value]="batch.id" *ngFor="let batch of batches">{{batch.name}}-{{batch.academic_year}}</option>
+              <label for="class">Category</label>
+              <select name="class" id="class" required ngModel (change)="getClassStreams($event.target.value)">
+                <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
+              </select>
+              <label for="stream">Stream</label>
+              <select name="stream" id="stream" ngModel required>
+                <option [value]="stream.id" *ngFor="let stream of classStreams">{{stream.name}}</option>
               </select>
               <label for="date">Date</label>
               <input type="date" id="date" required name="date" ngModel>

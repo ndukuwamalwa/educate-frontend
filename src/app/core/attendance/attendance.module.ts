@@ -4,7 +4,7 @@ import { AttendanceCreateComponent } from './attendance-create/attendance-create
 import { PortalModule } from '../portal/portal.module';
 import { DirectivesModule } from 'src/app/directives/directives.module';
 import { DashboardModule } from '../dashboard/dashboard.module';
-import { BatchService } from '../batch/batch.service';
+import { ClassService } from '../class/class.service';
 import { AttendanceService } from './attendance.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { FormsModule } from '@angular/forms';
@@ -27,7 +27,7 @@ import { Http } from 'src/app/http/http';
     AttendanceCreateComponent
   ],
   providers: [
-    BatchService,
+    ClassService,
     AttendanceService,
     ToastrService,
     Http
