@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { AttendanceService } from '../attendance.service';
 import { Student } from 'src/app/models/student.model';
@@ -10,36 +10,49 @@ import { Student } from 'src/app/models/student.model';
   styleUrls: ['./attendance-create.component.scss']
 })
 export class AttendanceCreateComponent implements OnInit {
-  batches: Batch[];
-  isGettingBatches: boolean = false;
+  classes: Class[];
+  isGettingClasses: boolean = false;
   isLoadingStudents: boolean = false;
   students: Student[];
   attendance: any[] = [];
   isSendingAttendance: boolean = false;
   isGettingRegister: boolean = false;
   register: any[];
+  streams: any[];
+  classStreams: any[];
 
   constructor(
-    private batchService: BatchService,
+    private classService: ClassService,
     private toastr: ToastrService,
     private attendanceService: AttendanceService
   ) { }
 
   ngOnInit() {
-    this.isGettingBatches = true;
-    this.batchService.getBatches()
+    this.isGettingClasses = true;
+    this.classService.getClasses()
       .subscribe(res => {
-        this.batches = res.items;
-        this.isGettingBatches = false;
+        this.classes = res.items;
+        this.isGettingClasses = false;
       }, err => {
-        this.toastr.error("Failed to load batches");
-        this.isGettingBatches = false;
+        this.toastr.error("Failed to load classes");
+        this.isGettingClasses = false;
+      });
+    this.classService.getStreams()
+      .subscribe(res => {
+        this.streams = res.items;
+      }, e => {
+        this.toastr.error("Failed to load streams.");
       });
   }
 
-  loadStudents(batch) {
+  getClassStreams(id) {
+    const streams = this.streams.filter(val => +val.classId === +id);
+    this.classStreams = streams;
+  }
+
+  loadStudents(stream) {
     this.isLoadingStudents = true;
-    this.batchService.getStudents(batch)
+    this.classService.getStreamStudents(stream)
       .subscribe(res => {
         this.students = res;
         this.isLoadingStudents = false;
@@ -68,14 +81,17 @@ export class AttendanceCreateComponent implements OnInit {
         this.isSendingAttendance = false;
       }, err => {
         this.isSendingAttendance = false;
-        if (err.status === 409) return this.toastr.info("Register has already been marked.");
+        if (err.status === 409) {
+          this.attendance = [];
+          return this.toastr.info("Register has already been marked.");
+        }
         this.toastr.error("Failed to save register.");
       });
   }
 
-  viewAttendance({ batch, date }) {
+  viewAttendance({ stream, date }) {
     this.isGettingRegister = true;
-    this.attendanceService.getRegister(batch, date)
+    this.attendanceService.getRegister(stream, date)
       .subscribe(res => {
         this.register = res;
         this.isGettingRegister = false;
