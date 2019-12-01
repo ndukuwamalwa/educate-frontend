@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TeacherService } from '../teacher.service';
 import { ToastrService } from 'src/app/toastr.service';
-import { BatchService } from '../../batch/batch.service';
+import { ClassService } from '../../class/class.service';
 import { NgForm } from '@angular/forms';
 import { back } from 'src/app/utilities';
 
@@ -27,7 +27,7 @@ export class TeacherPageComponent implements OnInit {
     private route: ActivatedRoute,
     private teacherService: TeacherService,
     private toastr: ToastrService,
-    private batchService: BatchService
+    private batchService: ClassService
   ) { }
 
   ngOnInit() {
@@ -49,7 +49,7 @@ export class TeacherPageComponent implements OnInit {
   getBatches() {
     if (this.batches) return;
     this.isGettingBatches = true;
-    this.batchService.getBatches()
+    this.batchService.getClasses()
       .subscribe(res => {
         this.batches = res.items;
         this.isGettingBatches = false;
