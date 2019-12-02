@@ -1,6 +1,6 @@
 interface Class {
     id: number;
-    name: string;
+    level: number;
     streams?: number,
     students?: number,
     fees: number
