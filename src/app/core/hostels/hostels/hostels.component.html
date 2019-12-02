@@ -17,7 +17,7 @@
             </ol>
             <div class="tabs__content tabs__content--vertical">
               <div data-revealId="new-hostel" appPermitted [table]="'hostel'" [operation]="'create'">
-                <form #hostelForm="ngForm" (ngSubmit)="addHostel(hostelForm.value)" ngNativeValidate>
+                <form #hostelForm="ngForm" (ngSubmit)="addHostel(hostelForm)" ngNativeValidate>
                   <span>Ne hostel</span>
                   <div class="input">
                     <fieldset>

@@ -113,19 +113,11 @@
                 </div>
                 <div>
                   <span>Name</span>
-                  <span>{{student.student | titlecase}}</span>
+                  <span>{{student.name | titlecase}}</span>
                 </div>
                 <div>
                   <span>Class</span>
-                  <span>{{student.class | titlecase}}</span>
-                </div>
-                <div>
-                  <span>Admitted</span>
-                  <span>{{student.admitted | date: 'y'}}</span>
-                </div>
-                <div>
-                  <span>Academic year</span>
-                  <span>{{class?.academic_year}}</span>
+                  <span>Form {{stream.level}} {{stream.name | titlecase}}</span>
                 </div>
                 <div>
                   <span>Action</span>

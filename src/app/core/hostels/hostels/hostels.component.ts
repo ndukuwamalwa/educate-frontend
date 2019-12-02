@@ -3,6 +3,7 @@ import { HostelsService } from '../hostels.service';
 import { ToastrService } from 'src/app/toastr.service';
 import { ClassService } from '../../class/class.service';
 import { Student } from 'src/app/models/student.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-hostels',
@@ -56,7 +57,8 @@ export class HostelsComponent implements OnInit {
       });
   }
 
-  addHostel(data) {
+  addHostel(form: NgForm) {
+    const data = form.value;
     this.isSavingHostel = true;
     this.hostelsService.addHostel(data)
       .subscribe(res => {
@@ -64,6 +66,7 @@ export class HostelsComponent implements OnInit {
           this.hostels.push({ id: res.id, ...data, occupants: 0 });
         }
         this.isSavingHostel = false;
+        form.reset();
         this.toastr.success("New hostel created successfully.");
       }, err => {
         this.isSavingHostel = false;
