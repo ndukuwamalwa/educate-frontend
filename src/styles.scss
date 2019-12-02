@@ -439,6 +439,9 @@ iframe {
 }
 
 @media all and (max-width: 1050px) and (min-width: 501px) {
+    table {
+        min-width: 60%;
+    }
     .tabs {
         &__links {
             position: fixed;
