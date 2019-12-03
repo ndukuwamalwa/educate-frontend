@@ -22,6 +22,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { DashboardComponent } from './core/dashboard/dashboard/dashboard.component';
 import { StreamPageComponent } from './core/class/stream-page/stream-page.component';
+import { ChequePageComponent } from './core/finance/cheque-page/cheque-page.component';
 
 export const routes: Routes = [
     {
@@ -95,6 +96,13 @@ export const routes: Routes = [
     {
         path: 'finance',
         component: FinanceComponent,
+        canActivate: [
+            AuthGuard
+        ]
+    },
+    {
+        path: 'finance/cheque/:id',
+        component: ChequePageComponent,
         canActivate: [
             AuthGuard
         ]
