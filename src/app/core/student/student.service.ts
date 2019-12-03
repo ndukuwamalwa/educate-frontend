@@ -92,4 +92,8 @@ export class StudentService {
   deleteContact(id): Observable<any> {
     return this.http._delete(`${this.api}/students/contacts?id=${id}`);
   }
+
+  getPreviewByAdms(adms: string[]): Observable<any> {
+    return this.http._post(`${this.api}/students/previews`, adms);
+  }
 }
