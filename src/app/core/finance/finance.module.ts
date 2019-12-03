@@ -11,10 +11,13 @@ import { ToastrService } from 'src/app/toastr.service';
 import { FormsModule } from '@angular/forms';
 import { ClassService } from '../class/class.service';
 import { Http } from 'src/app/http/http';
+import { ChequePageComponent } from './cheque-page/cheque-page.component';
+import { StudentService } from '../student/student.service';
 
 @NgModule({
   declarations: [
-    FinanceComponent
+    FinanceComponent,
+    ChequePageComponent
   ],
   imports: [
     CommonModule,
@@ -26,13 +29,15 @@ import { Http } from 'src/app/http/http';
     FormsModule
   ],
   exports: [
-    FinanceComponent
+    FinanceComponent,
+    ChequePageComponent
   ],
   providers: [
     FinanceService,
     ToastrService,
     ClassService,
-    Http
+    Http,
+    StudentService
   ]
 })
 export class FinanceModule { }
