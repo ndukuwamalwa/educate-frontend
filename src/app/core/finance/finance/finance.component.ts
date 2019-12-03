@@ -31,7 +31,12 @@ export class FinanceComponent implements OnInit {
   startDate: string;
   endDate: string;
   isSavingPayment: boolean = false;
-  printPaymentsUrl: SafeResourceUrl
+  printPaymentsUrl: SafeResourceUrl;
+  printChequesUrl: SafeResourceUrl;
+  isSavingCheque: boolean = false;
+  isGettingCheques: boolean = false;
+  totalCheques: number;
+  cheques: any[];
 
   constructor(
     private financeService: FinanceService,
@@ -163,6 +168,46 @@ export class FinanceComponent implements OnInit {
   printPayments({ startDate, endDate }) {
     const url = printUrlWithToken(`/payments?startDate=${startDate}&endDate=${endDate}`);
     this.printPaymentsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  printCheques({ startDate, endDate }) {
+    const url = printUrlWithToken(`/cheques?startDate=${startDate}&endDate=${endDate}`);
+    this.printChequesUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  addCheque(data) {
+    this.isSavingCheque = true;
+    this.financeService.addCheque(data)
+      .subscribe(res => {
+        this.isSavingCheque = false;
+        this.toastr.success("Cheque added successfully.");
+        this.router.navigate(['finance', 'cheque', res.id]);
+      }, err => {
+        this.isSavingCheque = false;
+        if (err.status === 409) return this.toastr.error("Cheque number already exists.");
+        this.toastr.error("Failed to add cheque.");
+      });
+  }
+
+  viewCheques(options = {}) {
+    this.isGettingCheques = true;
+    this.financeService.getCheques(options)
+      .subscribe(res => {
+        this.totalCheques = res.total;
+        this.cheques = res.items;
+        this.isGettingCheques = false;
+      }, e => {
+        this.isGettingCheques = false;
+        this.toastr.error("Failed to get cheques.");
+      });
+  }
+
+  onChequePageChange(options) {
+    this.viewCheques(options);
+  }
+
+  viewCheque(id) {
+    this.router.navigate(['finance', 'cheque', id]);
   }
 
 }

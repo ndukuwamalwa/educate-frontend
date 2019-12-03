@@ -225,6 +225,10 @@
             <ol class="tabs__links tabs__links--vertical">
               <li data-revealId="new-payments" data-default="true" appTabView appPermitted [table]="'fee_payment'"
                 [operation]="'create'">New payment</li>
+              <li data-revealId="cheque-payment" appTabView appPermitted [table]="'fee_payment'" [operation]="'create'">
+                Cheque payment</li>
+              <li data-revealId="cheque-list" appTabView (click)="viewCheques()">Cheques</li>
+              <li data-revealId="cheque-print" appTabView>Print cheques</li>
               <li data-revealId="all-payments" (click)="getPayments({}, true)" appTabView appPermitted
                 [table]="'fee_payment'" [operation]="'create'">All payments</li>
               <li data-revealId="payment-by-date" appTabView appPermitted [table]="'fee_payment'"
@@ -397,6 +401,83 @@
                     </fieldset>
                   </div>
                 </form>
+              </div>
+              <div data-revealId="cheque-payment">
+                <form #chequeForm="ngForm" (ngSubmit)="addCheque(chequeForm.value)" ngNativeValidate>
+                  <span>Add cheque details</span>
+                  <div class="input">
+                    <fieldset>
+                      <label for="no">Cheque number</label>
+                      <input type="text" name="no" id="no" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="input">
+                    <fieldset>
+                      <label for="amount">Amount</label>
+                      <input type="number" name="amount" id="amount" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div>
+                    <fieldset>
+                      <label for="bank">Bank name</label>
+                      <input type="text" name="bank" id="bank" required ngModel autocomplete="off">
+                    </fieldset>
+                  </div>
+                  <div class="submit">
+                    <fieldset>
+                      <button class="btn btn--blue" [disabled]="isSavingCheque">Proceed</button>
+                      <app-loader *ngIf="isSavingCheque"></app-loader>
+                    </fieldset>
+                  </div>
+                </form>
+              </div>
+              <div data-revealId="cheque-list">
+                <app-normal-pagination [total]="totalCheques"
+                  [sorts]="['no','amount','bank','beneficiaries','used','unused']"
+                  (options)="onChequePageChange($event)"></app-normal-pagination>
+                <app-loader *ngIf="isGettingCheques"></app-loader>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Bank</th>
+                      <th>Amount</th>
+                      <th>Used</th>
+                      <th>Unused</th>
+                      <th>Beneficiaries</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let cheque of cheques" class="clickable" (click)="viewCheque(cheque.id)">
+                      <td>{{cheque.no | uppercase}}</td>
+                      <td>{{cheque.bank | titlecase}}</td>
+                      <td>{{cheque.amount | currency: 'Kshs. '}}</td>
+                      <td>{{cheque.used | currency: 'Kshs. '}}</td>
+                      <td>{{cheque.unused | currency: 'Kshs. '}}</td>
+                      <td>{{cheque.beneficiaries | number}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div data-revealId="cheque-print">
+                <form #printChequeForm="ngForm" (ngSubmit)="printCheques(printChequeForm.value)" ngNativeValidate>
+                  <span></span>
+                  <div class="inputs">
+                    <fieldset>
+                      <label for="startDate">Start date</label>
+                      <input type="date" name="startDate" id="startDate" ngModel required>
+                    </fieldset>
+                    <fieldset>
+                      <label for="endDate">Start date</label>
+                      <input type="date" name="endDate" id="endDate" ngModel required>
+                    </fieldset>
+                    <fieldset>
+                      <label for="" style="color: transparent;">.</label>
+                      <button class="btn btn--blue">Print</button>
+                    </fieldset>
+                  </div>
+                </form>
+                <iframe [src]="printChequesUrl" *ngIf="printChequesUrl" frameborder="0"></iframe>
               </div>
               <div data-revealId="print-by-date" appPermitted [table]="'fee_payment'" [operation]="'select'">
                 <form #printPaymentsForm="ngForm" (ngSubmit)="printPayments(printPaymentsForm.value)" ngNativeValidate>
