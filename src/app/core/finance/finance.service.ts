@@ -35,4 +35,36 @@ export class FinanceService {
   pay(formData): Observable<any> {
     return this.http._post(`${this.api}/payments`, formData);
   }
+
+  addCheque(data): Observable<any> {
+    return this.http._post(`${this.api}/cheques`, data);
+  }
+
+  updateCheque(data): Observable<any> {
+    return this.http._put(`${this.api}/cheques?id=${data.id}`, data);
+  }
+
+  getCheque(id): Observable<any> {
+    return this.http._get(`${this.api}/cheques?id=${id}`);
+  }
+
+  getCheques(options = {}): Observable<any> {
+    return this.http._get(`${this.api}/cheques?${createQuery(options)}`);
+  }
+
+  addBeneficiaries(beneficiaries: any[]): Observable<any> {
+    return this.http._post(`${this.api}/cheques/beneficiaries?bulk=true`, beneficiaries);
+  }
+
+  getBeneficiaries(id, options = {}): Observable<any> {
+    return this.http._get(`${this.api}/cheques/beneficiaries?${createQuery(options)}&id=${id}`);
+  }
+
+  deleteBeneficiary(id): Observable<any> {
+    return this.http._delete(`${this.api}/cheques/beneficiaries?id=${id}`)
+  }
+
+  deleteCheque(id): Observable<any> {
+    return this.http._delete(`${this.api}/cheques?id=${id}`);
+  }
 }
