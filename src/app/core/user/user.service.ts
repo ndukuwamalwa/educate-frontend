@@ -40,4 +40,8 @@ export class UserService {
   savePermissions(perms: any[]): Observable<any> {
     return this.http._post(`${this.api}/modules`, perms);
   }
+
+  getTables(): Observable<any> {
+    return this.http._get(`${this.api}/tables`);
+  }
 }
