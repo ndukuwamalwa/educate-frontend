@@ -40,10 +40,10 @@ export class SubjectComponent implements OnInit {
 
   addSubject(form: NgForm) {
     this.isSaving = true;
-    this.subjectService.add(form.value.name)
+    this.subjectService.add(form.value)
       .subscribe(res => {
         if (this.subjects) {
-          this.subjects.push({ name: form.value.name, id: res.id });
+          this.subjects.push({ ...form.value, id: res.id });
         }
         this.isSaving = false;
         this.toastr.success("Subject added successfully.");

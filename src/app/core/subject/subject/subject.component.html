@@ -11,10 +11,14 @@
         <div data-revealId="subject-add" appPermitted [table]="'subject'" [operation]="'create'">
           <form #addForm="ngForm" (ngSubmit)="addSubject(addForm)" ngNativeValidate>
             <span>Add new subject</span>
-            <div class="input">
+            <div class="inputs">
               <fieldset>
                 <label for="name">Name of the subject</label>
                 <input type="text" name="name" id="name" required ngModel autocomplete="off">
+              </fieldset>
+              <fieldset>
+                <label for="code">Subject code</label>
+                <input type="text" name="code" id="code" required ngModel autocomplete="off">
               </fieldset>
             </div>
             <div class="submit">
@@ -31,12 +35,14 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Code</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let subject of subjects">
                 <td>{{subject.name}}</td>
+                <td>{{subject.code}}</td>
                 <td class="danger" (click)="delete(subject.id)">Delete</td>
               </tr>
             </tbody>

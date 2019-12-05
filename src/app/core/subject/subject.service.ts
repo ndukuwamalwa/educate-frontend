@@ -27,8 +27,8 @@ export class SubjectService {
     return this.http._delete(`${this.api}/register?id=${regId}`);
   }
 
-  add(name): Observable<any> {
-    return this.http._post(this.api, { name });
+  add(data): Observable<any> {
+    return this.http._post(this.api, data);
   }
 
   delete(id): Observable<any> {
