@@ -22,4 +22,8 @@ export class AttendanceService {
   delete(id): Observable<any> {
     return this.http._delete(`${this.api}?id=${id}`);
   }
+
+  getUnmarked(stream): Observable<any> {
+    return this.http._get(`${this.api}/unmarked?stream=${stream}`);
+  }
 }
