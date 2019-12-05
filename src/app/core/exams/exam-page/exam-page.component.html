@@ -10,6 +10,7 @@
         <li data-revealId="update" appTabView>Update details</li>
         <li data-revealId="add-results" appTabView>Add results</li>
         <li data-revealId="view-results" appTabView>View results</li>
+        <li data-revealId="report-cards" appTabView>Report cards</li>
         <li data-revealId="danger" appTabView>Danger zone</li>
       </ol>
       <div class="tabs__content tabs__content--vertical" style="overflow: auto;">
@@ -203,6 +204,31 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div data-revealId="report-cards">
+          <form #cardForm="ngForm" (ngSubmit)="printReportCards(cardForm.value)" ngNativeValidate>
+            <span>Report cards</span>
+            <div class="inputs">
+              <fieldset>
+                <label for="class">Print for</label>
+                <select name="class" id="class" required ngModel (change)="getClassStreams($event.target.value)">
+                  <option [value]="class.id" *ngFor="let class of classes">Form {{class.level}}</option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label for="stream">Stream</label>
+                <select name="stream" id="stream" ngModel="all" required>
+                  <option value="all">All</option>
+                  <option [value]="stream.id" *ngFor="let stream of classStreams">{{stream.name}}</option>
+                </select>
+              </fieldset>
+              <fieldset>
+                <label for="hfs" style="color: transparent;">.</label>
+                <button class="btn btn--blue">Generate</button>
+              </fieldset>
+            </div>
+          </form>
+          <iframe [src]="reportCardsUrl" frameborder="0" *ngIf="reportCardsUrl"></iframe>
         </div>
         <div data-revealId="danger">Danger zone</div>
       </div>
