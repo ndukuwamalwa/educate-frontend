@@ -20,84 +20,7 @@ export class UserPageComponent implements OnInit {
   isUpdating: boolean = false;
   modules: any[];
   selectedPermissions: any[] = [];
-  sections: { title: string, table: string, create?: string, update?: string, delete?: string, select?: string }[] = [
-    {
-      title: 'Students',
-      table: 'student'
-    },
-    {
-      title: 'Student contacts',
-      table: 'student_contact'
-    },
-    {
-      title: 'Student attendance',
-      table: 'student_attendance'
-    },
-    {
-      title: 'Academic calendar',
-      table: 'academic_year'
-    },
-    {
-      title: 'Classes',
-      table: 'batch'
-    },
-    {
-      title: 'Student classes',
-      table: 'student_batch'
-    },
-    {
-      title: 'Student charges',
-      table: 'student_charge'
-    },
-    {
-      title: 'Subjects',
-      table: 'subject'
-    },
-    {
-      title: 'Subject registration',
-      table: 'student_subject'
-    },
-    {
-      title: 'Exams',
-      table: 'exam'
-    },
-    {
-      title: 'Exam results',
-      table: 'exam_result'
-    },
-    {
-      title: 'Fee payments',
-      table: 'fee_payment'
-    },
-    {
-      title: 'Employees',
-      table: 'employee'
-    },
-    {
-      title: 'Employee salaries',
-      table: 'salaried'
-    },
-    {
-      title: 'Teachers',
-      table: 'teacher'
-    },
-    {
-      title: 'Teacher roles',
-      table: 'teacher_role'
-    },
-    {
-      title: 'Hostels',
-      table: 'hostel'
-    },
-    {
-      title: 'Hostel allocation',
-      table: 'student_hostel'
-    },
-    {
-      title: 'SMS Messaging',
-      table: 'sms'
-    }
-  ];
+  sections: { title: string, table: string, create?: string, update?: string, delete?: string, select?: string }[];
 
   constructor(
     private userService: UserService,
@@ -116,6 +39,22 @@ export class UserPageComponent implements OnInit {
             this.id = res.id;
             this.isGettingBasicDetails = false;
           });
+      });
+    this.getTables();
+  }
+
+  getTables() {
+    this.userService.getTables()
+      .subscribe(res => {
+        res = res.map((t: string) => {
+          let section = { table: '', title: '' };
+          section.table = t.toLowerCase();
+          section.title = t.replace("_", " ");
+          return section;
+        });
+        this.sections = res;
+      }, e => {
+        this.toastr.error("Failed to get database documents.");
       });
   }
 
