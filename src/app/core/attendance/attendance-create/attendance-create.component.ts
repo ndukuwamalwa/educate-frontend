@@ -52,7 +52,7 @@ export class AttendanceCreateComponent implements OnInit {
 
   loadStudents(stream) {
     this.isLoadingStudents = true;
-    this.classService.getStreamStudents(stream)
+    this.attendanceService.getUnmarked(stream)
       .subscribe(res => {
         this.students = res;
         this.isLoadingStudents = false;
@@ -76,6 +76,7 @@ export class AttendanceCreateComponent implements OnInit {
     this.isSendingAttendance = true;
     this.attendanceService.send(this.attendance)
       .subscribe(res => {
+        this.students = this.students.filter(v => !this.attendance.includes(+v['studentId']));
         this.attendance = [];
         this.toastr.success("Register saved successfully.");
         this.isSendingAttendance = false;
