@@ -96,7 +96,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let section of sections">
-                  <td>{{section.title}}</td>
+                  <td>{{section.title | titlecase}}</td>
                   <td>
                     <input type="checkbox" name="{{section.table}}_CREATE" id="{{section.table}}_CREATE"
                       [ngModel]="section.create" value="CREATE" (change)="onPermChange(section.table, $event.target)">
