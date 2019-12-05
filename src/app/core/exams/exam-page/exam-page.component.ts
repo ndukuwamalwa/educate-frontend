@@ -4,7 +4,8 @@ import { ToastrService } from 'src/app/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 import { SubjectService } from '../../subject/subject.service';
 import { ClassService } from '../../class/class.service';
-import { back } from 'src/app/utilities';
+import { back, printUrlWithToken } from 'src/app/utilities';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-exam-page',
@@ -30,13 +31,15 @@ export class ExamPageComponent implements OnInit {
   shortSubjectNames: any[];
   streams: any[];
   classStreams: any[];
+  reportCardsUrl: SafeResourceUrl;
 
   constructor(
     private examService: ExamService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private subjectService: SubjectService,
-    private classService: ClassService
+    private classService: ClassService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -178,6 +181,13 @@ export class ExamPageComponent implements OnInit {
         this.toastr.error("Failed to get results.");
         this.isGettingResults = false;
       });
+  }
+
+  printReportCards(data) {
+    let cat = data.stream.toLowerCase() === 'all' ? 'class' : 'stream';
+    let id = (cat === 'stream') ? data.stream : data.class;
+    const url = printUrlWithToken(`/exams/cards/${cat}?id=${id}&exam=${this.id}`);
+    this.reportCardsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
 }
