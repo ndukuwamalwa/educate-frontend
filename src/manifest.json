@@ -1,0 +1,16 @@
+{
+  "name": "School",
+  "short_name": "School",
+  "theme_color": "#1976d2",
+  "background_color": "#fafafa",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "sizes": "284x284",
+      "type": "image/png"
+    }
+  ]
+}

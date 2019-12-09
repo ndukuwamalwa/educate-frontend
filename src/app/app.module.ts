@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { routes } from './routes';
 import { CoreModule } from './core/core.module';
 import { ToastrService } from './toastr.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { ToastrService } from './toastr.service';
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    CoreModule
+    CoreModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     ToastrService
