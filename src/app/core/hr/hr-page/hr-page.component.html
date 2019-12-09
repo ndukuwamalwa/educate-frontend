@@ -82,7 +82,8 @@
             <div class="inputs">
               <fieldset>
                 <label for="empNo">Employee number</label>
-                <input type="text" name="empNo" id="empNo" required [ngModel]="employee?.empNo" autocomplete="off">
+                <input type="text" name="empNo" id="empNo" required [ngModel]="employee?.empNo" autocomplete="off"
+                  pattern="[a-zA-Z0-9/-]{1,}">
               </fieldset>
               <fieldset>
                 <label for="idNo">ID Number</label>
@@ -93,19 +94,22 @@
             <div class="input">
               <fieldset>
                 <label for="fname">First name</label>
-                <input type="text" name="fname" id="fname" required [ngModel]="employee?.fname" autocomplete="off">
+                <input type="text" name="fname" id="fname" required [ngModel]="employee?.fname" autocomplete="off"
+                  pattern="[a-zA-Z' ]{1,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="mname">Middle name</label>
-                <input type="text" name="mname" id="mname" [ngModel]="employee?.mname" autocomplete="off">
+                <input type="text" name="mname" id="mname" [ngModel]="employee?.mname" autocomplete="off"
+                  pattern="[a-zA-Z' ]{0,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="lname">Last name</label>
-                <input type="text" name="lname" id="lname" required [ngModel]="employee?.lname" autocomplete="off">
+                <input type="text" name="lname" id="lname" required [ngModel]="employee?.lname" autocomplete="off"
+                  pattern="[a-zA-Z' ]{1,}">
               </fieldset>
             </div>
             <div class="inputs">
@@ -160,7 +164,7 @@
               <fieldset>
                 <label for="position">Work title</label>
                 <input type="text" name="position" id="position" required [ngModel]="employee?.position"
-                  autocomplete="off">
+                  autocomplete="off" pattern="[a-zA-Z ]{1,}">
               </fieldset>
               <fieldset>
                 <label for="qualification">Academic qualification</label>
@@ -177,7 +181,8 @@
             <div class="inputs">
               <fieldset>
                 <label for="phone">Phone number</label>
-                <input type="tel" name="phone" id="phone" required [ngModel]="employee?.phone" autocomplete="off">
+                <input type="tel" name="phone" id="phone" required [ngModel]="employee?.phone" autocomplete="off"
+                  pattern="^07[0-9]{8}">
               </fieldset>
               <fieldset>
                 <label for="email">Email address</label>
@@ -205,13 +210,15 @@
             <div class="input">
               <fieldset>
                 <label for="bank">Bank name</label>
-                <input type="text" name="bank" id="bank" required [ngModel]="salary?.bank" autocomplete="off">
+                <input type="text" name="bank" id="bank" required [ngModel]="salary?.bank" autocomplete="off"
+                  pattern="[a-zA-Z]{1,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="branch">Branch</label>
-                <input type="text" name="branch" id="branch" required [ngModel]="salary?.branch" autocomplete="off">
+                <input type="text" name="branch" id="branch" required [ngModel]="salary?.branch" autocomplete="off"
+                  pattern="[a-zA-Z]{1,}">
               </fieldset>
             </div>
             <div class="input">
@@ -224,7 +231,8 @@
             <div class="input">
               <fieldset>
                 <label for="basic">Basic salary</label>
-                <input type="number" name="basic" id="basic" required [ngModel]="salary?.basic" autocomplete="off">
+                <input type="number" name="basic" id="basic" min="1" required [ngModel]="salary?.basic"
+                  autocomplete="off">
               </fieldset>
             </div>
             <div class="submit">

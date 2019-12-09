@@ -16,7 +16,8 @@
             <div class="inputs">
               <fieldset>
                 <label for="empNo">Employee number</label>
-                <input type="text" name="empNo" id="empNo" required ngModel autocomplete="off">
+                <input type="text" name="empNo" id="empNo" required ngModel autocomplete="off"
+                  pattern="[a-zA-Z0-9/-]{1,}">
               </fieldset>
               <fieldset>
                 <label for="idNo">ID Number</label>
@@ -26,19 +27,19 @@
             <div class="input">
               <fieldset>
                 <label for="fname">First name</label>
-                <input type="text" name="fname" id="fname" required ngModel autocomplete="off">
+                <input type="text" name="fname" id="fname" required ngModel autocomplete="off" pattern="[a-zA-Z' ]{1,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="mname">Middle name</label>
-                <input type="text" name="mname" id="mname" ngModel autocomplete="off">
+                <input type="text" name="mname" id="mname" ngModel autocomplete="off" pattern="[a-zA-Z' ]{0,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="lname">Last name</label>
-                <input type="text" name="lname" id="lname" required ngModel autocomplete="off">
+                <input type="text" name="lname" id="lname" required ngModel autocomplete="off" pattern="[a-zA-Z' ]{1,}">
               </fieldset>
             </div>
             <div class="inputs">
@@ -90,7 +91,8 @@
             <div class="inputs">
               <fieldset>
                 <label for="position">Work title</label>
-                <input type="text" name="position" id="position" required ngModel autocomplete="off">
+                <input type="text" name="position" id="position" required ngModel autocomplete="off"
+                  pattern="[a-zA-Z ]{1,}">
               </fieldset>
               <fieldset>
                 <label for="qualification">Academic qualification</label>
@@ -107,7 +109,7 @@
             <div class="inputs">
               <fieldset>
                 <label for="phone">Phone number</label>
-                <input type="tel" name="phone" id="phone" required ngModel autocomplete="off">
+                <input type="tel" name="phone" id="phone" required ngModel autocomplete="off" pattern="^07[0-9]{8}">
               </fieldset>
               <fieldset>
                 <label for="email">Email address</label>

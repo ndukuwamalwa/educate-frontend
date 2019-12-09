@@ -45,19 +45,19 @@
             <div class="input">
               <fieldset>
                 <label for="name">Name of the user</label>
-                <input type="text" id="name" name="name" [ngModel]="user?.name" required autocomplete="off">
+                <input type="text" id="name" name="name" [ngModel]="user?.name" required autocomplete="off" pattern="[a-zA-Z' ]{1,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="title">Work title</label>
-                <input type="text" id="title" name="title" [ngModel]="user?.title" required autocomplete="off">
+                <input type="text" id="title" name="title" [ngModel]="user?.title" required autocomplete="off" pattern="[a-zA-Z ]{1,}">
               </fieldset>
             </div>
             <div class="input">
               <fieldset>
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" [ngModel]="user?.username" required autocomplete="off">
+                <input type="text" id="username" name="username" [ngModel]="user?.username" required autocomplete="off" pattern="[a-zA-Z0-9]{1,}">
               </fieldset>
             </div>
             <div class="input">
