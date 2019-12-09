@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-$theme-color: rgb(27, 155, 240);
+$theme-color: rgb(6, 73, 94);
 
 * {
     padding: 0;
@@ -141,7 +141,7 @@ button, .btn {
     }
 
     &--red {
-        background-color: rgb(235, 77, 77);
+        background-color: rgb(194, 23, 23);
     }
 
     &--standalone {
@@ -201,9 +201,9 @@ button, .btn {
         }
 
         &--active {
-            color: $theme-color;
+            color: #0f4b73;
             font-weight: bold;
-            border-bottom: 3px solid $theme-color;
+            border-bottom: 3px solid #0f4b73;
         }
     }
 
