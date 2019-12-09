@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   message: string;
   userId: string;
   jwtHelper = new JwtHelperService();
+  loginMessage: string = '';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -46,6 +47,14 @@ export class LoginComponent implements OnInit {
       }, err => {
         this.invalid = true;
         this.isLoggingIn = false;
+        if (err.status === 401) {
+          this.loginMessage = "Invalid username or password.";
+          return;
+        } else if (err.status === 0) {
+          this.loginMessage = "You are offline.";
+        } else {
+          this.loginMessage = "A server problem was encountered. Please retry.";
+        }
       });
   }
 
