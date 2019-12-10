@@ -60,6 +60,10 @@ export class StudentComponent implements OnInit {
 
   ngOnInit() {
     this.viewStudents('active');
+    this.getClasses();
+  }
+
+  getClasses() {
     this.classService.getClasses()
       .subscribe(res => {
         this.classes = res.items;
@@ -217,6 +221,7 @@ export class StudentComponent implements OnInit {
         this.toastr.success(`${this.selectedStudents.length} students have been assigned a class successfully.`);
         this.selectedStudents = [];
         this.viewMisplaced({ sortBy: "admitted", sort: "1" });
+        this.getClasses();
       }, err => {
         this.isAddingToClass = false;
         this.toastr.error(`Failed to add students to class.`);
