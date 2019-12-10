@@ -39,6 +39,7 @@ export class ExamComponent implements OnInit {
         this.router.navigate(['exams', res.id]);
       }, err => {
         this.isSaving = false;
+        if (err.status === 422) return this.toastr.error(`${err.error.message}`);
         if (err.status === 409) return this.toastr.error("Exam with the given name already exists.");
         this.toastr.error("Failed to add exam");
       });

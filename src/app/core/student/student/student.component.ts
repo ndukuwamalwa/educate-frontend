@@ -78,6 +78,8 @@ export class StudentComponent implements OnInit {
       }, err => {
         if (err.status === 409) {
           this.toastr.error('Admission number has already been used.');
+        } else if(err.status === 422) {
+          this.toastr.error(err.error.message);
         } else {
           this.toastr.error('Failed to add new student. Please retry.');
         }
@@ -266,9 +268,11 @@ export class StudentComponent implements OnInit {
       this.isSavingBulk = false;
       this.toastr.success("Students added successfully.");
       this.bulkStudents = undefined;
+      this.getStudents({}, "active");
     }, err => {
       this.isSavingBulk = false;
       if (err.status === 409) return this.toastr.error(`Cannot add students. Conflicts were encountere`);
+      if (err.status === 422) return this.toastr.error(err.error.message);
     });
   }
 

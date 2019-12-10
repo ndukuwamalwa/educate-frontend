@@ -100,6 +100,7 @@ export class ExamPageComponent implements OnInit {
         this.isSaving = false;
       }, err => {
         this.isSaving = false;
+        if (err.status === 422) return this.toastr.error(`${err.error.message}`);
         if (err.status === 409) return this.toastr.error("Exam with the given name already exists.");
         this.toastr.error("Failed to update exam.");
       });

@@ -95,6 +95,7 @@ export class ClassComponent implements OnInit {
         this.getClasses({}, true);
         this.levels = [];
         this.toastr.success("Classes created and saved successfully.");
+        this.getClasses({}, true);
       }, err => {
         this.isSavingClass = false;
         if (err.status === 409) return this.toastr.error("Failed to save classes. Duplicates were found.");

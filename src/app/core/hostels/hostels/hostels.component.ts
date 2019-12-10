@@ -70,6 +70,7 @@ export class HostelsComponent implements OnInit {
         this.toastr.success("New hostel created successfully.");
       }, err => {
         this.isSavingHostel = false;
+        if (err.status === 422) return this.toastr.error(err.error.message);
         if (err.status === 409) return this.toastr.error("Hostel already exists.");
         this.toastr.error("Failed to add hostel.");
       });

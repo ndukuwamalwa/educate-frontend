@@ -38,6 +38,7 @@ export class UserComponent implements OnInit {
         this.router.navigate(['users', res.id]);
         this.toastr.success("User added successfully.");
         this.isSaving = false;
+        this.getUsers({});
       }, err => {
         this.isSaving = false;
         if (err.status === 409) {

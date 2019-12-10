@@ -17,7 +17,7 @@ export class HrComponent implements OnInit {
   isGettingEmployees: boolean = false;
   employees: any[];
   total: number;
-  printUrl: SafeResourceUrl
+  printUrl: SafeResourceUrl;
 
   constructor(
     private hrService: HrService,
@@ -36,11 +36,10 @@ export class HrComponent implements OnInit {
         this.toastr.success("Employee addded successfully.");
         this.isAddingEmployee = false;
         this.router.navigate(['hr', res.id]);
+        this.getEmployees({}, true);
       }, err => {
         this.isAddingEmployee = false;
-        if (err.status === 409) {
-          return this.toastr.error(err.error.message);
-        }
+        if ((err.status === 409) || (err.status === 422)) return this.toastr.error(err.error.message);
         this.toastr.error("Failed to add employee.");
       });
   }

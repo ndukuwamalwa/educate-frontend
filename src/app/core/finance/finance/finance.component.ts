@@ -59,6 +59,7 @@ export class FinanceComponent implements OnInit {
         form.reset();
       }, err => {
         this.isSavingPayment = false;
+        if (err.status === 422) return this.toastr.error(err.error.message);
         if (err.status === 409) {
           return this.toastr.error("Transaction number belongs to another stored payment.");
         }
@@ -184,6 +185,7 @@ export class FinanceComponent implements OnInit {
         this.router.navigate(['finance', 'cheque', res.id]);
       }, err => {
         this.isSavingCheque = false;
+        if (err.status === 422) return this.toastr.error(err.error.message);
         if (err.status === 409) return this.toastr.error("Cheque number already exists.");
         this.toastr.error("Failed to add cheque.");
       });

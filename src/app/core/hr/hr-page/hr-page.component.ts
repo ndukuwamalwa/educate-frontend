@@ -53,6 +53,7 @@ export class HrPageComponent implements OnInit {
         this.toastr.success('Details updated successfully.');
       }, err => {
         this.isUpdatingEmployee = false;
+        if ((err.status === 409) || (err.status === 422)) return this.toastr.error(err.error.message);
         this.toastr.error("Update failed. Check details and try again.");
       });
   }
@@ -82,6 +83,7 @@ export class HrPageComponent implements OnInit {
         this.toastr.success("Salary details saved successfully.");
       }, err => {
         this.isSavingSalary = false;
+        if ((err.status === 409) || (err.status === 422)) return this.toastr.error(err.error.message);
         this.toastr.error("Failed to save salary details.");
       });
   }
