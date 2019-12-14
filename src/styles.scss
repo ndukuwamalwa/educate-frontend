@@ -321,7 +321,8 @@ table {
 
                     &:first-child {
                         flex-basis: 30%;
-                        text-align: right;
+                        text-align: left;
+                        padding: 5px;
                     }
 
                     &:last-child {
@@ -330,6 +331,10 @@ table {
                     }
                 }
             }
+        }
+        tr:hover {
+            background-color: transparent;
+            color: #000 !important;
         }
     }
 }
@@ -440,7 +445,7 @@ iframe {
 
 @media all and (max-width: 1050px) and (min-width: 501px) {
     table {
-        min-width: 60%;
+        min-width: 80%;
     }
     .tabs {
         &__links {
@@ -525,7 +530,7 @@ iframe {
     }
 
     table {
-        width: 100%;
+        min-width: 100%;
     }
 
     #container {

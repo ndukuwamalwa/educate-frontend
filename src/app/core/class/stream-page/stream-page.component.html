@@ -60,14 +60,14 @@
               <thead>
                 <th>Adm</th>
                 <th>Name</th>
-                <th>Class</th>
+                <th class="not-mobile">Class</th>
                 <th>Action</th>
               </thead>
               <tbody>
                 <tr *ngFor="let student of unstreamedStudents">
                   <td>{{student.adm}}</td>
                   <td>{{student.student}}</td>
-                  <td>Form {{student.class}}</td>
+                  <td class="not-mobile">Form {{student.class}}</td>
                   <td>
                     <input type="checkbox" name="stud_{{student.studentId}}" id="stud_{{student.studentId}}" ngModel
                       (change)="onSelectChange($event.target)" [value]="student.studentId">
