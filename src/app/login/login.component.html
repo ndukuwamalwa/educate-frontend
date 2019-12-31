@@ -1,0 +1,53 @@
+<main>
+    <form [formGroup]="loginForm" *ngIf="!shouldChangePassword" (ngSubmit)="login(loginForm.value)" ngNativeValidate>
+        <div class="form-title">
+            <span class="form-heading">Login</span>
+            <span>Enter your details to log in</span>
+        </div>
+        <fieldset class="full-width">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" formControlName="username" autocomplete="off"
+                (focus)="onFocus()" readonly>
+        </fieldset>
+        <fieldset class="full-width">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" formControlName="password" autocomplete="off"
+                (focus)="onFocus()" readonly>
+        </fieldset>
+        <fieldset class="full-width">
+            <p style="color: red;" *ngIf="invalidCredentials">{{invalidCredentials}}</p>
+        </fieldset>
+        <fieldset>
+            <button class="btn btn--primary" [disabled]="loginForm.dirty && loginForm.invalid">
+                <i class="fa fa-sign-in"></i> Login
+            </button>
+            <app-loader *ngIf="isLoading"></app-loader>
+        </fieldset>
+    </form>
+    <form #form="ngForm" (ngSubmit)="changePassword(form.value)" ngNativeValidate *ngIf="shouldChangePassword">
+        <div class="form-title">
+            <span class="form-heading">Change Password</span>
+            <span>We have noticed that you are using a default password. Please change your password to enhance
+                security.</span>
+        </div>
+        <fieldset class="full-width">
+            <label for="password">New password</label>
+            <input type="password" name="password" id="password" required minlength="8"
+                (keyup)="onChangePass($event.target)" ngModel #p>
+        </fieldset>
+        <fieldset class="full-width">
+            <p style="color: red;" *ngIf="invalidPassMessage">{{invalidPassMessage}}</p>
+        </fieldset>
+        <fieldset class="full-width">
+            <label for="confirm">New password</label>
+            <input type="password" name="confirm" id="confirm" required minlength="8"
+                (keyup)="onConfirmPass($event.target, p.value)" ngModel>
+        </fieldset>
+        <fieldset>
+            <button class="btn btn--primary" [disabled]="form.dirty && form.invalid || invalidPassMessage">
+                Change Password and login
+            </button>
+            <app-loader *ngIf="isLoading"></app-loader>
+        </fieldset>
+    </form>
+</main>

@@ -1,0 +1,24 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="classes && classes.length === 0">No classes here</p>
+<table *ngIf="classes && classes.length > 0">
+    <thead>
+        <tr>
+            <th>Class</th>
+            <th>Fees</th>
+            <th>Streams</th>
+            <th>Students</th>
+            <th>Notes</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c of classes" (click)="viewClass($event.target.nodeName, c)" class="clickable">
+            <td>Form {{c.level}}</td>
+            <td>{{c.fees | currency: "Kshs. "}}</td>
+            <td>{{c.streams | number}}</td>
+            <td>{{c.students | number}}</td>
+            <td>{{c.description}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(c)"></i></td>
+        </tr>
+    </tbody>
+</table>

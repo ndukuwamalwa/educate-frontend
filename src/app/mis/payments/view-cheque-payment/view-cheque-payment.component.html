@@ -1,0 +1,28 @@
+<app-paginator [total]="total" [shown]="cheques?.length" [sorts]="sorts" (output)="onOptions($event)"></app-paginator>
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="cheques && cheques.length === 0">No cheques to show</p>
+<table *ngIf="cheques && cheques.length > 0">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Bank</th>
+            <th>Amount</th>
+            <th>Allocated</th>
+            <th>Balance</th>
+            <th>Benefited</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c of cheques" (click)="view($event.target.nodeName, c)" class="clickable">
+            <td>{{c.no | uppercase}}</td>
+            <td>{{c.bank | titlecase}}</td>
+            <td>{{c.amount | currency: 'Shs. '}}</td>
+            <td>{{c.used | currency: 'Shs. '}}</td>
+            <td>{{c.amount - c.used | currency: 'Shs. '}}</td>
+            <td>{{c.beneficiaries | number}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete($event.target.nodeName, c)"></i>
+            </td>
+        </tr>
+    </tbody>
+</table>

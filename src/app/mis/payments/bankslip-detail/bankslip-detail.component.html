@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>Payment - {{data.receiptNo | uppercase}}</h2>
+<mat-dialog-content>
+    <app-add-pay [data]="data" [title]="'Update'" (submitted)="update($event)" [isLoading]="isLoading"></app-add-pay>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="data">Close</button>
+</mat-dialog-actions>

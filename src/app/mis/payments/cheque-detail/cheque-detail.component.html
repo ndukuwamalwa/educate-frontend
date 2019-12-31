@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>{{cheque?.no | titlecase}}</h2>
+<mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab label="Add beneficiaries">
+            <p class="info" *ngIf="cheque.amount === cheque.used">The cheque has been used up. There is no amount to
+                allocate.</p>
+            <form #b="ngForm" (ngSubmit)="addBeneficiary(b)" *ngIf="cheque.amount > cheque.used" ngNativeValidate>
+                <div class="form-title">
+                    <span class="form-heading">Add beneficiary</span>
+                </div>
+                <fieldset>
+                    <label for="adm">Admission number</label>
+                    <input type="text" name="adm" id="adm" required autocomplete="off" ngModel>
+                </fieldset>
+                <fieldset>
+                    <label for="amount">Amount</label>
+                    <input type="number" name="amount" id="amount" required min="1" [max]="cheque.amount - cheque.used"
+                        ngModel autocomplete="off">
+                </fieldset>
+                <fieldset>
+                    <label class="transparent">.</label>
+                    <button class="btn btn--primary" [disabled]="b.invalid || isAddingBeneficiary">Submit</button>
+                    <app-loader *ngIf="isAddingBeneficiary"></app-loader>
+                </fieldset>
+                <fieldset></fieldset>
+            </form>
+        </mat-tab>
+        <mat-tab label="View beneficiaries">
+            <p class="info" *ngIf="beneficiaries && beneficiaries.length === 0">No beneficiaries found</p>
+            <app-loader *ngIf="isGettingBeneficiaries"></app-loader>
+            <table *ngIf="beneficiaries && beneficiaries.length > 0">
+                <thead>
+                    <tr>
+                        <th>Adm</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let b of beneficiaries">
+                        <td>{{b.adm | uppercase}}</td>
+                        <td>{{b.name | titlecase}}</td>
+                        <td>{{b.amount | currency: "Shs. "}}</td>
+                        <td><i class="fa fa-trash action-icon action-icon--danger" (click)="deleteBeneficiary(b)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="cheque">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,36 @@
+<form #f="ngForm" (ngSubmit)="view(f.value.adm)">
+    <fieldset>
+        <label for="adm">Enter admission number</label>
+        <input type="text" name="adm" id="adm" ngModel required autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label class="transparent">.</label>
+        <button class="btn btn--primary" [disabled]="isLoading">View</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<table *ngIf="balance">
+    <tbody>
+        <tr>
+            <td>Adm</td>
+            <td>{{balance?.adm | uppercase}}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{balance?.name | titlecase}}</td>
+        </tr>
+        <tr>
+            <td>Credit</td>
+            <td>{{balance?.credit | currency: 'Kshs. '}}</td>
+        </tr>
+        <tr>
+            <td>Debit</td>
+            <td>{{balance?.debit | currency: 'Kshs. '}}</td>
+        </tr>
+        <tr>
+            <td>Balance</td>
+            <td>{{balance?.balance | currency: 'Kshs. '}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,57 @@
+<form [formGroup]="employeeForm" (ngSubmit)="save(employeeForm.value)">
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fileds marked * must be completed.</span>
+    </div>
+    <fieldset>
+        <label for="empNo">Employee No.*</label>
+        <input type="text" name="empNo" id="empNo" formControlName="empNo" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="fname">First name*</label>
+        <input type="text" name="fname" id="fname" formControlName="fname" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="mname">Middle name</label>
+        <input type="text" name="mname" id="mname" formControlName="mname" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="lname">Last name*</label>
+        <input type="text" name="lname" id="lname" formControlName="lname" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="gender">Gender*</label>
+        <div>
+            <div>
+                <input type="radio" name="gender" id="male" value="Male" formControlName="gender">
+                <label for="male">Male</label>
+            </div>
+            <div>
+                <input type="radio" name="gender" id="female" value="Female" formControlName="gender">
+                <label for="female">Female</label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="dob">Date of Birth*</label>
+        <input type="date" name="dob" id="dob" formControlName="dob">
+    </fieldset>
+    <fieldset>
+        <label for="county">County*</label>
+        <select name="county" id="county" formControlName="county">
+            <option [value]="c" *ngFor="let c of counties">{{c}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="idNo">National ID No.*</label>
+        <input type="text" name="idNo" id="idNo" formControlName="idNo" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="joined">Date joined*</label>
+        <input type="date" name="joined" id="joined" formControlName="joined">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="employeeForm.invalid || isLoading">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

@@ -1,0 +1,29 @@
+<form>
+    <fieldset>
+        <label for="class">Class</label>
+        <select name="class" id="class" (change)="onClassChange($event.target.value)" [ngModel]="selectedClass">
+            <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+        </select>
+    </fieldset>
+</form>
+<app-paginator [total]="total" [shown]="students?.length" [sorts]="sorts" (output)="onOptions($event)"></app-paginator>
+<p class="info" *ngIf="students && students.length === 0">No students in the selected class</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Class</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td>{{s.adm}}</td>
+            <td>{{s.fname + ' ' + s.lname}}</td>
+            <td>{{s.gender}}</td>
+            <td>Form {{s.level}}</td>
+        </tr>
+    </tbody>
+</table>

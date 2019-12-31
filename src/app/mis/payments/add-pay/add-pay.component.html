@@ -1,0 +1,37 @@
+<form [formGroup]="paymentForm" (ngSubmit)="onSubmit(paymentForm)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed</span>
+    </div>
+    <fieldset *ngIf="type !== 'cash'">
+        <label for="acknowledger">Bank name*</label>
+        <input type="text" name="acknowledger" id="acknowledger" formControlName="acknowledger" required>
+    </fieldset>
+    <fieldset *ngIf="type !== 'cash'">
+        <label for="receiptNo">Transaction number*</label>
+        <input type="text" name="receiptNo" id="receiptNo" formControlName="receiptNo" required autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="paidBy">Paid by*</label>
+        <input type="text" name="paidBy" id="paidBy" formControlName="paidBy" required autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="student">Student admission number*</label>
+        <input type="text" name="student" id="student" required formControlName="student" autocomplete="off"
+            (change)="onAdm($event.target.value)">
+        <strong
+            *ngIf="results && results.adm">{{results.adm}}-{{results.fname + ' ' + results.lname | titlecase}}</strong>
+    </fieldset>
+    <fieldset>
+        <label for="datePaid">Date of payment*</label>
+        <input type="date" name="datePaid" id="datePaid" required formControlName="datePaid">
+    </fieldset>
+    <fieldset>
+        <label for="amount">Amount paid*</label>
+        <input type="number" name="amount" id="amount" formControlName="amount" required autocomplete="off" min="1">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="paymentForm.invalid || isLoading">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

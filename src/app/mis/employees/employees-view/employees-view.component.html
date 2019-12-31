@@ -1,0 +1,4 @@
+<app-paginator [total]="total" [shown]="employees?.length" [sorts]="columns" (output)="onOptions($event)"></app-paginator>
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="employees && employees.length === 0">No employees found.</p>
+<app-table [headers]="columns" *ngIf="employees?.length > 0" [rows]="employees" (rowClicked)="onClicked($event)"></app-table>

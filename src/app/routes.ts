@@ -1,28 +1,21 @@
 import { Routes } from '@angular/router';
-import { UserComponent } from './core/user/user/user.component';
-import { AttendanceCreateComponent } from './core/attendance/attendance-create/attendance-create.component';
-import { ClassComponent } from './core/class/class/class.component';
-import { ExamComponent } from './core/exams/exam/exam.component';
-import { FinanceComponent } from './core/finance/finance/finance.component';
-import { HrComponent } from './core/hr/hr/hr.component';
-import { HostelsComponent } from './core/hostels/hostels/hostels.component';
-import { StudentComponent } from './core/student/student/student.component';
-import { TeacherComponent } from './core/teacher/teacher/teacher.component';
-import { SubjectComponent } from './core/subject/subject/subject.component';
-import { SmsComponent } from './core/sms/sms/sms.component';
-import { SettingsComponent } from './core/settings/settings/settings.component';
-import { UserPageComponent } from './core/user/user-page/user-page.component';
-import { StudentPageComponent } from './core/student/student-page/student-page.component';
-import { TeacherPageComponent } from './core/teacher/teacher-page/teacher-page.component';
-import { HrPageComponent } from './core/hr/hr-page/hr-page.component';
-import { ExamPageComponent } from './core/exams/exam-page/exam-page.component';
-import { ClassPageComponent } from './core/class/class-page/class-page.component';
-import { LoginComponent } from './core/auth/login/login.component';
-import { AuthGuard } from './guards/auth.guard';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './mis/dashboard/dashboard/dashboard.component';
+import { AttandanceComponent } from './mis/attendance/attandance/attandance.component';
+import { ClassesComponent } from './mis/classes/classes/classes.component';
+import { EmployeesComponent } from './mis/employees/employees/employees.component';
+import { ExamsComponent } from './mis/exams/exams/exams.component';
+import { FeesComponent } from './mis/fees/fees/fees.component';
+import { HostelsComponent } from './mis/hostels/hostels/hostels.component';
+import { PaymentsComponent } from './mis/payments/payments/payments.component';
+import { SetupComponent } from './mis/setup/setup/setup.component';
+import { SmsComponent } from './mis/sms/sms/sms.component';
+import { StudentsComponent } from './mis/students/students/students.component';
+import { SubjectsComponent } from './mis/subjects/subjects/subjects.component';
+import { TeachersComponent } from './mis/teachers/teachers/teachers.component';
+import { UsersComponent } from './mis/users/users/users.component';
 import { LoginGuard } from './guards/login.guard';
-import { DashboardComponent } from './core/dashboard/dashboard/dashboard.component';
-import { StreamPageComponent } from './core/class/stream-page/stream-page.component';
-import { ChequePageComponent } from './core/finance/cheque-page/cheque-page.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -33,148 +26,105 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'home',
+        path: "dashboard",
         component: DashboardComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'users',
-        component: UserComponent,
+        path: "attendance/:tab/:subtab",
+        component: AttandanceComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'users/:id',
-        component: UserPageComponent,
+        path: "classes/:tab/:subtab",
+        component: ClassesComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'attendance',
-        component: AttendanceCreateComponent,
-        pathMatch: 'full',
+        path: "employees/:tab/:subtab",
+        component: EmployeesComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'class',
-        component: ClassComponent,
+        path: "exams/:tab/:subtab",
+        component: ExamsComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: "class/stream/:id",
-        component: StreamPageComponent
-    },
-    {
-        path: 'class/:id',
-        component: ClassPageComponent,
+        path: "fees/:tab/:subtab",
+        component: FeesComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'exams',
-        component: ExamComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'exams/:id',
-        component: ExamPageComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'finance',
-        component: FinanceComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'finance/cheque/:id',
-        component: ChequePageComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'hr',
-        component: HrComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'hr/:id',
-        component: HrPageComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'hostels',
+        path: "hostels/:tab/:subtab",
         component: HostelsComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'students',
-        component: StudentComponent,
+        path: "payments/:tab/:subtab",
+        component: PaymentsComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'students/:id',
-        component: StudentPageComponent,
+        path: "setup/:tab/:subtab",
+        component: SetupComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'teachers',
-        component: TeacherComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'teachers/:id',
-        component: TeacherPageComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'subjects',
-        component: SubjectComponent,
-        canActivate: [
-            AuthGuard
-        ]
-    },
-    {
-        path: 'sms',
+        path: "sms/:tab/:subtab",
         component: SmsComponent,
         canActivate: [
             AuthGuard
         ]
     },
     {
-        path: 'settings',
-        component: SettingsComponent,
+        path: "students/:tab/:subtab",
+        component: StudentsComponent,
         canActivate: [
             AuthGuard
         ]
+    },
+    {
+        path: "subjects/:tab/:subtab",
+        component: SubjectsComponent,
+        canActivate: [
+            AuthGuard
+        ]
+    },
+    {
+        path: "teachers/:tab/:subtab",
+        component: TeachersComponent,
+        canActivate: [
+            AuthGuard
+        ]
+    },
+    {
+        path: "users/:tab/:subtab",
+        component: UsersComponent,
+        canActivate: [
+            AuthGuard
+        ]
+    },
+    {
+        path: "**",
+        redirectTo: ""
     }
 ];

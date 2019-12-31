@@ -1,0 +1,121 @@
+<div *ngIf="type === 'stream'">
+    <h4>Stream attendance</h4>
+    <form #streamF="ngForm" (ngSubmit)="viewStreamAttendance(streamF.value)" ngNativeValidate>
+        <fieldset>
+            <label for="att-stream">Stream</label>
+            <select name="stream" id="att-stream" required ngModel>
+                <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name}}</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <label [for]="type + 'date'">Date</label>
+            <input type="date" name="date" [id]="type + 'date'" required ngModel>
+        </fieldset>
+        <fieldset>
+            <label class="transparent">.</label>
+            <button class="btn btn--primary">View</button>
+        </fieldset>
+        <fieldset></fieldset>
+    </form>
+    <app-loader *ngIf="isLoading"></app-loader>
+    <table *ngIf="attendances">
+        <thead>
+            <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th>Stream</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let a of attendances">
+                <td>{{a.adm}}</td>
+                <td>{{a.name}}</td>
+                <td>{{a.stream}}</td>
+                <th>
+                    <i class="fa fa-trash action-icon action-icon--danger" (click)="deleteAttendance(a)"></i>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="type === 'class'">
+    <h4>Class attendance</h4>
+    <form #classF="ngForm" (ngSubmit)="viewClassAttendance(classF.value)" ngNativeValidate>
+        <fieldset>
+            <label for="clas">Class</label>
+            <select name="clas" id="clas" required ngModel>
+                <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <label [for]="type + 'date'">Date</label>
+            <input type="date" name="date" [id]="type + 'date'" required ngModel>
+        </fieldset>
+        <fieldset>
+            <label class="transparent">.</label>
+            <button class="btn btn--primary">View</button>
+        </fieldset>
+        <fieldset></fieldset>
+    </form>
+    <app-loader *ngIf="isLoading"></app-loader>
+    <table *ngIf="attendances">
+        <thead>
+            <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let a of attendances">
+                <td>{{a.adm}}</td>
+                <td>{{a.name}}</td>
+                <td>Form {{a.level}}</td>
+                <th>
+                    <i class="fa fa-trash action-icon action-icon--danger" (click)="deleteAttendance(a)"></i>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="type === 'student'">
+    <h4>Student attendance</h4>
+    <form #studentF="ngForm" (ngSubmit)="viewStudentAttendande(studentF.value)" ngNativeValidate>
+        <fieldset>
+            <label for="adm">Admission number</label>
+            <input type="text" name="adm" id="adm" required ngModel autocomplete="off">
+        </fieldset>
+        <fieldset>
+            <label for="startDate">From date</label>
+            <input type="date" name="startDate" id="startDate" required ngModel>
+        </fieldset>
+        <fieldset>
+            <label for="endDate">To date</label>
+            <input type="date" name="endDate" id="endDate" required ngModel>
+        </fieldset>
+        <fieldset>
+            <button class="btn btn--primary">View</button>
+        </fieldset>
+    </form>
+    <app-loader *ngIf="isLoading"></app-loader>
+    <table *ngIf="attendances">
+        <thead>
+            <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let a of attendances">
+                <td>{{a.adm}}</td>
+                <td>{{a.name}}</td>
+                <th>
+                    <i class="fa fa-trash action-icon action-icon--danger" (click)="deleteAttendance(a)"></i>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>

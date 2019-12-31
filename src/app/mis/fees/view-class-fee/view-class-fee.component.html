@@ -1,0 +1,32 @@
+<form>
+    <fieldset>
+        <label for="class">Select class</label>
+        <select name="class" id="class" ngModel (change)="onClassChange($event.target.value)">
+            <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+        </select>
+    </fieldset>
+</form>
+<app-paginator *ngIf="balances" [total]="total" [sorts]="sorts" [shown]="balances?.length" (output)="onOptions($event)">
+</app-paginator>
+<p class="info" *ngIf="balances && balances.length === 0">No items to show</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="balances?.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Credit</th>
+            <th>Debit</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let b of balances">
+            <td>{{b.adm | uppercase}}</td>
+            <td>{{b.name | titlecase}}</td>
+            <td>{{b.credit | currency: 'KShs. '}}</td>
+            <td>{{b.debit | currency: 'Kshs. '}}</td>
+            <td>{{b.balance | currency: 'Kshs. '}}</td>
+        </tr>
+    </tbody>
+</table>

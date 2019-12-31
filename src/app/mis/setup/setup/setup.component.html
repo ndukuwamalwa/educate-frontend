@@ -1,0 +1,18 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/setup'" #tabs>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/term" *ngIf="tabs.tab === 'add' && tabs.subtab === 'term'">
+                        <app-add-term></app-add-term>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/list" *ngIf="tabs.tab === 'view' && tabs.subtab === 'list'">
+                        <app-view-terms></app-view-terms>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

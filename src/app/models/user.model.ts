@@ -3,7 +3,11 @@ export interface User {
     name: string;
     title: string;
     username: string;
-    password?: string;
-    type: string;
+    password: string;
     state: string;
+    u_group: number;
+    created: string;
+    tables?: any;
+    userGroup?: string;
+    groupName?: string;
 }

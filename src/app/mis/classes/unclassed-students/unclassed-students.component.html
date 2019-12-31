@@ -1,0 +1,42 @@
+<app-paginator [total]="total" [shown]="students?.length" [sorts]="sorts" (output)="onOptions($event)"></app-paginator>
+<p class="info" *ngIf="students && students?.length === 0">No IDPs!!</p>
+<table>
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Date admitted</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td>{{s.adm}}</td>
+            <td>{{s.fname + ' ' + s.lname}}</td>
+            <td>{{s.gender}}</td>
+            <td>{{s.admitted | date}}</td>
+            <th>
+                <button class="btn" (click)="check(s.id)" [ngClass]="{
+                    'btn--primary': selectedStudents.includes(s.id)
+                }"><i class="fa fa-check"></i></button>
+            </th>
+        </tr>
+    </tbody>
+</table>
+<form #f="ngForm" (ngSubmit)="addToClass(f.value)" *ngIf="selectedStudents.length > 0" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">Add students to class</span>
+        <span>Fees will be charged for the selected class</span>
+    </div>
+    <fieldset>
+        <label for="stream">Select class</label>
+        <select name="stream" id="stream" required ngModel>
+            <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading">Add {{selectedStudents.length}} students</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

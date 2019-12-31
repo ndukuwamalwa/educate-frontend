@@ -1,0 +1,38 @@
+<form #rForm="ngForm" (ngSubmit)="viewResults(rForm.value)" ngNativeValidate>
+    <fieldset>
+        <label for="exam">Select exam</label>
+        <select name="exam" id="exam" ngModel required>
+            <option [value]="e.id" *ngFor="let e of exams">{{e.name}}-{{e.term}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="class">Select class</label>
+        <select name="clas" id="class" ngModel required (change)="onClassChange($event.target.value)">
+            <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="stream">Stream</label>
+        <select name="stream" id="stream" required ngModel>
+            <option value="all">All</option>
+            <option [value]="s.id" *ngFor="let s of sortedStreams">{{s.name}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading">View Results</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>
+<p class="info" *ngIf="results && results.length === 0">No results yet.</p>
+<table *ngIf="results && results.length > 0">
+    <thead>
+        <tr>
+            <th *ngFor="let h of headers">{{h | uppercase}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let r of results">
+            <td *ngFor="let h of headers">{{r[h]}}</td>
+        </tr>
+    </tbody>
+</table>

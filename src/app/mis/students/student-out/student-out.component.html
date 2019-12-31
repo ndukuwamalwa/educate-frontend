@@ -1,0 +1,28 @@
+<form (ngSubmit)="sendData(f.value)" #f="ngForm" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading" *ngIf="type === 'suspension'">New suspension</span>
+        <span class="form-heading" *ngIf="type === 'leave'">New leave out</span>
+        <span class="form-heading" *ngIf="type === 'expulsion'">New expulsion</span>
+        <span>All fields marked * must be completed</span>
+    </div>
+    <fieldset>
+        <label [for]="type + 'student'">Admission number</label>
+        <input type="text" name="student" [id]="type + 'student'" required ngModel>
+    </fieldset>
+    <fieldset>
+        <label [for]="type + 'startDate'">Start date</label>
+        <input type="date" name="startDate" [id]="type + 'startDate'" required ngModel>
+    </fieldset>
+    <fieldset *ngIf="type !== 'expulsion'">
+        <label [for]="type + 'endDate'">End date</label>
+        <input type="date" name="endDate" [id]="type + 'endDate'" required ngModel>
+    </fieldset>
+    <fieldset class="full-width">
+        <label [for]="type + 'reason'">Reason</label>
+        <textarea [name]="type === 'expulsion' ? 'comment': 'reason'" [id]="type + 'reason'" required ngModel></textarea>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

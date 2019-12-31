@@ -1,0 +1,144 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/students'" #tabs>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/single">
+                        <app-student-form [title]="'Add student'" (onSubmit)="addStudent($event)" [data]="{}"
+                            [isLoading]="isLoading">
+                        </app-student-form>
+                    </div>
+                    <div data-path="/import">
+                        <app-students-import (onImported)="onStudentImported($event)" [isLoading]="isLoading">
+                        </app-students-import>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/active" *ngIf="tabs.subtab === 'active' && tabs.tab === 'view'">
+                        <app-student-list [title]="'Active Students'" [method]="'active'" [options]="{}">
+                        </app-student-list>
+                    </div>
+                    <div data-path="/archived" *ngIf="tabs.subtab === 'archived' && tabs.tab === 'view'">
+                        <app-student-list [title]="'Archived Students'" [method]="'archived'" [options]="{}">
+                        </app-student-list>
+                    </div>
+                    <div data-path="/expelled" *ngIf="tabs.subtab === 'expelled' && tabs.tab === 'view'">
+                        <app-student-list [title]="'Expelled Students'" [method]="'expelled'" [options]="{}">
+                        </app-student-list>
+                    </div>
+                    <div data-path="/suspended" *ngIf="tabs.subtab === 'suspended' && tabs.tab === 'view'">
+                        <app-student-list [title]="'Suspended Students'" [method]="'suspended'" [options]="{}">
+                        </app-student-list>
+                    </div>
+                    <div data-path="/leave" *ngIf="tabs.subtab === 'leave' && tabs.tab === 'view'">
+                        <app-student-list [title]="'Students with leave outs'" [method]="'leave'" [options]="{}">
+                        </app-student-list>
+                    </div>
+                </div>
+                <div data-path="/printing">
+                    <div data-path="/active" *ngIf="tabs.subtab === 'active' && tabs.tab === 'printing'">
+                        <app-student-printing [type]="'active'"></app-student-printing>
+                    </div>
+                    <div data-path="/archived" *ngIf="tabs.subtab === 'archived' && tabs.tab === 'printing'">
+                        <app-student-printing [type]="'archived'"></app-student-printing>
+                    </div>
+                    <div data-path="/expelled" *ngIf="tabs.subtab === 'expelled' && tabs.tab === 'printing'">
+                        <app-student-printing [type]="'expelled'"></app-student-printing>
+                    </div>
+                    <div data-path="/suspended" *ngIf="tabs.subtab === 'suspended' && tabs.tab === 'printing'">
+                        <app-student-printing [type]="'suspended'"></app-student-printing>
+                    </div>
+                    <div data-path="/leave" *ngIf="tabs.subtab === 'leave' && tabs.tab === 'printing'">
+                        <app-student-printing [type]="'leave'"></app-student-printing>
+                    </div>
+                </div>
+                <div data-path="/management">
+                    <div data-path="/archive" *ngIf="tabs.subtab === 'archive' && tabs.tab === 'management'">
+                        <app-students-markable (studentIds)="onAddToArchiveList($event)" [method]="'active'">
+                        </app-students-markable>
+                        <form (ngSubmit)="archive(aF.value.comment)" #aF="ngForm" *ngIf="toArchive.length > 0"
+                            ngNativeValidate>
+                            <div class="form-title">
+                                <span class="form-heading">Archive students</span>
+                                <span>The selected students will be deactivated in the system</span>
+                            </div>
+                            <fieldset class="full-width">
+                                <label for="comment">Reason why theses students are being deactivated</label>
+                                <textarea name="comment" id="comment" required ngModel></textarea>
+                            </fieldset>
+                            <fieldset>
+                                <button class="btn btn--primary" [disabled]="isLoading">Archive
+                                    {{toArchive.length | number}} students</button>
+                                <app-loader *ngIf="isLoading"></app-loader>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div data-path="/leave" *ngIf="tabs.subtab === 'leave' && tabs.tab === 'management'">
+                        <app-student-out [type]="'leave'" (onSubmit)="addLeave($event)" [isLoading]="isLoading">
+                        </app-student-out>
+                    </div>
+                    <div data-path="/suspension" *ngIf="tabs.subtab === 'suspension' && tabs.tab === 'management'">
+                        <app-student-out [type]="'suspension'" (onSubmit)="addSuspension($event)"
+                            [isLoading]="isLoading"></app-student-out>
+                    </div>
+                    <div data-path="/expulsion" *ngIf="tabs.subtab === 'expulsion' && tabs.tab === 'management'">
+                        <app-student-out [type]="'expulsion'" (onSubmit)="addExpulsion($event)" [isLoading]="isLoading">
+                        </app-student-out>
+                    </div>
+                    <div data-path="/delete" *ngIf="tabs.subtab === 'delete' && tabs.tab === 'management'">
+                        <form>
+                            <fieldset>
+                                <label for="viewFrom">View students from</label>
+                                <select name="viewFrom" id="viewFrom" [ngModel]="viewFrom"
+                                    (change)="changeViewMode($event.target.value)">
+                                    <option value="active">Active students</option>
+                                    <option value="archived">Archived students</option>
+                                    <option value="expelled">Expelled students</option>
+                                </select>
+                            </fieldset>
+                        </form>
+                        <app-students-markable (studentIds)="onAddToDeleteList($event)" [method]="viewFrom">
+                        </app-students-markable>
+                        <form *ngIf="toDelete.length > 0">
+                            <div class="form-title">
+                                <span class="form-heading">Delete student records</span>
+                                <span>This operation is destructive and irreversible</span>
+                            </div>
+                            <fieldset>
+                                <button class="btn btn--danger" (click)="delete()">Delete {{toDelete.length | number}}
+                                    students</button>
+                                <app-loader *ngIf="isLoading"></app-loader>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div data-path="/restore" *ngIf="tabs.subtab === 'restore' && tabs.tab === 'management'">
+                        <form>
+                            <fieldset>
+                                <label for="viewFrom">View students from</label>
+                                <select name="viewFrom" id="viewFrom" [ngModel]="viewFrom"
+                                    (change)="changeViewMode($event.target.value)">
+                                    <option value="archived">Archived students</option>
+                                    <option value="expelled">Expelled students</option>
+                                </select>
+                            </fieldset>
+                        </form>
+                        <app-students-markable (studentIds)="onAddToRestoreList($event)" [method]="viewFrom">
+                        </app-students-markable>
+                        <form *ngIf="toRestore.length > 0">
+                            <div class="form-title">
+                                <span class="form-heading">Restore student records</span>
+                                <span>Selected students records will be reactivated in the system</span>
+                            </div>
+                            <fieldset>
+                                <button class="btn btn--primary" (click)="restore()">Restore
+                                    {{toRestore.length | number}}
+                                    students</button>
+                                <app-loader *ngIf="isLoading"></app-loader>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

@@ -1,0 +1,15 @@
+<form>
+    <fieldset *ngIf="category === 'stream'">
+        <label for="stream">Select stream</label>
+        <select name="stream" id="stream" ngModel (change)="onChange($event.target.value)">
+            <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name}}</option>
+        </select>
+    </fieldset>
+    <fieldset *ngIf="category === 'class'">
+        <label for="class">Select class</label>
+        <select name="class" id="class" ngModel (change)="onChange($event.target.value)">
+            <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+        </select>
+    </fieldset>
+</form>
+<iframe [src]="url" *ngIf="url"></iframe>

@@ -1,0 +1,18 @@
+<h4 *ngIf="category === 'non-teachers'">Create new teachers</h4>
+<h4 *ngIf="category === 'active'">Current teachers</h4>
+<h4 *ngIf="category === 'transfered'">Transfered teachers</h4>
+<h4 *ngIf="category === 'retired'">Retired teachers</h4>
+<app-paginator [total]="total" [sorts]="columns" (output)="onOptionsChange($event)" [shown]="teachers?.length">
+</app-paginator>
+<app-table [headers]="columns" [rows]="teachers" [checkKey]="'id'" *ngIf="category === 'non-teachers'"
+    (onchecked)="onchecked($event)"></app-table>
+<app-table [headers]="columns" [rows]="teachers" *ngIf="category !== 'non-teachers'"></app-table>
+<form *ngIf="selected.length > 0">
+    <div class="form-title">
+        <span class="form-heading">Create teachers</span>
+    </div>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isSavingTeachers" (click)="createTeachers()">Create
+            {{selected.length | number}} teachers</button>
+    </fieldset>
+</form>

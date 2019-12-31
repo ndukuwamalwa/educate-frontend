@@ -1,0 +1,51 @@
+<form #f="ngForm" (ngSubmit)="loadStudents(f.value)" ngNativeValidate>
+    <fieldset>
+        <label for="hostel_">Select hostel</label>
+        <select name="hostel" id="hostel_" ngModel required (change)="onHostelChange($event.target.value)">
+            <option [value]="h.id" *ngFor="let h of hostels">{{h.name}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="class">Load students from</label>
+        <select name="clas" id="class" ngModel required>
+            <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label class="transparent">.</label>
+        <button class="btn btn--primary" [disabled]="isLoading">Load</button>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="students && students.length === 0">No unallocated students found.</p>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td>{{s.adm | uppercase}}</td>
+            <td>{{s.fname + ' ' + s.lname | titlecase}}</td>
+            <td>
+                <button class="btn" [ngClass]="{ 'btn--primary': selected.includes(s.studentId) }" (click)="check(s.studentId)">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<form *ngIf="selected.length > 0">
+    <div class="form-title">
+        <span class="form-heading">Add the selected sudents to the selected hostel?</span>
+    </div>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isAddingToHostel" (click)="addToHostel()">
+            Add {{selected.length | number}} students
+        </button>
+    </fieldset>
+</form>

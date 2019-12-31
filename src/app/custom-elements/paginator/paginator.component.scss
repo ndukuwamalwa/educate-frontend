@@ -1,0 +1,62 @@
+article {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 2px 2px #b4b4b4;
+    padding: 5px;
+
+    & > div {
+        &:last-child {
+            margin-top: 10px;
+        }
+    }
+}
+.pagination {
+    display: flex;
+
+    label, span {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    & > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 5px;
+    }
+}
+#buts {
+    button {
+        margin: 0 5px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .pagination {
+        flex-wrap: wrap;
+
+        & > div {
+            flex: 1 1 40%;
+            margin: 5px 0;
+        }
+    }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap;
+
+        & > div {
+            flex: 1 1 40%;
+            margin: 5px 0;
+        }
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 1050px) {
+    .pagination {
+        flex-wrap: wrap;
+
+        & > div {
+            margin: 5px 0;
+        }
+    }
+}

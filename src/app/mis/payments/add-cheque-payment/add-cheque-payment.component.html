@@ -1,0 +1,23 @@
+<form #cF="ngForm" (ngSubmit)="save(cF)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed</span>
+    </div>
+    <fieldset>
+        <label for="no">Cheque number</label>
+        <input type="text" name="no" id="no" pattern="^[0-9a-zA-Z]+$" required autocomplete="off" [ngModel]="data?.no">
+    </fieldset>
+    <fieldset>
+        <label for="bank">Bank name</label>
+        <input type="text" name="bank" id="bank" required autocomplete="off" pattern="^[a-zA-Z ]+$"
+            [ngModel]="data?.bank">
+    </fieldset>
+    <fieldset>
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" id="amount" required autocomplete="off" min="1" [ngModel]="data?.amount">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading || cF.invalid">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

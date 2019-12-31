@@ -1,0 +1,22 @@
+<p class="info" *ngIf="subjects && subjects.length === 0">No subjects found</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="subjects && subjects.length > 0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Initials</th>
+            <th>Core?</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of subjects" (click)="more($event.target.nodeName, s)" class="clickable">
+            <td>{{s.name}}</td>
+            <td>{{s.code}}</td>
+            <td>{{s.initials}}</td>
+            <td>{{s.core === 1 ? 'Yes' : 'No'}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
+        </tr>
+    </tbody>
+</table>

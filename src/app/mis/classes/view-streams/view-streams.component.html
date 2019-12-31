@@ -1,0 +1,22 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="streams && streams.length === 0">No streams here</p>
+<table *ngIf="streams && streams.length > 0">
+    <thead>
+        <tr>
+            <th>Stream</th>
+            <th>Class</th>
+            <th>Students</th>
+            <th>Notes</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of streams" (click)="viewStream($event.target.nodeName, s)" class="clickable">
+            <td>Form {{s.level}} {{s.name}} </td>
+            <td>Form {{s.level}}</td>
+            <td>{{s.students | number}}</td>
+            <td>{{s.description}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
+        </tr>
+    </tbody>
+</table>

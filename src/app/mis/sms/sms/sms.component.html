@@ -1,0 +1,24 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/add'" [base]="'/sms'">
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/single">
+                        <app-send-message></app-send-message>
+                    </div>
+                    <div data-path="/multiple">
+                        <app-send-message></app-send-message>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/single">
+                        <app-view-messages></app-view-messages>
+                    </div>
+                    <div data-path="/multiple">
+                        <app-view-messages></app-view-messages>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

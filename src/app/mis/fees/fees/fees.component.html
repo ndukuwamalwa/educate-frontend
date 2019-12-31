@@ -1,0 +1,27 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/fees'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/view">
+                    <div data-path="/student" *ngIf="tab.tab === 'view' && tab.subtab === 'student'">
+                        <app-view-student-fee></app-view-student-fee>
+                    </div>
+                    <div data-path="/stream" *ngIf="tab.tab === 'view' && tab.subtab === 'stream'">
+                        <app-view-stream-fee></app-view-stream-fee>
+                    </div>
+                    <div data-path="/class" *ngIf="tab.tab === 'view' && tab.subtab === 'class'">
+                        <app-view-class-fee></app-view-class-fee>
+                    </div>
+                </div>
+                <div data-path="/print">
+                    <div data-path="/stream" *ngIf="tab.tab === 'print' && tab.subtab === 'stream'">
+                        <app-fee-print [category]="'stream'"></app-fee-print>
+                    </div>
+                    <div data-path="/class" *ngIf="tab.tab === 'print' && tab.subtab === 'class'">
+                        <app-fee-print [category]="'class'"></app-fee-print>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

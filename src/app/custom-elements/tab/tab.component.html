@@ -1,0 +1,14 @@
+<div id="tab">
+    <div id="top-nav">
+        <a [routerLink]="base + l.path + l.default" *ngFor="let l of links" [title]="l.label">{{l.label}}</a>
+    </div>
+    <div id="view">
+        <div id="side-nav" class="left-sub-menu" *ngFor="let l of links" [attr.data-path]="l.path">
+            <a [routerLink]="base + l.path + c.path" *ngFor="let c of l.children" [title]="c.label"
+                routerLinkActive="active-tab" [routerLinkActiveOptions]="{exact: true}">{{c.label}}</a>
+        </div>
+        <div id="content">
+            <ng-content selector=".tab-content"></ng-content>
+        </div>
+    </div>
+</div>

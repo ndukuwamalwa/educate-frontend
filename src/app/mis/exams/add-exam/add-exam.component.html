@@ -1,0 +1,29 @@
+<form [formGroup]="examForm" (ngSubmit)="submit(examForm.value)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed.</span>
+    </div>
+    <fieldset>
+        <label for="name">Exam title</label>
+        <input type="text" name="name" id="name" formControlName="name" autocomplete="off">
+    </fieldset>
+    <input type="hidden" name="type" id="type" formControlName="type" [value]="type">
+    <fieldset>
+        <label for="startDate">Start date</label>
+        <input type="date" name="startDate" id="startDate" formControlName="startDate">
+    </fieldset>
+    <fieldset>
+        <label for="endDate">End date</label>
+        <input type="date" name="endDate" id="endDate" formControlName="endDate">
+    </fieldset>
+    <fieldset>
+        <label for="term">Term</label>
+        <select name="term" id="term" formControlName="term">
+            <option [value]="t.id" *ngFor="let t of terms">{{t.label}}-{{t.year}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading || examForm.invalid">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

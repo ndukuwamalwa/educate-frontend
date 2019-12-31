@@ -1,0 +1,45 @@
+<div *ngIf="category === 'stream'">
+    <h4>Mark stream register</h4>
+    <form #f="ngForm" (ngSubmit)="loadStudents(f.value.stream, true)" ngNativeValidate>
+        <fieldset>
+            <label for="stream">Select stream</label>
+            <select name="stream" id="stream" required ngModel>
+                <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name | titlecase}}</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <label style="color: transparent;">.</label>
+            <button class="btn btn--primary"><i class="fa fa-download"></i>Load students</button>
+        </fieldset>
+        <fieldset></fieldset>
+    </form>
+</div>
+<div *ngIf="category === 'class'">
+    <h4>Mark class register</h4>
+    <form #fo="ngForm" (ngSubmit)="loadStudents(fo.value.class, false)"  ngNativeValidate>
+        <fieldset>
+            <label for="class">Select class</label>
+            <select name="class" id="class" required ngModel>
+                <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <label style="color: transparent;">.</label>
+            <button class="btn btn--primary"><i class="fa fa-download"></i>Load students</button>
+        </fieldset>
+        <fieldset></fieldset>
+    </form>
+</div>
+<p class="info" *ngIf="students && students.length === 0">No unmarked students found</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<app-table [headers]="headers" [rows]="students" [checkKey]="'id'" (onchecked)="onStudents($event)"
+    *ngIf="students && students.length > 0"></app-table>
+
+<form *ngIf="selected.length > 0">
+    <div class="form-title">
+        <span class="form-heading">Mark Register</span>
+    </div>
+    <fieldset>
+        <button (click)="mark()" class="btn btn--primary" [disabled]="isMarking">Mark Present</button>
+    </fieldset>
+</form>

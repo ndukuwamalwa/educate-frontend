@@ -1,0 +1,9 @@
+<form>
+    <fieldset>
+        <label for="host">Select hostel</label>
+        <select name="hostel" id="host" ngModel (change)="onHostelChange($event.target.value)">
+            <option [value]="hostel.id" *ngFor="let hostel of hostels">{{hostel.name}}</option>
+        </select>
+    </fieldset>
+</form>
+<iframe [src]="url" *ngIf="url"></iframe>

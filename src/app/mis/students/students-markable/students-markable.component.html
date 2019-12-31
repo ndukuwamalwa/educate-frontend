@@ -1,0 +1,5 @@
+<app-paginator [total]="total" (output)="onOptionsChange($event)" [sorts]="columns"></app-paginator>
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="students && students.length === 0">No students found</p>
+<app-table [headers]="columns" *ngIf="students && students.length > 0" [rows]="students" (onchecked)="onStudent($event)"
+    [checkKey]="'id'"></app-table>

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -16,7 +15,7 @@ export class AuthGuard implements CanActivate {
     if (this.isAuthenticated()) {
       return true;
     } else {
-      window.sessionStorage.setItem('afterLogin', next.url);
+      window.sessionStorage.setItem('next_url', next.url);
       this.router.navigateByUrl('');
       return false;
     }
@@ -31,7 +30,6 @@ export class AuthGuard implements CanActivate {
     const isExpired = this.jwtHelper.isTokenExpired(token);
     if (isExpired) {
       window.sessionStorage.removeItem('token');
-      window.sessionStorage.removeItem('userInfo');
       this.router.navigateByUrl('');
       return false;
     }

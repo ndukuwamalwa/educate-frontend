@@ -1,0 +1,22 @@
+<form [formGroup]="classForm" (ngSubmit)="addClass(classForm.value)">
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed.</span>
+    </div>
+    <fieldset>
+        <label for="level">Class level</label>
+        <input type="number" name="level" id="level" formControlName="level" min="1">
+    </fieldset>
+    <fieldset>
+        <label for="fees">Fees for this class</label>
+        <input type="number" name="fees" id="fees" formControlName="fees" min="0">
+    </fieldset>
+    <fieldset>
+        <label for="description">Notes/Intro</label>
+        <input type="text" name="description" id="description" formControlName="description">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading || classForm.invalid">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

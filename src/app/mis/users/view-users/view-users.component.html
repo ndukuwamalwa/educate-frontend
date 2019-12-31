@@ -1,0 +1,23 @@
+<app-paginator [total]="total" [sorts]="sorts" (output)="onOptions($event)" [shown]="users?.length"></app-paginator>
+<p class="info" *ngIf="users && users?.length === 0">No results</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="users">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Username</th>
+            <th>Group Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users" class="clickable" (click)="viewUser($event.target.nodeName, user)">
+            <td>{{user.name | titlecase}}</td>
+            <td>{{user.title | titlecase}}</td>
+            <td>{{user.username | lowercase}}</td>
+            <td>{{user.groupName | titlecase}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(user.id)"></i></td>
+        </tr>
+    </tbody>
+</table>

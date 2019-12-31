@@ -1,0 +1,37 @@
+<form #f="ngForm" (ngSubmit)="load(f.value)" ngNativeValidate>
+    <fieldset>
+        <label for="subject">Subject</label>
+        <select name="subject" id="subject" required ngModel>
+            <option [value]="s.id" *ngFor="let s of subjects">{{s.name | titlecase}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="stream">Stream</label>
+        <select name="stream" id="stream" required ngModel>
+            <option [value]="st?.id" *ngFor="let st of streams">Form {{st.level}} {{st.name | titlecase}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label class="transparent">.</label>
+        <button class="btn btn--primary">Load students</button>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="students && students.length === 0">No students registered for the subject.</p>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td>{{s.adm}}</td>
+            <td>{{s.name}}</td>
+            <th><i class="fa fa-trash action-icon action-icon--danger" (click)="remove(s)"></i></th>
+        </tr>
+    </tbody>
+</table>

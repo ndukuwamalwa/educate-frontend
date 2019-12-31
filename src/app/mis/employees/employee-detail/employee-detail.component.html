@@ -1,0 +1,170 @@
+<h2 mat-dialog-title>{{(employee.fname + ' ' + employee.lname) + '(' + employee.empNo + ')' | uppercase}}</h2>
+<mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab label="Details">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Employee No.</td>
+                        <td>{{employee.empNo | uppercase}}</td>
+                    </tr>
+                    <tr>
+                        <td>First name</td>
+                        <td>{{employee.fname | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Middle name</td>
+                        <td>{{employee.mname | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last name</td>
+                        <td>{{employee.lname | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{{employee.gender | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td>
+                        <td>{{employee.dob | date}}</td>
+                    </tr>
+                    <tr>
+                        <td>National ID</td>
+                        <td>{{employee.idNo}}</td>
+                    </tr>
+                    <tr>
+                        <td>County</td>
+                        <td>{{employee.county | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date joined</td>
+                        <td>{{employee.joined | date}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date added</td>
+                        <td>{{employee.created | date: "short"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+        <mat-tab label="Update">
+            <app-employee-add [data]="employee" [isLoading]="isLoading" (submitted)="update($event)"></app-employee-add>
+        </mat-tab>
+        <mat-tab label="Bank Details">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Ac/no</td>
+                        <td>{{bankDetails?.accNo}}</td>
+                    </tr>
+                    <tr>
+                        <td>Bank</td>
+                        <td>{{bankDetails?.bank | uppercase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Branch</td>
+                        <td>{{bankDetails?.branch | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>KRA PIN</td>
+                        <td>{{bankDetails?.kra | uppercase}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+        <mat-tab label="Set Bank Details">
+            <form #bnkF="ngForm" (ngSubmit)="setBankDetails(bnkF.value)" ngNativeValidate>
+                <div class="form-title">
+                    <span class="form-heading">Employee bank details</span>
+                </div>
+                <fieldset>
+                    <label for="accNo">Account No.</label>
+                    <input type="text" name="accNo" id="accNo" required [ngModel]="bankDetails?.accNo"
+                        pattern="^[0-9]+$">
+                </fieldset>
+                <fieldset>
+                    <label for="bank">Bank name</label>
+                    <input type="text" name="bank" id="bank" required [ngModel]="bankDetails?.bank"
+                        pattern="^[a-zA-Z ]+$">
+                </fieldset>
+                <fieldset>
+                    <label for="branch">Branch</label>
+                    <input type="text" name="branch" id="branch" required [ngModel]="bankDetails?.branch"
+                        pattern="^[a-zA-Z ]+$">
+                </fieldset>
+                <fieldset>
+                    <label for="kra">KRA PIN</label>
+                    <input type="text" name="kra" id="kra" required [ngModel]="bankDetails?.kra"
+                        pattern="^A[0-9]{9}[a-zA-Z]{1}$">
+                </fieldset>
+                <fieldset>
+                    <button class="btn btn--primary" [disabled]="bnkF.invalid || isSavingBank">Save</button>
+                    <app-loader *ngIf="isSavingBank"></app-loader>
+                </fieldset>
+            </form>
+        </mat-tab>
+        <mat-tab label="Contacts">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Contact</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of contacts">
+                        <td>{{c.type | titlecase}}</td>
+                        <td>{{c.contact}}</td>
+                        <td (click)="deleteContact(c)"><i class="fa fa-trash action-icon action-icon--danger"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+        <mat-tab label="Add contacts">
+            <form #contactF="ngForm" (ngSubmit)="addContact(contactF)" ngNativeValidate>
+                <div class="form-title">
+                    <span class="form-heading">Add contact</span>
+                </div>
+                <fieldset class="full-width">
+                    <label for="type">Type of contact</label>
+                    <div>
+                        <div>
+                            <input type="radio" name="type" id="phone" value="PHONE" required ngModel #p>
+                            <label for="phone">Phone number</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="type" id="email" value="EMAIL" required ngModel #e>
+                            <label for="email">Email address</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="type" id="address" value="ADDRESS" required ngModel #a>
+                            <label for="address">P.O Box</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset *ngIf="p.checked">
+                    <label for="contact">Phone number</label>
+                    <input type="tel" name="contact" id="contact" ngModel required autocomplete="off"
+                        pattern="^07[0-9]{8}$">
+                </fieldset>
+                <fieldset *ngIf="e.checked">
+                    <label for="contact">Email address</label>
+                    <input type="email" name="contact" id="contact" ngModel required autocomplete="off" email>
+                </fieldset>
+                <fieldset *ngIf="a.checked">
+                    <label for="contact">Address</label>
+                    <input type="address" name="contact" id="contact" ngModel required autocomplete="off">
+                </fieldset>
+                <fieldset>
+                    <button class="btn btn--primary" [disabled]="contactF.invalid || isSavingContact">Add
+                        Contact</button>
+                    <app-loader *ngIf="isSavingContact"></app-loader>
+                </fieldset>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="employee">Close</button>
+</mat-dialog-actions>

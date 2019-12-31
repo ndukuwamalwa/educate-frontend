@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{'Form ' + clas?.level | uppercase}}</h2>
+<mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab label="Update">
+            <app-add-class [data]="clas" [isLoading]="isLoading" [title]="'Update class'" (submitted)="update($event)">
+            </app-add-class>
+        </mat-tab>
+        <mat-tab label="Streams">
+            <app-loader *ngIf="isGettingStreams"></app-loader>
+            <p class="info" *ngIf="streams && streams.length === 0">No streams here</p>
+            <table *ngIf="streams && streams.length > 0">
+                <thead>
+                    <tr>
+                        <th>Stream</th>
+                        <th>Students</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s of streams">
+                        <td>Form {{s.level}} {{s.name}} </td>
+                        <td>{{s.students | number}}</td>
+                        <td>{{s.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+        <mat-tab label="Add Stream">
+            <app-add-stream [isLoading]="isLoading" [title]="'Add stream'" (submitted)="addStream($event)">
+            </app-add-stream>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="clas">Close</button>
+</mat-dialog-actions>

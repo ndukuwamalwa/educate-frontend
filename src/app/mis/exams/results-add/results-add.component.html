@@ -1,0 +1,48 @@
+<form #f="ngForm" (ngSubmit)="loadResults(f.value)" ngNativeValidate>
+    <fieldset>
+        <label for="exam">Select exam</label>
+        <select name="exam" id="exam" ngModel required>
+            <option [value]="e.id" *ngFor="let e of exams">{{e.name}}-{{e.term}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="subject">Select subject</label>
+        <select name="subject" id="subject" ngModel required>
+            <option [value]="s.id" *ngFor="let s of subjects">{{s.name | titlecase}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="stream">Select stream</label>
+        <select name="stream" id="stream" required ngModel>
+            <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name | titlecase}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isLoading">Load</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>
+<p class="info" *ngIf="results && results.length === 0">No results found.</p>
+<form (ngSubmit)="save(rForm.value)" #rForm="ngForm" ngNativeValidate *ngIf="results && results.length > 0">
+    <table>
+        <thead>
+            <tr>
+                <th>Adm</th>
+                <th>Name</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let r of results">
+                <td>{{r.adm | uppercase}}</td>
+                <td>{{r.name | titlecase}}</td>
+                <td>
+                    <input type="number" min="0" max="100" [name]="'student_' + r.studentId" [ngModel]="r.marks">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isSavingMarks">Save</button>
+    </fieldset>
+</form>

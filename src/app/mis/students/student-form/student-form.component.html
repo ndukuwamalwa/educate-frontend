@@ -1,0 +1,53 @@
+<form [formGroup]="studentForm" (ngSubmit)="submit(studentForm.value)">
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed</span>
+    </div>
+    <fieldset>
+        <label for="adm">Admission number*</label>
+        <input type="text" formControlName="adm" id="adm" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="admitted">Date admitted*</label>
+        <input type="date" formControlName="admitted" id="admitted" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="fname">First name*</label>
+        <input type="text" formControlName="fname" id="fname" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="mname">Middle name</label>
+        <input type="text" formControlName="mname" id="mname" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="lname">Last name*</label>
+        <input type="text" formControlName="lname" id="lname" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="dob">Date of birth*</label>
+        <input type="date" formControlName="dob" id="dob" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="gender">Gender*</label>
+        <div>
+            <div>
+                <input type="radio" name="gender" id="male" value="Male" formControlName="gender">
+                <label for="male">Male</label>
+            </div>
+            <div>
+                <input type="radio" name="gender" id="female" value="Female" formControlName="gender">
+                <label for="female">Female</label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="county">County of origin*</label>
+        <select name="county" id="county" formControlName="county">
+            <option [value]="c" *ngFor="let c of counties">{{c}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <app-loader *ngIf="isLoading"></app-loader>
+        <button class="btn btn--primary" [disabled]="studentForm.invalid || isLoading">Submit</button>
+    </fieldset>
+</form>

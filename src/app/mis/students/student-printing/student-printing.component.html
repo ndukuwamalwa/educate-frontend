@@ -1,0 +1,51 @@
+<div *ngIf="type === 'active' || type === 'archived' || type  === 'expelled'">
+    <h4>Print {{type | lowercase}} students</h4>
+    <form ngNativeValidate #f="ngForm" (ngSubmit)="printByState(f.value)">
+        <fieldset>
+            <label [for]="type + 'category'">Print category</label>
+            <select name="category" [id]="type + 'category'" ngModel #cat required>
+                <option value="all">Print all</option>
+                <option value="adms">Enter admission numbers to print</option>
+                <option value="admitted">Print by date of admission</option>
+            </select>
+        </fieldset>
+        <fieldset *ngIf="cat.value === 'admitted'">
+            <label [for]="type + 'startDate'">Start date</label>
+            <input type="date" name="startDate" [id]="type + 'startDate'" required ngModel>
+        </fieldset>
+        <fieldset *ngIf="cat.value === 'admitted'">
+            <label [for]="type + 'endDate'">Start date</label>
+            <input type="date" name="endDate" [id]="type + 'endDate'" required ngModel>
+        </fieldset>
+        <fieldset class="full-width" *ngIf="cat.value === 'adms'">
+            <label for="adms">Enter admission numbers separated by commas</label>
+            <textarea name="adms" id="adms" required ngModel></textarea>
+        </fieldset>
+        <fieldset>
+            <label class="transparent">.</label>
+            <button class="btn btn--primary" [id]="'vdh' + type" [disabled]="f.invalid"><i class="fa fa-file-pdf-o"></i>
+                Print</button>
+        </fieldset>
+        <fieldset></fieldset>
+    </form>
+</div>
+<div *ngIf="type === 'suspended' || type === 'leave'">
+    <h4 *ngIf="type === 'suspended'">Print suspended students</h4>
+    <h4 *ngIf="type === 'leave'">Print students on leave</h4>
+    <form #fo="ngForm" ngNativeValidate (ngSubmit)="printByStatus(fo.value)">
+        <fieldset>
+            <label [for]="type + 'cat'">Select category</label>
+            <select name="cat" [id]="type + 'cat'" ngModel required #st>
+                <option value="active">Active {{type}}</option>
+                <option value="all">All</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <label class="transparent">.</label>
+            <button class="btn btn--primary" [id]="type + 'vdh'" [disabled]="fo.invalid"><i class="fa fa-file-pdf-o"></i>
+                Print</button>
+        </fieldset>
+        <fieldset></fieldset>
+    </form>
+</div>
+<iframe [src]="url" *ngIf="url"></iframe>

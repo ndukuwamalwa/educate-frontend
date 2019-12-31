@@ -18,10 +18,9 @@ export class LoginGuard implements CanActivate {
     const isExpired = this.jwtHelper.isTokenExpired(token);
     if (isExpired) {
       window.sessionStorage.removeItem('token');
-      window.sessionStorage.removeItem('userInfo');
       return true;
     }
-    this.router.navigate(['students']);
+    this.router.navigate(['dashboard']);
     return false;
   }
 }

@@ -1,0 +1,16 @@
+<form #f="ngForm" (ngSubmit)="viewPayments(f.value.startDate, f.value.endDate)" ngNativeValidate>
+    <fieldset>
+        <label for="startDate">Start date</label>
+        <input type="date" id="startDate" name="startDate" required ngModel>
+    </fieldset>
+    <fieldset>
+        <label for="endDate">End date</label>
+        <input type="date" id="endDate" name="endDate" required ngModel>
+    </fieldset>
+    <fieldset>
+        <label class="transparent">.</label>
+        <button class="btn btn--primary">Print</button>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<iframe [src]="url" *ngIf="url"></iframe>

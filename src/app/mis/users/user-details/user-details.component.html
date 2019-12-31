@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>{{user.name | uppercase}}</h2>
+<mat-dialog-content>
+    <app-loader *ngIf="isLoading"></app-loader>
+    <mat-tab-group *ngIf="!isLoading">
+        <mat-tab label="Details">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Name</td>
+                        <td>{{user?.name | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Title</td>
+                        <td>{{user?.title | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td>{{user?.username | lowercase}}</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>{{user?.state | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>User group</td>
+                        <td>{{user?.groupName | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date created</td>
+                        <td>{{user?.created | date: 'short'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+        <mat-tab label="Update">
+            <app-add-user [data]="user" (submitted)="update($event)" [isLoading]="isUpdating">
+            </app-add-user>
+        </mat-tab>
+        <mat-tab label="Access">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entity</th>
+                        <th>Create</th>
+                        <th>Update</th>
+                        <th>View</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="user?.tables.length">
+                    <tr *ngFor="let t of user?.tables">
+                        <td>{{t.table | uppercase}}</td>
+                        <td>
+                            <i class="fa fa-check" *ngIf="t.operations.includes('CREATE')"></i>
+                            <i class="fa fa-close" *ngIf="!t.operations.includes('CREATE')"></i>
+                        </td>
+                        <td>
+                            <i class="fa fa-check" *ngIf="t.operations.includes('UPDATE')"></i>
+                            <i class="fa fa-close" *ngIf="!t.operations.includes('UPDATE')"></i>
+                        </td>
+                        <td>
+                            <i class="fa fa-check" *ngIf="t.operations.includes('SELECT')"></i>
+                            <i class="fa fa-close" *ngIf="!t.operations.includes('SELECT')"></i>
+                        </td>
+                        <td>
+                            <i class="fa fa-check" *ngIf="t.operations.includes('DELETE')"></i>
+                            <i class="fa fa-close" *ngIf="!t.operations.includes('DELETE')"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="user">Close</button>
+</mat-dialog-actions>

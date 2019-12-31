@@ -1,0 +1,22 @@
+<form [formGroup]="termForm" (ngSubmit)="save(termForm.value)">
+    <div class="form-title">
+        <span class="form-heading">Configure Term</span>
+        <span>All fields marked * must be completed.</span>
+    </div>
+    <fieldset>
+        <label for="startDate">Starts on</label>
+        <input type="date" id="startDate" name="startDate" formControlName="startDate">
+    </fieldset>
+    <fieldset>
+        <label for="endDate">Ends on</label>
+        <input type="date" name="endDate" id="endDate" formControlName="endDate">
+    </fieldset>
+    <fieldset>
+        <label for="year">Year</label>
+        <input type="number" name="year" id="year" formControlName="year" [min]="currentYear">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="termForm.invalid || isLoading">Save</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

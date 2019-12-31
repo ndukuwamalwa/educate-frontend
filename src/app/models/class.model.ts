@@ -1,7 +1,8 @@
-interface Class {
+export interface Class {
     id: number;
     level: number;
-    streams?: number,
-    students?: number,
-    fees: number
+    fees: number;
+    description: string;
+    streams?: number;
+    created: string;
 }

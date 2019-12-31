@@ -1,0 +1,353 @@
+header {
+    background-color: #fff;
+    color: #000;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    height: var(--header-height);
+    overflow: hidden;
+    border-bottom: thin solid #e7e7e7;
+
+    #toggler {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #user {
+        & > div {
+            cursor: pointer;
+        }
+    }
+
+    & > div {
+        display: flex;
+        padding: 2px 4px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .fa-bars, .fa-close {
+        cursor: pointer;
+        display: none;
+    }
+
+    img {
+        height: 90%;
+    }
+}
+
+nav {
+    display: flex;
+    z-index: 80;
+    position: fixed;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+    overflow-x: hidden;
+    background-color: #000;
+    display: flex;
+
+    a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: 400;
+        display: flex;
+    }
+}
+
+main {
+    background-color: transparent !important;
+    color: #000;
+    position: absolute;
+    top: calc(var(--header-height) + 3px);
+    margin-bottom: 20px;
+    align-items: center;
+
+    & > * {
+        width: 100%;
+    }
+}
+
+@keyframes menuAnimationMobile {
+    0% {
+        transform: scaleY(0);
+        transform-origin: top;
+    }
+
+    100% {
+        transform: scaleY(1);
+        transform-origin: top;
+    }
+}
+
+@keyframes menuAnimationTablet {
+    0% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+
+    100% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    header {
+        .fa-bars, .fa-close {
+            display: block;
+        }
+
+        #toggler {
+            i {
+                font-size: 40px;
+            }
+        }
+
+        #user {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & > div {
+                display: flex;
+                font-size: 18px;
+                font-weight: 500;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                &:first-child {
+                    flex-basis: 70%;
+
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+
+        & > div {
+            flex: 1 1 auto;
+        }
+    }
+    
+    nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        animation: menuAnimationMobile 700ms;
+        width: 100vw;
+
+        & > div {
+            flex-basis: 23%;
+            height: 70px;
+            align-content: center;
+
+            a {
+                flex-direction: column;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 13px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                img {
+                    width: 40px;
+                    margin: 5px auto;
+                }
+            }
+        }
+    }
+    main {
+        width: 100%;
+    }
+    
+}
+
+@media only screen and (min-width: 500px) and (max-width: 768px) {
+    header {
+        .fa-bars, .fa-close {
+            display: block;
+        }
+
+        #toggler {
+            i {
+                font-size: 40px;
+            }
+        }
+
+        #user {
+            flex-basis: 60%;
+            margin-left: 20px;
+            white-space: nowrap;
+            & > div {
+                display: flex;
+            }
+
+            .fa-user {
+                margin-right: 5px;
+            }
+        }
+
+        #school {
+            display: flex;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    
+    nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        animation: menuAnimationMobile 700ms;
+        width: 100vw;
+
+        & > div {
+            flex-basis: 23%;
+            height: 70px;
+            align-content: center;
+
+            a {
+                flex-direction: column;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 14px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                img {
+                    width: 40px;
+                    margin: 5px auto;
+                }
+            }
+        }
+    }
+
+    main {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1050px) {
+    header {
+        .fa-bars, .fa-close {
+            display: block;
+        }
+
+        #toggler {
+            i {
+                font-size: 40px;
+            }
+        }
+
+        #user {
+            flex-basis: 60%;
+            margin-left: 20px;
+            white-space: nowrap;
+            & > div {
+                display: flex;
+            }
+
+            .fa-user {
+                margin-right: 5px;
+            }
+        }
+
+        #school {
+            display: flex;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    
+    nav {
+        width: 30vw;
+        flex-direction: column;
+        animation: menuAnimationTablet 400ms;
+
+        & > div {
+            width: 100%;
+            margin: 10px;
+
+            a {
+                flex-direction: row;
+                text-transform: uppercase;
+                font-size: 15px;
+
+                img {
+                    height: 23px;
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+
+    main {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1050px) {
+    header {
+        & > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1 1 auto;
+
+            & > div {
+                display: flex;
+            }
+        }
+
+        #user {
+            & > div {
+                margin: 0 10px;
+            }
+        }
+
+        #school {
+            & > div {
+                margin-left: 10px;
+                display: flex;
+                flex-direction: column;
+                span {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    
+    nav {
+        width: var(--desktop-side-bar-width);
+        flex-direction: column;
+
+        & > div {
+            width: 100%;
+            margin: 10px;
+
+            a {
+                flex-direction: row;
+                text-transform: uppercase;
+                font-size: 15px;
+
+                img {
+                    height: 23px;
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+    
+    main {
+        left: calc(var(--desktop-side-bar-width) + 2px);
+        width: calc(99.5% - var(--desktop-side-bar-width));
+    }
+}

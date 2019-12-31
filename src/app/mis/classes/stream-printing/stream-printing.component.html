@@ -1,0 +1,9 @@
+<form>
+    <fieldset>
+        <label for="stream">Stream</label>
+        <select name="stream" id="stream" (change)="onStreamChange($event.target.value)" ngModel>
+            <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name}}</option>
+        </select>
+    </fieldset>
+</form>
+<iframe [src]="url" *ngIf="url" frameborder="0"></iframe>

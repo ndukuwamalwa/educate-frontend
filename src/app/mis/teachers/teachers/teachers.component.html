@@ -1,0 +1,40 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/teachers'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/new">
+                        <app-teacher-list [category]="'non-teachers'"></app-teacher-list>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/active" *ngIf="tab.tab === 'view' && tab.subtab === 'active'">
+                        <app-teacher-list [category]="'active'"></app-teacher-list>
+                    </div>
+                    <div data-path="/transfered" *ngIf="tab.tab === 'view' && tab.subtab === 'transfered'">
+                        <app-teacher-list [category]="'transfered'"></app-teacher-list>
+                    </div>
+                    <div data-path="/retired" *ngIf="tab.tab === 'view' && tab.subtab === 'retired'">
+                        <app-teacher-list [category]="'retired'"></app-teacher-list>
+                    </div>
+                </div>
+                <div data-path="/classes">
+                    <div data-path="/assign" *ngIf="tab.tab === 'classes' && tab.subtab === 'assign'">
+                        <app-assign-class></app-assign-class>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'classes' && tab.subtab === 'view'">
+                        <app-view-class-teachers></app-view-class-teachers>
+                    </div>
+                </div>
+                <div data-path="/subjects">
+                    <div data-path="/assign" *ngIf="tab.tab === 'subjects' && tab.subtab === 'assign'">
+                        <app-assign-subject></app-assign-subject>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'subjects' && tab.subtab === 'view'">
+                        <app-view-teacher-subjects></app-view-teacher-subjects>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

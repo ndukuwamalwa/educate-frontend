@@ -1,0 +1,35 @@
+<form *ngIf="action === 'delete'">
+    <fieldset>
+        <label for="from">Delete from</label>
+        <select name="from" id="from" ngModel (change)="onTypeChange($event.target.value)">
+            <option value="active">Active employees</option>
+            <option value="retired">Retired employees</option>
+            <option value="transfered">Transfered employees</option>
+        </select>
+    </fieldset>
+</form>
+<form *ngIf="action === 'restore'">
+    <fieldset>
+        <label for="from">Restore from</label>
+        <select name="from" id="from" ngModel (change)="onTypeChange($event.target.value)">
+            <option value="retired">Retired employees</option>
+            <option value="transfered">Transfered employees</option>
+        </select>
+    </fieldset>
+</form>
+<app-paginator [total]="total" [sorts]="colums" [shown]="employees?.length" (output)="onOptions($event)">
+</app-paginator>
+<p class="info" *ngIf="employees && employees.length === 0">No results found</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<app-table [headers]="colums" [rows]="employees" [checkKey]="'id'" (onchecked)="onEmployees($event)"
+    *ngIf="employees && employees?.length > 0"></app-table>
+<form *ngIf="selectedEmployees.length > 0">
+    <div class="form-title">
+        <span class="form-heading">{{action}} employees</span>
+        <span>Please take these actions with caution.</span>
+    </div>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isCommiting" (click)="commit()">{{action | titlecase}}
+            {{selectedEmployees.length | number}} employees</button>
+    </fieldset>
+</form>

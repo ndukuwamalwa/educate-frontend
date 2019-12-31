@@ -1,0 +1,38 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/employees'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/single" *ngIf="tab.tab === 'add' && tab.subtab === 'single'">
+                        <app-employee-add></app-employee-add>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/active" *ngIf="tab.tab === 'view' && tab.subtab === 'active'">
+                        <app-employees-view [type]="'active'"></app-employees-view>
+                    </div>
+                    <div data-path="/retired" *ngIf="tab.tab === 'view' && tab.subtab === 'retired'">
+                        <app-employees-view [type]="'retired'"></app-employees-view>
+                    </div>
+                    <div data-path="/transfered" *ngIf="tab.tab === 'view' && tab.subtab === 'transfered'">
+                        <app-employees-view [type]="'transfered'"></app-employees-view>
+                    </div>
+                </div>
+                <div data-path="/management">
+                    <div data-path="/transfer" *ngIf="tab.tab === 'management' && tab.subtab === 'transfer'">
+                        <app-employees-manage [action]="'transfer'"></app-employees-manage>
+                    </div>
+                    <div data-path="/retire" *ngIf="tab.tab === 'management' && tab.subtab === 'retire'">
+                        <app-employees-manage [action]="'retire'"></app-employees-manage>
+                    </div>
+                    <div data-path="/delete" *ngIf="tab.tab === 'management' && tab.subtab === 'delete'">
+                        <app-employees-manage [action]="'delete'"></app-employees-manage>
+                    </div>
+                    <div data-path="/restore" *ngIf="tab.tab === 'management' && tab.subtab === 'restore'">
+                        <app-employees-manage [action]="'restore'"></app-employees-manage>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

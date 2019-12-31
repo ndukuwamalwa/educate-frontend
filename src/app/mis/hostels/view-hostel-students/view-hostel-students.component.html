@@ -1,0 +1,27 @@
+<form>
+    <fieldset>
+        <label for="hostel">Select hostel</label>
+        <select name="hostel" id="hostel" ngModel (change)="onHostelChange($event.target.value)">
+            <option [value]="hostel.id" *ngFor="let hostel of hostels">{{hostel.name}}</option>
+        </select>
+    </fieldset>
+</form>
+<app-paginator [total]="total" [shown]="students?.length" [sorts]="sorts" (output)="onOptions($event)"></app-paginator>
+<p class="info" *ngIf="students && students.length === 0">No students found</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let student of students">
+            <td>{{student.adm | uppercase}}</td>
+            <td>{{student.name | titlecase}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(student)"></i></td>
+        </tr>
+    </tbody>
+</table>

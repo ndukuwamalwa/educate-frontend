@@ -1,0 +1,27 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/mark'" [base]="'/attendance'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/mark">
+                    <div data-path="/stream" *ngIf="tab.tab === 'mark' && tab.subtab === 'stream'">
+                        <app-absent-students [category]="'stream'" (present)="onPresent($event)"></app-absent-students>
+                    </div>
+                    <div data-path="/class" *ngIf="tab.tab === 'mark' && tab.subtab === 'class'">
+                        <app-absent-students [category]="'class'" (present)="onPresent($event)"></app-absent-students>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/stream" *ngIf="tab.tab === 'view' && tab.subtab === 'stream'">
+                        <app-view-attendance [type]="'stream'"></app-view-attendance>
+                    </div>
+                    <div data-path="/class" *ngIf="tab.tab === 'view' && tab.subtab === 'class'">
+                        <app-view-attendance [type]="'class'"></app-view-attendance>
+                    </div>
+                    <div data-path="/student" *ngIf="tab.tab === 'view' && tab.subtab === 'student'">
+                        <app-view-attendance [type]="'student'"></app-view-attendance>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

@@ -1,0 +1,35 @@
+<form [formGroup]="hostelForm" (ngSubmit)="submit(hostelForm.value)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed</span>
+    </div>
+    <fieldset>
+        <label for="name">Hostel name</label>
+        <input type="text" name="name" id="name" formControlName="name" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="type">Hostel type</label>
+        <div>
+            <div>
+                <input type="radio" name="type" id="gents" value="GENTS" formControlName="type">
+                <label for="gents">Gents</label>
+            </div>
+            <div>
+                <input type="radio" name="type" id="ladies" value="LADIES" formControlName="type">
+                <label for="ladies">Ladies</label>
+            </div>
+            <div>
+                <input type="radio" namLadiese="type" id="mixed" value="MIXED" formControlName="type">
+                <label for="mixed">Mixed</label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <label for="capacity">Total capacity</label>
+        <input type="number" name="capacity" id="capacity" formControlName="capacity" min="1">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="hostelForm.invalid || isLoading">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

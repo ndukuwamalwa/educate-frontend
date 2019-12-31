@@ -1,0 +1,52 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/bank-slip'" [base]="'/payments'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/bank-slip">
+                    <div data-path="/new" *ngIf="tab.tab === 'bank-slip' && tab.subtab === 'new'">
+                        <app-add-pay [title]="'Bankslip Payment'" [type]="'bankslip'"></app-add-pay>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'bank-slip' && tab.subtab === 'view'">
+                        <app-view-payment [type]="'bankslip'"></app-view-payment>
+                    </div>
+                    <div data-path="/print" *ngIf="tab.tab === 'bank-slip' && tab.subtab === 'print'">
+                        <app-print-payment [type]="'bankslip'"></app-print-payment>
+                    </div>
+                </div>
+                <div data-path="/cheque">
+                    <div data-path="/new" *ngIf="tab.tab === 'cheque' && tab.subtab === 'new'">
+                        <app-add-cheque-payment [title]="'Add cheque'"></app-add-cheque-payment>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'cheque' && tab.subtab === 'view'">
+                        <app-view-cheque-payment></app-view-cheque-payment>
+                    </div>
+                    <div data-path="/print" *ngIf="tab.tab === 'cheque' && tab.subtab === 'print'">
+                        <app-print-cheque-payment></app-print-cheque-payment>
+                    </div>
+                </div>
+                <div data-path="/mpesa">
+                    <div data-path="/view" *ngIf="tab.tab === 'mpesa' && tab.subtab === 'view'">
+                        <app-view-payment [type]="'mpesa'"></app-view-payment>
+                    </div>
+                    <div data-path="/reverse" *ngIf="tab.tab === 'mpesa' && tab.subtab === 'reverse'">
+                        <app-reverse-mpesa-payment></app-reverse-mpesa-payment>
+                    </div>
+                    <div data-path="/print" *ngIf="tab.tab === 'mpesa' && tab.subtab === 'print'">
+                        <app-print-payment [type]="'mpesa'"></app-print-payment>
+                    </div>
+                </div>
+                <div data-path="/cash">
+                    <div data-path="/new" *ngIf="tab.tab === 'cash' && tab.subtab === 'new'">
+                        <app-add-pay [title]="'Cash Payment'" [type]="'cash'"></app-add-pay>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'cash' && tab.subtab === 'view'">
+                        <app-view-payment [type]="'cash'"></app-view-payment>
+                    </div>
+                    <div data-path="/print" *ngIf="tab.tab === 'cash' && tab.subtab === 'print'">
+                        <app-print-payment [type]="'cash'"></app-print-payment>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

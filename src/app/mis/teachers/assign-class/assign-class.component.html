@@ -1,0 +1,20 @@
+<form>
+    <div class="form-title">
+        <span class="form-heading">Assign teachers to classes</span>
+        <span>Assignments will be effected for the current year.</span>
+        <span>Only classes that have not been assigned a teacher will be shown.</span>
+    </div>
+    <fieldset>
+        <label for="category">Select category</label>
+        <div>
+            <div>
+                <input type="radio" name="category" id="classteacher" ngModel required value="Classteacher">
+                <label for="classteacher">Class teacher</label>
+            </div>
+            <div>
+                <input type="radio" name="category" id="assistant" ngModel required value="Classteacher">
+                <label for="assistant">Assistant</label>
+            </div>
+        </div>
+    </fieldset>
+</form>

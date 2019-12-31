@@ -1,0 +1,40 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/classes'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/single" *ngIf="tab.tab === 'add' && tab.subtab === 'single'">
+                        <app-add-class></app-add-class>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/classes" *ngIf="tab.tab === 'view' && tab.subtab === 'classes'">
+                        <app-view-classes></app-view-classes>
+                    </div>
+                    <div data-path="/streams" *ngIf="tab.tab === 'view' && tab.subtab === 'streams'">
+                        <app-view-streams></app-view-streams>
+                    </div>
+                </div>
+                <div data-path="/students">
+                    <div data-path="/class" *ngIf="tab.tab === 'students' && tab.subtab === 'class'">
+                        <app-class-students></app-class-students>
+                    </div>
+                    <div data-path="/stream" *ngIf="tab.tab === 'students' && tab.subtab === 'stream'">
+                        <app-stream-students></app-stream-students>
+                    </div>
+                    <div data-path="/unclassed" *ngIf="tab.tab === 'students' && tab.subtab === 'unclassed'">
+                        <app-unclassed-students></app-unclassed-students>
+                    </div>
+                </div>
+                <div data-path="/printing">
+                    <div data-path="/class" *ngIf="tab.tab === 'printing' && tab.subtab === 'class'">
+                        <app-class-printing></app-class-printing>
+                    </div>
+                    <div data-path="/stream" *ngIf="tab.tab === 'printing' && tab.subtab === 'stream'">
+                        <app-stream-printing></app-stream-printing>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

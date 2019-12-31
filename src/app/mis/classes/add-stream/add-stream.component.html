@@ -1,0 +1,18 @@
+<form [formGroup]="streamForm" (ngSubmit)="save(streamForm.value)">
+    <div class="form-title">
+        <span class="form-heading">{{title}}</span>
+        <span>All fields marked * must be completed</span>
+    </div>
+    <fieldset>
+        <label for="name">Name of stream</label>
+        <input type="text" name="name" id="name" formControlName="name" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" formControlName="description" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="streamForm.invalid || isLoading">Submit</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

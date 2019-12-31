@@ -1,0 +1,53 @@
+<form #f="ngForm" (ngSubmit)="load(f.value)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">Register students for subject</span>
+        <span>You must register students for non-core subjects for teachers to be able to enter exam results</span>
+    </div>
+    <fieldset>
+        <label for="subject">Subject</label>
+        <select name="subject" id="subject" required ngModel>
+            <option [value]="s.id" *ngFor="let s of subjects">{{s.name | titlecase}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="stream">Stream</label>
+        <select name="stream" id="stream" required ngModel>
+            <option [value]="st?.id" *ngFor="let st of streams">Form {{st.level}} {{st.name | titlecase}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label class="transparent">.</label>
+        <button class="btn btn--primary">Load students</button>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<app-loader *ngIf="isGettingStudents"></app-loader>
+<p class="info" *ngIf="students && !isGettingStudents">Only non registered students are shown</p>
+<table *ngIf="students && !isGettingStudents">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td>{{s.adm}}</td>
+            <td>{{s.fname + ' ' + s.lname | titlecase}}</td>
+            <td>
+                <button class="btn" [ngClass]="{'btn--primary': selectedStudents.includes(s.studentId)}"
+                    (click)="check(s.studentId)">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<form>
+    <fieldset *ngIf="selectedStudents.length > 0">
+        <button class="btn btn--primary" [disabled]="isLoading" (click)="register()">Register
+            {{selectedStudents.length | number}}</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </fieldset>
+</form>

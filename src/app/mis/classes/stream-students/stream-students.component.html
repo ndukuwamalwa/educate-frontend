@@ -1,0 +1,31 @@
+<form>
+    <fieldset>
+        <label for="stream">Stream</label>
+        <select name="stream" id="stream" (change)="onStreamChange($event.target.value)" [ngModel]="selectedStream">
+            <option [value]="s.id" *ngFor="let s of streams">Form {{s.level}} {{s.name}}</option>
+        </select>
+    </fieldset>
+</form>
+<app-paginator [total]="total" [shown]="students?.length" [sorts]="sorts" (output)="onOptions($event)"></app-paginator>
+<p class="info" *ngIf="students && students.length === 0">No students in the selected stream</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Stream</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td>{{s.adm}}</td>
+            <td>{{s.fname + ' ' + s.lname}}</td>
+            <td>{{s.gender}}</td>
+            <td>Form {{s.level}} {{s.name}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
+        </tr>
+    </tbody>
+</table>

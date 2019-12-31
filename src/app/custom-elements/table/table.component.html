@@ -1,0 +1,56 @@
+<table class="desktop">
+    <thead>
+        <tr>
+            <th *ngFor="let header of headers">{{header.label}}</th>
+            <th *ngIf="includeCheck">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of rows" class="clickable" (click)="onRowClick($event, row)">
+            <td *ngFor="let header of headers">{{row[header.key]}}</td>
+            <td *ngIf="includeCheck">
+                <button class="btn" (click)="onSelect(row[checkKey])"
+                    [ngClass]="{'btn--primary': selected.includes(row[checkKey])}">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="ipad tablet">
+    <thead>
+        <tr>
+            <th *ngFor="let header of headers">{{header.label}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of rows" (click)="onRowClick($event, row)" class="clickable" >
+            <td *ngFor="let header of headers">{{row[header.key]}}</td>
+            <td *ngIf="includeCheck">
+                <button class="btn" (click)="onSelect(row[checkKey])"
+                    [ngClass]="{'btn--primary': selected.includes(row[checkKey])}">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="mobile">
+    <tbody>
+        <article *ngFor="let row of rows">
+            <tr *ngFor="let header of headers" (click)="onRowClick($event, row)">
+                <td>{{header.label}}</td>
+                <td>{{row[header.key]}}</td>
+            </tr>
+            <tr *ngIf="includeCheck">
+                <td>Select</td>
+                <td>
+                    <button class="btn" (click)="onSelect(row[checkKey])"
+                        [ngClass]="{'btn--primary': selected.includes(row[checkKey])}">
+                        <i class="fa fa-check"></i>
+                    </button>
+                </td>
+            </tr>
+        </article>
+    </tbody>
+</table>

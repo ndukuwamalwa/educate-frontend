@@ -1,0 +1,85 @@
+<h2 mat-dialog-title>{{(basicDetails?.fname + ' ' + basicDetails?.lname) | uppercase}}</h2>
+<mat-dialog-content>
+    <app-loader *ngIf="isLoading"></app-loader>
+    <mat-tab-group *ngIf="!isLoading">
+        <mat-tab label="Basic Details">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>State</td>
+                        <td>{{state?.state | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Starting from</td>
+                        <td>{{state?.startDate | date}}</td>
+                    </tr>
+                    <tr>
+                        <td>Comment</td>
+                        <td>{{state?.comment}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table tabindex="1">
+                <tbody>
+                    <tr>
+                        <td>Admission No.</td>
+                        <td>{{basicDetails?.adm}}</td>
+                    </tr>
+                    <tr>
+                        <td>First name</td>
+                        <td>{{basicDetails?.fname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Other names</td>
+                        <td>{{basicDetails?.mname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last name</td>
+                        <td>{{basicDetails?.lname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{{basicDetails?.gender}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td>
+                        <td>{{basicDetails?.dob | date}}</td>
+                    </tr>
+                    <tr>
+                        <td>County</td>
+                        <td>{{basicDetails?.county}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date admitted</td>
+                        <td>{{basicDetails?.admitted | date}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date added</td>
+                        <td>{{basicDetails?.created | date: 'medium'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+        <mat-tab label="Update">
+            <app-student-form [data]="basicDetails" (onSubmit)="update($event)" [isLoading]="isUpdating">
+            </app-student-form>
+        </mat-tab>
+        <mat-tab label="Class">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Class</td>
+                        <td>{{classes?.length > 0 ? 'Form ' + classes[0].level : ''}}</td>
+                    </tr>
+                    <tr>
+                        <td>Stream</td>
+                        <td>{{streams?.length > 0 ? 'Form ' + streams[0].level + ' ' + streams[0].name : ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="basicDetails">Close</button>
+</mat-dialog-actions>

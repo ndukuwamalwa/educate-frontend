@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>{{'Form ' + stream?.level + ' ' + stream?.name | uppercase}}</h2>
+<mat-dialog-content>
+    <app-add-stream [data]="stream" [isLoading]="isLoading" [title]="'Update stream'" (submitted)="update($event)">
+    </app-add-stream>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button class="btn btn--primary" [mat-dialog-close]="stream">Close</button>
+</mat-dialog-actions>

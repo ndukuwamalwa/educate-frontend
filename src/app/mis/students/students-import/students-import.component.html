@@ -1,0 +1,21 @@
+<form #bulkForm="ngForm" enctype="multipart/form-data">
+    <div class="form-title">
+        <span class="form-heading">Import students from file</span>
+        <span>Do not change the format of the template</span>
+    </div>
+    <fieldset style="flex-basis: 100%;">
+        <p><a href="assets/student-template.xlsx" download>Download template</a> then fill the file and
+            upload it here.</p>
+    </fieldset>
+    <fieldset>
+        <label for="template">Select filled template file</label>
+        <input type="file" name="template" id="template" required ngModel accept=".xlsx"
+            (change)="processUploadedTemplate($event.target)">
+    </fieldset>
+    <app-loader *ngIf="processingFile || isLoading"></app-loader>
+    <fieldset>
+        <button class="btn btn--primary" *ngIf="students && students.length > 0" (click)="onAdd()">Add
+            {{students.length}} students</button>
+    </fieldset>
+</form>
+<app-table *ngIf="students" [rows]="students" [headers]="columns"></app-table>

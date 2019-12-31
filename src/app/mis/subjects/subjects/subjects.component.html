@@ -1,0 +1,26 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/subjects'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/new" *ngIf="tab.tab === 'add' && tab.subtab === 'new'">
+                        <app-add-subject></app-add-subject>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/list" *ngIf="tab.tab === 'view' && tab.subtab === 'list'">
+                        <app-view-subjects></app-view-subjects>
+                    </div>
+                </div>
+                <div data-path="/registration">
+                    <div data-path="/new" *ngIf="tab.tab === 'registration' && tab.subtab === 'new'">
+                        <app-subject-register></app-subject-register>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'registration' && tab.subtab === 'view'">
+                        <app-view-subject-register></app-view-subject-register>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>

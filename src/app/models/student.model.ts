@@ -3,10 +3,10 @@ export interface Student {
     adm: string;
     admitted: string;
     fname: string;
-    mname?: string;
+    mname: string;
     lname: string;
     dob: string;
     gender: string;
     county: string;
-    state?: string
-}
+    created: string;
+} 

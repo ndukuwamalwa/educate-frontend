@@ -1,0 +1,9 @@
+<form>
+    <fieldset>
+        <label for="class">Class</label>
+        <select name="class" id="class" (change)="onClassChange($event.target.value)" ngModel>
+            <option [value]="c.id" *ngFor="let c of classes">Form {{c.level}}</option>
+        </select>
+    </fieldset>
+</form>
+<iframe [src]="url" *ngIf="url" frameborder="0"></iframe>

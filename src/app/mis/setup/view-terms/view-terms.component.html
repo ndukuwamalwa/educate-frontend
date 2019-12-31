@@ -1,0 +1,23 @@
+<app-paginator [total]="total" (output)="onOptions($event)" [sorts]="sorts" [shown]="terms?.length"></app-paginator>
+<app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="terms && terms.length === 0">No results found</p>
+<table *ngIf="terms && terms.length > 0">
+    <thead>
+        <tr>
+            <th>Label</th>
+            <th>Year</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let term of terms" class="clickable" (click)="viewTerm($event.target.nodeName, term)">
+            <td>{{term.label}}</td>
+            <td>{{term.year}}</td>
+            <td>{{term.startDate | date}}</td>
+            <td>{{term.endDate | date}}</td>
+            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(term.id)"></i></td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+<form ngNativeValidate #f="ngForm" (ngSubmit)="print(f.value)">
+    <fieldset>
+        <div>
+            <div>
+                <input type="radio" name="cat" id="cheques" value="cheques" ngModel #c>
+                <label for="cheques">Print Cheques</label>
+            </div>
+            <div>
+                <input type="radio" name="cat" id="benficiaries" value="benficiaries" ngModel #b>
+                <label for="benficiaries">Print Beneficiaries</label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset *ngIf="c.checked">
+        <label for="startDate">Start date</label>
+        <input type="date" name="startDate" id="startDate" required ngModel>
+    </fieldset>
+    <fieldset *ngIf="c.checked">
+        <label for="endDate">Start date</label>
+        <input type="date" name="endDate" id="endDate" required ngModel>
+    </fieldset>
+    <fieldset *ngIf="b.checked">
+        <label for="no">Enter cheque no.</label>
+        <input type="text" name="no" id="no" required ngModel>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary">Print</button>
+    </fieldset>
+</form>
+<iframe [src]="url" *ngIf="url"></iframe>

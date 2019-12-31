@@ -1,0 +1,47 @@
+<app-portal>
+    <ng-container class="page-content">
+        <app-tab [links]="links" [default]="'/view'" [base]="'/exams'" #tab>
+            <ng-container class="tab-content">
+                <div data-path="/add">
+                    <div data-path="/main" *ngIf="tab.tab === 'add' && tab.subtab === 'main'">
+                        <app-add-exam [title]="'New end-of-term exam'" [type]="'END TERM'"></app-add-exam>
+                    </div>
+                    <div data-path="/mid-term" *ngIf="tab.tab === 'add' && tab.subtab === 'mid-term'">
+                        <app-add-exam [title]="'New mid-of-term exam'" [type]="'MID TERM'"></app-add-exam>
+                    </div>
+                </div>
+                <div data-path="/view">
+                    <div data-path="/all" *ngIf="tab.tab === 'view' && tab.subtab === 'all'">
+                        <app-exams-view [mode]="'all'"></app-exams-view>
+                    </div>
+                    <div data-path="/upcoming" *ngIf="tab.tab === 'view' && tab.subtab === 'upcoming'">
+                        <app-exams-view [mode]="'upcoming'"></app-exams-view>
+                    </div>
+                    <div data-path="/completed" *ngIf="tab.tab === 'view' && tab.subtab === 'completed'">
+                        <app-exams-view [mode]="'completed'"></app-exams-view>
+                    </div>
+                    <div data-path="/main" *ngIf="tab.tab === 'view' && tab.subtab === 'main'">
+                        <app-exams-view [mode]="'main'"></app-exams-view>
+                    </div>
+                    <div data-path="/mid" *ngIf="tab.tab === 'view' && tab.subtab === 'mid'">
+                        <app-exams-view [mode]="'mid'"></app-exams-view>
+                    </div>
+                </div>
+                <div data-path="/results">
+                    <div data-path="/add" *ngIf="tab.tab === 'results' && tab.subtab === 'add'">
+                        <app-results-add></app-results-add>
+                    </div>
+                    <div data-path="/view" *ngIf="tab.tab === 'results' && tab.subtab === 'view'">
+                        <app-results-view></app-results-view>
+                    </div>
+                    <div data-path="/print" *ngIf="tab.tab === 'results' && tab.subtab === 'print'">
+                        <app-results-print></app-results-print>
+                    </div>
+                    <div data-path="/report-cards" *ngIf="tab.tab === 'results' && tab.subtab === 'report-cards'">
+                        <app-report-cards></app-report-cards>
+                    </div>
+                </div>
+            </ng-container>
+        </app-tab>
+    </ng-container>
+</app-portal>
