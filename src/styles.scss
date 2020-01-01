@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("./assets/css/fa/css/font-awesome.min.css");
 @import url("./assets/css/toastr.min.css");
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 * {
     padding: 0;
     margin: 0;
@@ -128,11 +129,12 @@ textarea {
 }
 
 table {
-    border-collapse: separate;
+    border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
     margin: 10px auto;
     border-spacing: 0;
+    width: 100%;
 
     td, th {
         white-space: nowrap;
@@ -238,7 +240,6 @@ table {
     }
 
     table {
-        width: 100%;
         &.mobile {
             display: table;
         }
@@ -296,7 +297,6 @@ table {
         &.tablet {
             display: table;
         }
-        min-width: 85%;
     }
 }
 
@@ -328,7 +328,6 @@ table {
     }
 
     table {
-        min-width: 80%;
         &.ipad {
             display: table;
         }
