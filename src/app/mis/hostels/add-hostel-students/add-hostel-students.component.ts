@@ -13,10 +13,11 @@ export class AddHostelStudentsComponent implements OnInit {
   classes: any[];
   students: any[];
   isLoading: boolean = false;
-  selectedHostel: number;
+  selectedHostel: any;
   selected: number[] = [];
   isAddingToHostel: boolean = false;
   selectedClass: number;
+  hostelFull: boolean = false;
 
   constructor(
     private hostelService: HostelService,
@@ -40,10 +41,9 @@ export class AddHostelStudentsComponent implements OnInit {
   }
 
   loadStudents({ hostel, clas }) {
-    this.selectedHostel = +hostel;
     this.selectedClass = +clas;
     this.isLoading = true;
-    this.hostelService.unallocated(clas)
+    this.hostelService.unallocated(clas, hostel)
       .subscribe(res => {
         this.students = res;
         this.isLoading = false;
@@ -54,12 +54,21 @@ export class AddHostelStudentsComponent implements OnInit {
   }
 
   onHostelChange(host) {
-    this.selectedHostel = +host;
+    const hostel = this.hostels.find(h => +h.id === +host);
+    this.selectedHostel = hostel;
+    if (hostel.capacity === hostel.total) {
+      this.hostelFull = true;
+    } else {
+      this.hostelFull = false;
+    }
   }
 
   check(id: number) {
     const i = this.selected.indexOf(+id);
     if (i < 0) {
+      if (this.selectedHostel.capacity === (this.selectedHostel.total + this.selected.length)) {
+        return this.toastr.info("There are no spaces available for allocation.");
+      }
       this.selected.push(+id);
     } else {
       this.selected.splice(i, 1);
@@ -68,15 +77,16 @@ export class AddHostelStudentsComponent implements OnInit {
 
   addToHostel() {
     this.isAddingToHostel = true;
-    this.hostelService.addStudents(this.selectedHostel, this.selected)
+    this.hostelService.addStudents(this.selectedHostel.id, this.selected)
       .subscribe(res => {
         this.isAddingToHostel = false;
-        this.loadStudents({ hostel: this.selectedHostel, clas: this.selectedClass });
+        this.loadStudents({ hostel: this.selectedHostel.id, clas: this.selectedClass });
+        this.selectedHostel.total += this.selected.length;
         this.selected = [];
         this.toastr.success("Students added to hostel successfully.");
       }, e => {
         this.isAddingToHostel = false;
-        if (e.status === 409) return this.toastr.error("Some students already exist in the hostel. Please refresh page.");
+        if (e.status === 409) return this.toastr.error(e.error.message);
         return this.toastr.error("Failed to add students to hostel.");
       });
   }

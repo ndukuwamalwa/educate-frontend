@@ -2,7 +2,7 @@
     <fieldset>
         <label for="hostel_">Select hostel</label>
         <select name="hostel" id="hostel_" ngModel required (change)="onHostelChange($event.target.value)">
-            <option [value]="h.id" *ngFor="let h of hostels">{{h.name}}</option>
+            <option [value]="h.id" *ngFor="let h of hostels">{{h.name}} ({{h.capacity - h.total}} availabe spaces)</option>
         </select>
     </fieldset>
     <fieldset>
@@ -13,11 +13,12 @@
     </fieldset>
     <fieldset>
         <label class="transparent">.</label>
-        <button class="btn btn--primary" [disabled]="isLoading">Load</button>
+        <button class="btn btn--primary" [disabled]="isLoading || hostelFull">Load</button>
     </fieldset>
     <fieldset></fieldset>
 </form>
 <app-loader *ngIf="isLoading"></app-loader>
+<p class="info" *ngIf="hostelFull">Selected hostel is full</p>
 <p class="info" *ngIf="students && students.length === 0">No unallocated students found.</p>
 <table *ngIf="students && students.length > 0">
     <thead>
