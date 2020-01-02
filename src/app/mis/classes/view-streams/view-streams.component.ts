@@ -37,7 +37,7 @@ export class ViewStreamsComponent implements OnInit {
     if (nodeName.toLowerCase() !== "td") return;
     const dialog = this.dialog.open(StreamDetailsComponent, {
       minWidth: "70%",
-      minHeight: "60%",
+      height: "60%",
       data: stream
     });
     dialog.afterClosed()
