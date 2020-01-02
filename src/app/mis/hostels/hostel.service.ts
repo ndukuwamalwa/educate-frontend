@@ -36,8 +36,8 @@ export class HostelService {
     return this.http._get(`${this.api}/hostels/students?id=${id}&${createQuery(options)}`);
   }
 
-  unallocated(clas): Observable<any> {
-    return this.http._get(`${this.api}/hostels/unallocated?class=${clas}`);
+  unallocated(clas, hostel): Observable<any> {
+    return this.http._get(`${this.api}/hostels/unallocated?class=${clas}&hostel=${hostel}`);
   }
 
   addStudents(hostel: number, students: number[]): Observable<any> {
