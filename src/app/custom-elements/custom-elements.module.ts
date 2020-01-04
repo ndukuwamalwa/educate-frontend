@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableComponent } from './table/table.component';
 import { TabComponent } from './tab/tab.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { FormsModule } from "@angular/forms";
@@ -13,7 +12,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    TableComponent,
     TabComponent,
     PaginatorComponent,
     LoaderComponent,
@@ -26,7 +24,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
   ],
   exports: [
-    TableComponent,
     TabComponent,
     PaginatorComponent,
     LoaderComponent,
