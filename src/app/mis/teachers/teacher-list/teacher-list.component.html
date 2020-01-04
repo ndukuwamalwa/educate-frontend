@@ -19,7 +19,7 @@
             <td data-label="Name">{{t.name}}</td>
             <td data-label="ID No.">{{t.idNo}}</td>
             <td data-label="Action" *ngIf="category === 'non-teachers'">
-                <button class="btn" [ngClass]="{'btn--primary': selected.includes(s.id)}" (click)="check(s.id)">
+                <button class="btn" [ngClass]="{'btn--primary': selected.includes(t.id)}" (click)="check(t.id)">
                     <i class="fa fa-check"></i>
                 </button>
             </td>
