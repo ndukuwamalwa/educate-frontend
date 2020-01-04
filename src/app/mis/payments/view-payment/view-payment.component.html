@@ -11,17 +11,19 @@
             <th>Paid By</th>
             <th>Date paid</th>
             <th>Amount</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let p of payments" class="clickable" (click)="viewPayment($event.target.nodeName, p)">
-            <td>{{p.receiptNo | uppercase}}</td>
-            <td>{{p.adm | uppercase}}</td>
-            <td>{{p.name | titlecase}}</td>
-            <td>{{p.paidBy | titlecase}}</td>
-            <td>{{p.datePaid | date}}</td>
-            <td>{{p.amount | currency: 'KShs. '}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete($event.target.nodeName, p)"></i>
+            <td data-label="Receipt No.">{{p.receiptNo | uppercase}}</td>
+            <td data-label="Adm">{{p.adm | uppercase}}</td>
+            <td data-label="Name">{{p.name | titlecase}}</td>
+            <td data-label="Paid By">{{p.paidBy | titlecase}}</td>
+            <td data-label="Date paid">{{p.datePaid | date}}</td>
+            <td data-label="Amount">{{p.amount | currency: 'KShs. '}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
+                    (click)="delete($event.target.nodeName, p)"></i>
             </td>
         </tr>
     </tbody>

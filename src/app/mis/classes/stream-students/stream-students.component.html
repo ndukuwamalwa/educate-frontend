@@ -21,11 +21,11 @@
     </thead>
     <tbody>
         <tr *ngFor="let s of students">
-            <td>{{s.adm}}</td>
-            <td>{{s.fname + ' ' + s.lname}}</td>
-            <td>{{s.gender}}</td>
-            <td>Form {{s.level}} {{s.name}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
+            <td data-label="Adm">{{s.adm}}</td>
+            <td data-label="Name">{{s.fname + ' ' + s.lname}}</td>
+            <td data-label="Gender">{{s.gender}}</td>
+            <td data-label="Stream">Form {{s.level}} {{s.name}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
         </tr>
     </tbody>
 </table>

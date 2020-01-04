@@ -18,9 +18,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let s of streams">
-                        <td>Form {{s.level}} {{s.name}} </td>
-                        <td>{{s.students | number}}</td>
-                        <td>{{s.description}}</td>
+                        <td data-label="Stream">Form {{s.level}} {{s.name}} </td>
+                        <td data-label="Students">{{s.students | number}}</td>
+                        <td data-label="Notes">{{s.description}}</td>
                     </tr>
                 </tbody>
             </table>

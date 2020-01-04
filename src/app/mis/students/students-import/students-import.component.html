@@ -18,4 +18,29 @@
             {{students.length}} students</button>
     </fieldset>
 </form>
-<app-table *ngIf="students" [rows]="students" [headers]="columns"></app-table>
+<table *ngIf="students">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>First name</th>
+            <th>Middle name</th>
+            <th>Last name</th>
+            <th>Admitted</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>County</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td data-label="Adm">{{s.adm | uppercase}}</td>
+            <td data-label="First name">{{s.fname | titlecase}}</td>
+            <td data-label="Middle name">{{s.mname | titlecase}}</td>
+            <td data-label="Last name">{{s.lname | titlecase}}</td>
+            <td data-label="Admitted">{{s.admitted | date}}</td>
+            <td data-label="Gender">{{s.gender | titlecase}}</td>
+            <td data-label="Date of Birth">{{s.dob | date}}</td>
+            <td data-label="County">{{s.county | titlecase}}</td>
+        </tr>
+    </tbody>
+</table>

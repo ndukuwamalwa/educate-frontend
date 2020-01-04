@@ -29,12 +29,12 @@
         </thead>
         <tbody>
             <tr *ngFor="let a of attendances">
-                <td>{{a.adm}}</td>
-                <td>{{a.name}}</td>
-                <td>{{a.stream}}</td>
-                <th>
+                <td data-label="Adm">{{a.adm}}</td>
+                <td data-label="Name">{{a.name}}</td>
+                <td data-label="Stream">{{a.stream}}</td>
+                <td data-label="Action">
                     <i class="fa fa-trash action-icon action-icon--danger" (click)="deleteAttendance(a)"></i>
-                </th>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -70,12 +70,12 @@
         </thead>
         <tbody>
             <tr *ngFor="let a of attendances">
-                <td>{{a.adm}}</td>
-                <td>{{a.name}}</td>
-                <td>Form {{a.level}}</td>
-                <th>
+                <td data-label="Adm">{{a.adm}}</td>
+                <td data-label="Name">{{a.name}}</td>
+                <td data-label="Class">Form {{a.level}}</td>
+                <td data-label="Action">
                     <i class="fa fa-trash action-icon action-icon--danger" (click)="deleteAttendance(a)"></i>
-                </th>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -110,11 +110,11 @@
         </thead>
         <tbody>
             <tr *ngFor="let a of attendances">
-                <td>{{a.adm}}</td>
-                <td>{{a.name}}</td>
-                <th>
+                <td data-label="Adm">{{a.adm}}</td>
+                <td data-label="Name">{{a.name}}</td>
+                <td data-label="Action">
                     <i class="fa fa-trash action-icon action-icon--danger" (click)="deleteAttendance(a)"></i>
-                </th>
+                </td>
             </tr>
         </tbody>
     </table>

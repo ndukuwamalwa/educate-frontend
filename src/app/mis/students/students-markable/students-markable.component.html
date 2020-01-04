@@ -1,5 +1,33 @@
 <app-paginator [total]="total" (output)="onOptionsChange($event)" [sorts]="columns"></app-paginator>
 <app-loader *ngIf="isLoading"></app-loader>
 <p class="info" *ngIf="students && students.length === 0">No students found</p>
-<app-table [headers]="columns" *ngIf="students && students.length > 0" [rows]="students" (onchecked)="onStudent($event)"
-    [checkKey]="'id'"></app-table>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Date admitted</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>County</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td data-label="Adm">{{s.adm | uppercase}}</td>
+            <td data-label="First name">{{s.fname | titlecase}}</td>
+            <td data-label="Last name">{{s.lname | titlecase}}</td>
+            <td data-label="Date admitted">{{s.admitted | date}}</td>
+            <td data-label="Date of Birth">{{s.dob | date}}</td>
+            <td data-label="Gender">{{s.gender | titlecase}}</td>
+            <td data-label="County">{{s.county | titlecase}}</td>
+            <td data-label="Action">
+                <button class="btn" [ngClass]="{'btn--primary': selected.includes(s.id)}" (click)="check(s.id)">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -34,9 +34,9 @@
         </thead>
         <tbody>
             <tr *ngFor="let r of results">
-                <td>{{r.adm | uppercase}}</td>
-                <td>{{r.name | titlecase}}</td>
-                <td>
+                <td data-label="Adm">{{r.adm | uppercase}}</td>
+                <td data-label="Name">{{r.name | titlecase}}</td>
+                <td data-label="Marks">
                     <input type="number" min="0" max="100" [name]="'student_' + r.studentId" [ngModel]="r.marks">
                 </td>
             </tr>

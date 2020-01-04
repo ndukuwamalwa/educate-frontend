@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <mat-tab-group>
         <mat-tab label="Details">
-            <table>
+            <table class="default">
                 <tbody>
                     <tr>
                         <td>Employee No.</td>
@@ -51,7 +51,7 @@
             <app-employee-add [data]="employee" [isLoading]="isLoading" (submitted)="update($event)"></app-employee-add>
         </mat-tab>
         <mat-tab label="Bank Details">
-            <table>
+            <table class="default">
                 <tbody>
                     <tr>
                         <td>Ac/no</td>
@@ -104,7 +104,7 @@
             </form>
         </mat-tab>
         <mat-tab label="Contacts">
-            <table>
+            <table class="default">
                 <thead>
                     <tr>
                         <th>Type</th>

@@ -13,9 +13,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let u of users">
-                        <td>{{u.name | titlecase}}</td>
-                        <td>{{u.title | titlecase}}</td>
-                        <td>{{u.username | lowercase}}</td>
+                        <td data-label="Name">{{u.name | titlecase}}</td>
+                        <td data-label="Title">{{u.title | titlecase}}</td>
+                        <td data-label="Username">{{u.username | lowercase}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -33,20 +33,20 @@
                 </thead>
                 <tbody *ngIf="group?.tables.length">
                     <tr *ngFor="let t of group?.tables">
-                        <td>{{t.table | uppercase}}</td>
-                        <td>
+                        <td data-label="Entity">{{t.table | uppercase}}</td>
+                        <td data-label="Create">
                             <i class="fa fa-check" *ngIf="t.operations.includes('CREATE')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('CREATE')"></i>
                         </td>
-                        <td>
+                        <td data-label="Update">
                             <i class="fa fa-check" *ngIf="t.operations.includes('UPDATE')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('UPDATE')"></i>
                         </td>
-                        <td>
+                        <td data-label="View">
                             <i class="fa fa-check" *ngIf="t.operations.includes('SELECT')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('SELECT')"></i>
                         </td>
-                        <td>
+                        <td data-label="Delete">
                             <i class="fa fa-check" *ngIf="t.operations.includes('DELETE')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('DELETE')"></i>
                         </td>

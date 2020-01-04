@@ -32,7 +32,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let r of results">
-            <td *ngFor="let h of headers">{{r[h]}}</td>
+            <td [attr.data-label]="h | uppercase" *ngFor="let h of headers">{{r[h]}}</td>
         </tr>
     </tbody>
 </table>

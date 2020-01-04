@@ -12,11 +12,12 @@
     </thead>
     <tbody>
         <tr *ngFor="let h of hostels" (click)="update($event.target.nodeName, h)" class="clickable">
-            <td>{{h.name | titlecase}}</td>
-            <td>{{h.type | titlecase}}</td>
-            <td>{{h.capacity | number}}</td>
-            <td>{{h.total | number}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete($event.target.nodeName, h)"></i>
+            <td data-label="Name">{{h.name | titlecase}}</td>
+            <td data-label="Type">{{h.type | titlecase}}</td>
+            <td data-label="Capacity">{{h.capacity | number}}</td>
+            <td data-label="Occupied">{{h.total | number}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
+                    (click)="delete($event.target.nodeName, h)"></i>
             </td>
         </tr>
     </tbody>

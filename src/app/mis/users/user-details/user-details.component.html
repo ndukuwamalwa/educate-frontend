@@ -3,7 +3,7 @@
     <app-loader *ngIf="isLoading"></app-loader>
     <mat-tab-group *ngIf="!isLoading">
         <mat-tab label="Details">
-            <table>
+            <table class="default">
                 <tbody>
                     <tr>
                         <td>Name</td>
@@ -49,20 +49,20 @@
                 </thead>
                 <tbody *ngIf="user?.tables.length">
                     <tr *ngFor="let t of user?.tables">
-                        <td>{{t.table | uppercase}}</td>
-                        <td>
+                        <td data-label="Entity">{{t.table | uppercase}}</td>
+                        <td data-label="Create">
                             <i class="fa fa-check" *ngIf="t.operations.includes('CREATE')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('CREATE')"></i>
                         </td>
-                        <td>
+                        <td data-label="Update">
                             <i class="fa fa-check" *ngIf="t.operations.includes('UPDATE')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('UPDATE')"></i>
                         </td>
-                        <td>
+                        <td data-label="View">
                             <i class="fa fa-check" *ngIf="t.operations.includes('SELECT')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('SELECT')"></i>
                         </td>
-                        <td>
+                        <td data-label="Delete">
                             <i class="fa fa-check" *ngIf="t.operations.includes('DELETE')"></i>
                             <i class="fa fa-close" *ngIf="!t.operations.includes('DELETE')"></i>
                         </td>

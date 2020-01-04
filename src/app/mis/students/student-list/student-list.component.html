@@ -4,8 +4,53 @@
 </app-paginator>
 <app-loader *ngIf="isLoading"></app-loader>
 <p class="info" *ngIf="students && students.length === 0">No results found</p>
-<app-table [headers]="columns" [rows]="students" (rowClicked)="onStudentClicked($event)"
+
+<table
     *ngIf="(students && students.length > 0) && (method === 'active' || method === 'archived' || method === 'expelled')">
-</app-table>
-<app-table [headers]="statusColumns" [rows]="students" (rowClicked)="onStudentClicked($event)"
-    *ngIf="(students && students.length > 0) && (method === 'suspended' || method === 'leave')"></app-table>
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Date admitted</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>County</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students" class="clickable" (click)="onStudentClicked(s)">
+            <td data-label="Adm">{{s.adm | uppercase}}</td>
+            <td data-label="First name">{{s.fname | titlecase}}</td>
+            <td data-label="Last name">{{s.lname | titlecase}}</td>
+            <td data-label="Date admitted">{{s.admitted | date}}</td>
+            <td data-label="Date of Birth">{{s.dob | date}}</td>
+            <td data-label="Gender">{{s.gender | titlecase}}</td>
+            <td data-label="County">{{s.county | titlecase}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<table
+    *ngIf="(students && students.length > 0) && (method === 'suspended' || method === 'leave')">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students" class="clickable" (click)="onStudentClicked(s)">
+            <td data-label="Adm">{{s.adm | uppercase}}</td>
+            <td data-label="First name">{{s.fname | titlecase}}</td>
+            <td data-label="Last name">{{s.lname | titlecase}}</td>
+            <td data-label="Start date">{{s.startDate | date}}</td>
+            <td data-label="End date">{{s.endDate | date}}</td>
+            <td data-label="Reason">{{s.reason}}</td>
+        </tr>
+    </tbody>
+</table>

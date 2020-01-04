@@ -15,13 +15,14 @@
     </thead>
     <tbody>
         <tr *ngFor="let c of cheques" (click)="view($event.target.nodeName, c)" class="clickable">
-            <td>{{c.no | uppercase}}</td>
-            <td>{{c.bank | titlecase}}</td>
-            <td>{{c.amount | currency: 'Shs. '}}</td>
-            <td>{{c.used | currency: 'Shs. '}}</td>
-            <td>{{c.amount - c.used | currency: 'Shs. '}}</td>
-            <td>{{c.beneficiaries | number}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete($event.target.nodeName, c)"></i>
+            <td data-label="No.">{{c.no | uppercase}}</td>
+            <td data-label="Bank">{{c.bank | titlecase}}</td>
+            <td data-label="Amount">{{c.amount | currency: 'Shs. '}}</td>
+            <td data-label="Allocated">{{c.used | currency: 'Shs. '}}</td>
+            <td data-label="Balance">{{c.amount - c.used | currency: 'Shs. '}}</td>
+            <td data-label="Benefited">{{c.beneficiaries | number}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
+                    (click)="delete($event.target.nodeName, c)"></i>
             </td>
         </tr>
     </tbody>

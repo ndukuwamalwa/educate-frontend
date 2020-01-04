@@ -22,11 +22,11 @@
     </thead>
     <tbody>
         <tr *ngFor="let b of balances">
-            <td>{{b.adm | uppercase}}</td>
-            <td>{{b.name | titlecase}}</td>
-            <td>{{b.credit | currency: 'KShs. '}}</td>
-            <td>{{b.debit | currency: 'Kshs. '}}</td>
-            <td>{{b.balance | currency: 'Kshs. '}}</td>
+            <td data-label="Adm">{{b.adm | uppercase}}</td>
+            <td data-label="Name">{{b.name | titlecase}}</td>
+            <td data-label="Credit">{{b.credit | currency: 'KShs. '}}</td>
+            <td data-label="Debit">{{b.debit | currency: 'Kshs. '}}</td>
+            <td data-label="Balance">{{b.balance | currency: 'Kshs. '}}</td>
         </tr>
     </tbody>
 </table>

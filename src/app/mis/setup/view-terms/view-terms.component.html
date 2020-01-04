@@ -13,11 +13,11 @@
     </thead>
     <tbody>
         <tr *ngFor="let term of terms" class="clickable" (click)="viewTerm($event.target.nodeName, term)">
-            <td>{{term.label}}</td>
-            <td>{{term.year}}</td>
-            <td>{{term.startDate | date}}</td>
-            <td>{{term.endDate | date}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(term.id)"></i></td>
+            <td data-label="Label">{{term.label}}</td>
+            <td data-label="Year">{{term.year}}</td>
+            <td data-label="Start date">{{term.startDate | date}}</td>
+            <td data-label="End date">{{term.endDate | date}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(term.id)"></i></td>
         </tr>
     </tbody>
 </table>

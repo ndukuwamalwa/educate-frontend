@@ -39,10 +39,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let b of beneficiaries">
-                        <td>{{b.adm | uppercase}}</td>
-                        <td>{{b.name | titlecase}}</td>
-                        <td>{{b.amount | currency: "Shs. "}}</td>
-                        <td><i class="fa fa-trash action-icon action-icon--danger" (click)="deleteBeneficiary(b)"></i>
+                        <td data-label="Adm">{{b.adm | uppercase}}</td>
+                        <td data-label="Name">{{b.name | titlecase}}</td>
+                        <td data-label="Amount">{{b.amount | currency: "Shs. "}}</td>
+                        <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
+                                (click)="deleteBeneficiary(b)"></i>
                         </td>
                     </tr>
                 </tbody>

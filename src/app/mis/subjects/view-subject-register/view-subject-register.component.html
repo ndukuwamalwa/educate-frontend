@@ -29,9 +29,9 @@
     </thead>
     <tbody>
         <tr *ngFor="let s of students">
-            <td>{{s.adm}}</td>
-            <td>{{s.name}}</td>
-            <th><i class="fa fa-trash action-icon action-icon--danger" (click)="remove(s)"></i></th>
+            <td data-label="Adm">{{s.adm}}</td>
+            <td data-label="Name">{{s.name}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger" (click)="remove(s)"></i></td>
         </tr>
     </tbody>
 </table>

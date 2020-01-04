@@ -33,9 +33,9 @@
     </thead>
     <tbody>
         <tr *ngFor="let s of students">
-            <td>{{s.adm}}</td>
-            <td>{{s.fname + ' ' + s.lname | titlecase}}</td>
-            <td>
+            <td data-label="Adm">{{s.adm}}</td>
+            <td data-label="Name">{{s.fname + ' ' + s.lname | titlecase}}</td>
+            <td data-label="Action">
                 <button class="btn" [ngClass]="{'btn--primary': selectedStudents.includes(s.studentId)}"
                     (click)="check(s.studentId)">
                     <i class="fa fa-check"></i>

@@ -3,7 +3,7 @@
     <app-loader *ngIf="isLoading"></app-loader>
     <mat-tab-group *ngIf="!isLoading">
         <mat-tab label="Basic Details">
-            <table>
+            <table class="default">
                 <tbody>
                     <tr>
                         <td>State</td>
@@ -19,7 +19,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table tabindex="1">
+            <table tabindex="1" class="default">
                 <tbody>
                     <tr>
                         <td>Admission No.</td>
@@ -65,7 +65,7 @@
             </app-student-form>
         </mat-tab>
         <mat-tab label="Class">
-            <table>
+            <table class="default">
                 <tbody>
                     <tr>
                         <td>Class</td>

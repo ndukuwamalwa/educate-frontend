@@ -32,8 +32,26 @@
 </div>
 <p class="info" *ngIf="students && students.length === 0">No unmarked students found</p>
 <app-loader *ngIf="isLoading"></app-loader>
-<app-table [headers]="headers" [rows]="students" [checkKey]="'id'" (onchecked)="onStudents($event)"
-    *ngIf="students && students.length > 0"></app-table>
+<table *ngIf="students && students.length > 0">
+    <thead>
+        <tr>
+            <th>Adm</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of students">
+            <td data-label="Adm">{{s.adm | uppercase}}</td>
+            <td data-label="Name">{{s.name | titlecase}}</td>
+            <td data-label="Action">
+                <button class="btn" [ngClass]="{'btn--primary': selected.includes(s.id)}" (click)="check(s.id)">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <form *ngIf="selected.length > 0">
     <div class="form-title">

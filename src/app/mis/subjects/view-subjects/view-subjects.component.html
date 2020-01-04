@@ -12,11 +12,11 @@
     </thead>
     <tbody>
         <tr *ngFor="let s of subjects" (click)="more($event.target.nodeName, s)" class="clickable">
-            <td>{{s.name}}</td>
-            <td>{{s.code}}</td>
-            <td>{{s.initials}}</td>
-            <td>{{s.core === 1 ? 'Yes' : 'No'}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
+            <td data-label="Name">{{s.name}}</td>
+            <td data-label="Code">{{s.code}}</td>
+            <td data-label="Initials">{{s.initials}}</td>
+            <td data-label="Core?">{{s.core === 1 ? 'Yes' : 'No'}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger" (click)="delete(s)"></i></td>
         </tr>
     </tbody>
 </table>

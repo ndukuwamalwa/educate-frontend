@@ -4,9 +4,28 @@
 <h4 *ngIf="category === 'retired'">Retired teachers</h4>
 <app-paginator [total]="total" [sorts]="columns" (output)="onOptionsChange($event)" [shown]="teachers?.length">
 </app-paginator>
-<app-table [headers]="columns" [rows]="teachers" [checkKey]="'id'" *ngIf="category === 'non-teachers'"
-    (onchecked)="onchecked($event)"></app-table>
-<app-table [headers]="columns" [rows]="teachers" *ngIf="category !== 'non-teachers'"></app-table>
+<table>
+    <thead>
+        <tr>
+            <th>Employee no.</th>
+            <th>Name</th>
+            <th>ID No.</th>
+            <th *ngIf="category === 'non-teachers'">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let t of teachers">
+            <td data-label="Employee no.">{{t.empNo}}</td>
+            <td data-label="Name">{{t.name}}</td>
+            <td data-label="ID No.">{{t.idNo}}</td>
+            <td data-label="Action" *ngIf="category === 'non-teachers'">
+                <button class="btn" [ngClass]="{'btn--primary': selected.includes(s.id)}" (click)="check(s.id)">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <form *ngIf="selected.length > 0">
     <div class="form-title">
         <span class="form-heading">Create teachers</span>

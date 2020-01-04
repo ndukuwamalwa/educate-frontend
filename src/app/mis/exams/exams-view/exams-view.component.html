@@ -13,12 +13,13 @@
     </thead>
     <tbody>
         <tr *ngFor="let e of exams" class="clickable" (click)="update($event.target.nodeName, e)">
-            <td>{{e.name | titlecase}}</td>
-            <td>{{e.term}}</td>
-            <td>{{e.type | uppercase}}</td>
-            <td>{{e.startDate | date}}</td>
-            <td>{{e.endDate | date}}</td>
-            <td><i class="fa fa-trash action-icon action-icon--danger" (click)="delete($event.target.nodeName, e)"></i>
+            <td data-label="Title">{{e.name | titlecase}}</td>
+            <td data-label="Term">{{e.term}}</td>
+            <td data-label="Type">{{e.type | uppercase}}</td>
+            <td data-label="Start date">{{e.startDate | date}}</td>
+            <td data-label="End date">{{e.endDate | date}}</td>
+            <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
+                    (click)="delete($event.target.nodeName, e)"></i>
             </td>
         </tr>
     </tbody>
