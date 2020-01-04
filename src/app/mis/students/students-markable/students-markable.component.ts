@@ -45,6 +45,7 @@ export class StudentsMarkableComponent implements OnChanges, OnInit {
   ];
   students: Student[];
   isLoading: boolean = false;
+  selected: number[] = [];
 
   constructor(private studentService: StudentsService, private toastr: ToastrService) { }
 
@@ -55,28 +56,34 @@ export class StudentsMarkableComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    this.onStudent([]);
+    this.selected = [];
   }
 
   getStudents(options = {}) {
     this.isLoading = true;
     this.studentService[this.method](options)
-    .subscribe(res => {
-      this.total = res.total;
-      this.students = res.items;
-      this.isLoading = false;
-    }, e => {
-      this.isLoading = false;
-      this.toastr.error("Failed to fetch students.");
-    });
+      .subscribe(res => {
+        this.total = res.total;
+        this.students = res.items;
+        this.isLoading = false;
+      }, e => {
+        this.isLoading = false;
+        this.toastr.error("Failed to fetch students.");
+      });
   }
 
   onOptionsChange(options) {
     this.getStudents(options);
   }
 
-  onStudent(ids: number[]) {
-    this.studentIds.emit(ids);
+  check(id: number) {
+    const index = this.selected.indexOf(+id);
+    if (index < 0) {
+      this.selected.push(id);
+    } else {
+      this.selected.splice(index, 1);
+    }
+    this.studentIds.emit(this.selected);
   }
 
 }

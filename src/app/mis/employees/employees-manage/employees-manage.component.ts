@@ -86,8 +86,13 @@ export class EmployeesManageComponent implements OnChanges {
     this.getEmployees(options);
   }
 
-  onEmployees(ids: number[]) {
-    this.selectedEmployees = ids;
+  check(id: number) {
+    const index = this.selectedEmployees.indexOf(+id);
+    if (index < 0) {
+      this.selectedEmployees.push(+id);
+    } else {
+      this.selectedEmployees.splice(index, 1);
+    }
   }
 
   commit() {

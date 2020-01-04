@@ -71,8 +71,13 @@ export class AbsentStudentsComponent implements OnInit {
       });
   }
 
-  onStudents(ids: number[]) {
-    this.selected = ids;
+  check(id: number) {
+    const index = this.selected.indexOf(+id);
+    if (index < 0) {
+      this.selected.push(id);
+    } else {
+      this.selected.splice(index, 1);
+    }
   }
 
   loadStudents(id: number, stream: boolean) {

@@ -71,8 +71,13 @@ export class TeacherListComponent implements OnChanges {
       });
   }
 
-  onchecked(ids: number[]) {
-    this.selected = ids;
+  check(id: number) {
+    const index = this.selected.indexOf(+id);
+    if (index < 0) {
+      this.selected.push(id);
+    } else {
+      this.selected.splice(index, 1);
+    }
   }
 
   createTeachers() {
