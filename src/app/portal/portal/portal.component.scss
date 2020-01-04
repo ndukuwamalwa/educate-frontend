@@ -140,6 +140,7 @@ main {
         flex-wrap: wrap;
         animation: menuAnimationMobile 700ms;
         width: 100vw;
+        z-index: 500;
 
         & > div {
             flex-basis: 23%;
@@ -206,6 +207,7 @@ main {
         flex-wrap: wrap;
         animation: menuAnimationMobile 700ms;
         width: 100vw;
+        z-index: 500;
 
         & > div {
             flex-basis: 23%;
@@ -271,6 +273,7 @@ main {
         width: 30vw;
         flex-direction: column;
         animation: menuAnimationTablet 400ms;
+        z-index: 500;
 
         & > div {
             width: 100%;
