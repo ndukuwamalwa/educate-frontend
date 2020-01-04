@@ -5,6 +5,8 @@ import { Student } from 'src/app/models/student.model';
 import { ToastrService } from 'src/app/toastr.service';
 import { StudentsService } from '../students.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmComponent } from 'src/app/custom-elements/confirm/confirm.component';
 
 @Component({
   selector: 'app-students',
@@ -19,7 +21,12 @@ export class StudentsComponent implements OnInit {
   toRestore: number[] = [];
   viewFrom: string = "expelled";
 
-  constructor(private toastr: ToastrService, private studentService: StudentsService, private router: Router) { }
+  constructor(
+    private toastr: ToastrService,
+    private studentService: StudentsService,
+    private router: Router,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit() {
 
@@ -133,30 +140,48 @@ export class StudentsComponent implements OnInit {
   }
 
   delete() {
-    if (!confirm("Are you sure you want to delete these students?")) return;
-    this.isLoading = true;
-    this.studentService.delete(this.toDelete)
-      .subscribe(res => {
-        this.isLoading = false;
-        this.toastr.success("Students deleted successfully.");
-        this.router.navigate(['students', 'view', 'active']);
-      }, e => {
-        this.isLoading = false;
-        this.toastr.error("Could not delete part/all of the selected students. Please retry.");
+    const cnf = this.dialog.open(ConfirmComponent, {
+      width: "auto",
+      height: "auto",
+      data: "Delete student records?"
+    });
+    cnf.afterClosed()
+      .subscribe(r => {
+        if (r) {
+          this.isLoading = true;
+          this.studentService.delete(this.toDelete)
+            .subscribe(res => {
+              this.isLoading = false;
+              this.toastr.success("Students deleted successfully.");
+              this.router.navigate(['students', 'view', 'active']);
+            }, e => {
+              this.isLoading = false;
+              this.toastr.error("Could not delete part/all of the selected students. Please retry.");
+            });
+        }
       });
   }
 
   restore() {
-    if (!confirm("Are you sure you want to restore these student records?")) return;
-    this.isLoading = true;
-    this.studentService.restore(this.toRestore)
-      .subscribe(res => {
-        this.isLoading = false;
-        this.toastr.success("Students restored successfully.");
-        this.router.navigate(['students', 'view', 'active']);
-      }, e => {
-        this.isLoading = false;
-        this.toastr.error("Failed to restore some/all of the students.");
+    const cnf = this.dialog.open(ConfirmComponent, {
+      width: "auto",
+      height: "auto",
+      data: "Restore student records?"
+    });
+    cnf.afterClosed()
+      .subscribe(r => {
+        if (r) {
+          this.isLoading = true;
+          this.studentService.restore(this.toRestore)
+            .subscribe(res => {
+              this.isLoading = false;
+              this.toastr.success("Students restored successfully.");
+              this.router.navigate(['students', 'view', 'active']);
+            }, e => {
+              this.isLoading = false;
+              this.toastr.error("Failed to restore some/all of the students.");
+            });
+        }
       });
   }
 
