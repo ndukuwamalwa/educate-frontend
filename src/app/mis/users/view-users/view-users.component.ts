@@ -65,8 +65,8 @@ export class ViewUsersComponent implements OnInit {
   viewUser(nodeName: string, user) {
     if (nodeName.toLowerCase() === "td") {
       const dialog = this.dialog.open(UserDetailsComponent, {
-        width: "50%",
-        height: "70%",
+        width: "auto",
+      height: "auto",
         data: user
       });
       dialog.afterClosed()
@@ -80,8 +80,8 @@ export class ViewUsersComponent implements OnInit {
 
   delete(id) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "400px",
-      height: "200px",
+      width: "auto",
+      height: "auto",
       data: "Delete this user from the system? Note that activity logs for this user will not be deleted."
     });
     confirm.afterClosed()

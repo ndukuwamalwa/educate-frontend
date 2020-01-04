@@ -36,8 +36,8 @@ export class ViewSubjectsComponent implements OnInit {
   more(nodeName: string, s: Subject) {
     if (nodeName.toLowerCase() !== "td") return;
     const d = this.dialog.open(SubjectDetailsComponent, {
-      width: "60%",
-      height: "60%",
+      width: "auto",
+      height: "auto",
       data: s
     });
     d.afterClosed()
@@ -50,8 +50,8 @@ export class ViewSubjectsComponent implements OnInit {
 
   delete(s: Subject) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete subject?"
     });
     confirm.afterClosed()

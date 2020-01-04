@@ -74,8 +74,8 @@ export class StreamStudentsComponent implements OnInit {
 
   delete(s) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "200px",
+      width: "auto",
+      height: "auto",
       data: "Remove student? NOTE: This removes the student from the class as well."
     });
     confirm.afterClosed()

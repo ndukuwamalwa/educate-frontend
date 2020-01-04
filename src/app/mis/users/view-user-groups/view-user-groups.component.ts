@@ -30,8 +30,8 @@ export class ViewUserGroupsComponent implements OnInit {
   viewGroup(nodeName: string, group) {
     if (nodeName.toLowerCase() !== "td") return;
     const dia = this.dialog.open(GroupDetailsComponent, {
-      width: "50%",
-      height: "70%",
+      width: "auto",
+      height: "auto",
       data: group
     });
     dia.afterClosed()
@@ -44,8 +44,8 @@ export class ViewUserGroupsComponent implements OnInit {
 
   delete(id) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete user group?"
     });
     confirm.afterClosed()

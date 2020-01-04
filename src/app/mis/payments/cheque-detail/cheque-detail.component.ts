@@ -45,8 +45,8 @@ export class ChequeDetailComponent implements OnInit {
 
   deleteBeneficiary(b) {
     const cf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Remove?"
     });
     cf.afterClosed()

@@ -97,8 +97,8 @@ export class EmployeesManageComponent implements OnChanges {
 
   commit() {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "350px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: `Proceed with this operation?`
     });
     confirm.afterClosed()

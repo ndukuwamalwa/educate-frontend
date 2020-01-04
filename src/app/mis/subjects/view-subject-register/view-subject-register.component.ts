@@ -54,8 +54,8 @@ export class ViewSubjectRegisterComponent implements OnInit {
 
   remove(reg) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Remove student?"
     });
     confirm.afterClosed()

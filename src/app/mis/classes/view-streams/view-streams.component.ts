@@ -36,8 +36,8 @@ export class ViewStreamsComponent implements OnInit {
   viewStream(nodeName: string, stream: Stream) {
     if (nodeName.toLowerCase() !== "td") return;
     const dialog = this.dialog.open(StreamDetailsComponent, {
-      minWidth: "70%",
-      height: "60%",
+      width: "auto",
+      height: "auto",
       data: stream
     });
     dialog.afterClosed()
@@ -50,8 +50,8 @@ export class ViewStreamsComponent implements OnInit {
 
   delete(stream: Stream) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete stream?"
     });
     confirm.afterClosed()

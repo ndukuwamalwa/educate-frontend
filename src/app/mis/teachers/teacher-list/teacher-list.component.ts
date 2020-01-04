@@ -82,8 +82,8 @@ export class TeacherListComponent implements OnChanges {
 
   createTeachers() {
     const conf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Create teachers?"
     });
     conf.afterClosed()

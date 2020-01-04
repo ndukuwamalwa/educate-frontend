@@ -102,8 +102,8 @@ export class EmployeeDetailComponent implements OnInit {
 
   deleteContact(contact) {
     const conf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete contact?"
     });
     conf.afterClosed()

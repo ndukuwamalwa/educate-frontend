@@ -62,8 +62,8 @@ export class ViewTermsComponent implements OnInit {
   viewTerm(node: string, term) {
     if (node.toLowerCase() !== "td") return;
     const dialog = this.dialog.open(TermDetailsComponent, {
-      width: "50%",
-      height: "60%",
+      width: "auto",
+      height: "auto",
       data: term
     });
     dialog.afterClosed()
@@ -76,8 +76,8 @@ export class ViewTermsComponent implements OnInit {
 
   delete(id) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "400px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete term?"
     });
     confirm.afterClosed()

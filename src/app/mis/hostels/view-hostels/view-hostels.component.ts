@@ -35,8 +35,8 @@ export class ViewHostelsComponent implements OnInit {
   delete(nodeName: string, hostel) {
     if (nodeName.toLowerCase() !== "i") return;
     const conf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete hostel?"
     });
     conf.afterClosed()
@@ -56,8 +56,8 @@ export class ViewHostelsComponent implements OnInit {
   update(nodeName: string, hostel) {
     if (nodeName.toLowerCase() !== 'td') return;
     const dia = this.dialog.open(HostelDetailsComponent, {
-      minWidth: '50%',
-      height: '60%',
+      width: "auto",
+      height: "auto",
       data: hostel
     });
     dia.afterClosed()

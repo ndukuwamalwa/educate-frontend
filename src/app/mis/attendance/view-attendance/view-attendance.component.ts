@@ -80,8 +80,8 @@ export class ViewAttendanceComponent implements OnInit {
 
   deleteAttendance(a) {
     const conf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete?"
     });
     conf.afterClosed()

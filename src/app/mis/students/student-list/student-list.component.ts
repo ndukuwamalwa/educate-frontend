@@ -108,8 +108,8 @@ export class StudentListComponent implements OnChanges {
 
   onStudentClicked(student) {
     const dialog = this.dialog.open(StudentDetailsComponent, {
-      minWidth: "97%",
-      height: "90%",
+      width: "auto",
+      height: "auto",
       data: student
     });
     dialog.afterClosed()

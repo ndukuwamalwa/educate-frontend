@@ -36,8 +36,8 @@ export class ViewClassesComponent implements OnInit {
   viewClass(nodeName: string, clas: Class) {
     if (nodeName.toLowerCase() !== "td") return;
     const dialog = this.dialog.open(ClassDetailsComponent, {
-      minWidth: "70%",
-      height: "60%",
+      width: "auto",
+      height: "auto",
       data: clas
     });
     dialog.afterClosed()
@@ -50,8 +50,8 @@ export class ViewClassesComponent implements OnInit {
 
   delete(clas: Class) {
     const confirm = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete class?"
     });
     confirm.afterClosed()

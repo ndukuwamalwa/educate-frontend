@@ -71,8 +71,8 @@ export class ViewChequePaymentComponent implements OnInit {
   view(nodeName: string, cheque) {
     if (nodeName.toLowerCase() !== "td") return;
     const dia = this.dialog.open(ChequeDetailComponent, {
-      minWidth: "60%",
-      height: "80%",
+      width: "auto",
+      height: "auto",
       data: cheque
     });
     dia.afterClosed()
@@ -86,8 +86,8 @@ export class ViewChequePaymentComponent implements OnInit {
   delete(nodeName: string, cheque) {
     if (nodeName.toLowerCase() !== "i") return;
     const conf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: "150px",
+      width: "auto",
+      height: "auto",
       data: "Delete cheque?"
     });
     conf.afterClosed()

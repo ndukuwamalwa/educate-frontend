@@ -130,10 +130,10 @@ textarea {
 
 .mat-dialog-actions {
     position: absolute;
-    bottom: 30px;
-    width: 90%;
-    background-color: #fff;
+    top: 0;
+    right: 0;
     z-index: 20;
+    background-color: transparent;
 }
 
 .mat-dialog-container {
@@ -358,6 +358,7 @@ iframe {
         box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
         margin: 10px auto;
         border-spacing: 0;
+        min-width: 50%;
     
         td, th {
             white-space: nowrap;

@@ -79,8 +79,8 @@ export class ViewPaymentComponent implements OnChanges {
     if (nodeName.toLowerCase() !== "td") return;
     let dialog: MatDialogRef<any>;
     const settings = {
-      minWidth: "300px",
-      minHeight: "500px",
+      width: "auto",
+      height: "auto",
       data: pay
     };
     if (this.type === "bankslip") {
@@ -98,7 +98,7 @@ export class ViewPaymentComponent implements OnChanges {
 
   delete(nodeName: string, pay) {
     if (nodeName.toLowerCase() !== "i") return;
-    const cnf = this.dialog.open(ConfirmComponent, { width: "300px", height: "150px", data: "Delete payment?" });
+    const cnf = this.dialog.open(ConfirmComponent, { width: "auto", height: "auto", data: "Delete payment?" });
     cnf.afterClosed()
       .subscribe(d => {
         if (d) {

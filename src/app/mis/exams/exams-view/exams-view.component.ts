@@ -69,8 +69,8 @@ export class ExamsViewComponent implements OnChanges {
   update(nodeName: string, exam) {
     if (nodeName.toLowerCase() !== 'td') return;
     const dia = this.dialog.open(ExamDetailsComponent, {
-      minWidth: "50%",
-      height: "60%",
+      width: "auto",
+      height: "auto",
       data: exam
     });
     dia.afterClosed()
@@ -84,8 +84,8 @@ export class ExamsViewComponent implements OnChanges {
   delete(nodeName: string, exam) {
     if (nodeName.toLowerCase() !== 'i') return;
     const cf = this.dialog.open(ConfirmComponent, {
-      width: "300px",
-      height: '150px',
+      width: "auto",
+      height: "auto",
       data: "Delete exam?"
     });
     cf.afterClosed()

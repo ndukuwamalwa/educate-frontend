@@ -80,8 +80,8 @@ export class EmployeesViewComponent implements OnInit {
 
   onClicked(employee: Employee) {
     const dialog = this.dialog.open(EmployeeDetailComponent, {
-      width: "80%",
-      height: "80%",
+      width: "auto",
+      height: "auto",
       data: employee
     });
     dialog.afterClosed()
