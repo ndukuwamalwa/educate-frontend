@@ -30,7 +30,7 @@ article {
     }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 700px) {
     .pagination {
         flex-wrap: wrap;
 
@@ -41,7 +41,7 @@ article {
     }
 }
 
-@media only screen and (min-width: 500px) and (max-width: 768px) {
+@media only screen and (min-width: 700px) and (max-width: 1000px) {
     .pagination {
         flex-wrap: wrap;
 
@@ -51,7 +51,7 @@ article {
         }
     }
 }
-@media only screen and (min-width: 768px) and (max-width: 1050px) {
+@media only screen and (min-width: 1001px) and (max-width: 1050px) {
     .pagination {
         flex-wrap: wrap;
 
