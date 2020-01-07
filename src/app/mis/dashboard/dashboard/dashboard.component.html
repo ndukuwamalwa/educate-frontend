@@ -1,3 +1,191 @@
 <app-portal>
-    <ng-container class="page-content"></ng-container>
+    <ng-container class="page-content">
+        <div id="stats">
+            <div class="stat">
+                <span>Attendance</span>
+                <div>
+                    <article>
+                        <div class="stat__item" style="color: #fff;background-color: blue;">
+                            <span>{{stats?.attendance.expected | number}}</span>
+                            <span><i class="fa fa-info"></i>Total</span>
+                        </div>
+                        <div class="stat__item" style="color: #fff;background-color: green;">
+                            <span>{{stats?.attendance.present | number}}</span>
+                            <span><i class="fa fa-check"></i>Present</span>
+                        </div>
+                        <div class="stat__item" style="color: #fff;background-color: red;">
+                            <span>{{stats?.attendance.absent | number}}</span>
+                            <span><i class="fa fa-close"></i>Absent</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="stat">
+                <span>Students</span>
+                <div>
+                    <article>
+                        <div class="stat__item">
+                            <span>{{stats?.students.total | number}}</span>
+                            <span><i class="fa fa-group"></i>Total</span>
+                        </div>
+                        <div class="stat__item" *ngFor="let g of stats?.students.gender"
+                            style="color: #fff;background-color: blue;">
+                            <span>{{g.total | number}}</span>
+                            <span><i class="fa fa-male" *ngIf="g.gender === 'Male'"></i><i class="fa fa-female"
+                                    *ngIf="g.gender === 'Female'"></i>{{g.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let s of stats?.students.state">
+                            <span>{{s.total | number}}</span>
+                            <span><i class="fa fa-check"></i>{{s.state | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.students.active"
+                            style="color: #fff;background-color: blue;">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-male" *ngIf="a.gender === 'Male'"></i><i class="fa fa-female"
+                                    *ngIf="a.gender === 'Female'"></i>Active {{a.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.students.archived"
+                            style="color: #fff;background-color: blue;">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-male" *ngIf="a.gender === 'Male'"></i><i class="fa fa-female"
+                                    *ngIf="a.gender === 'Female'"></i>Archived {{a.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.students.expelled"
+                            style="color: #fff;background-color: blue;">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-male" *ngIf="a.gender === 'Male'"></i><i class="fa fa-female"
+                                    *ngIf="a.gender === 'Female'"></i>Expelled {{a.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.students.outs">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-user-group"></i>{{a.type | titlecase}}</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="stat">
+                <span>Classes</span>
+                <div>
+                    <article>
+                        <div class="stat__item" style="color: #fff;background-color: rgb(65, 65, 119);">
+                            <span>{{stats?.classes.levels | number}}</span>
+                            <span><i class="fa fa-building-o"></i>Classes</span>
+                        </div>
+                        <div class="stat__item" style="color: #fff;background-color: rgb(143, 89, 27);">
+                            <span>{{stats?.classes.streams | number}}</span>
+                            <span><i class="fa fa-building-o"></i>Streams</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" style="color: #fff;background-color: rgb(23, 109, 124);">
+                            <span style="font-size: 18px;">{{stats?.classes.highestClass.class}}-({{stats?.classes.highestClass.total | number}})</span>
+                            <span><i class="fa fa-arrow-up"></i>Highest class</span>
+                        </div>
+                        <div class="stat__item" style="color: #fff;background-color: rgb(23, 70, 124);">
+                            <span style="font-size: 18px;">{{stats?.classes.lowestClass.class}}-({{stats?.classes.lowestClass.total | number}})</span>
+                            <span><i class="fa fa-arrow-down"></i>Lowest class</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" style="color: #fff;background-color: rgb(7, 66, 77);">
+                            <span style="font-size: 18px;">{{stats?.classes.highestStream.stream}}-({{stats?.classes.highestStream.total | number}})</span>
+                            <span><i class="fa fa-arrow-up"></i>Highest class</span>
+                        </div>
+                        <div class="stat__item" style="color: #fff;background-color: rgb(74, 8, 94);">
+                            <span style="font-size: 18px;">{{stats?.classes.lowestStream.stream}}-({{stats?.classes.lowestStream.total | number}})</span>
+                            <span><i class="fa fa-arrow-down"></i>Lowest class</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item">
+                            <span>{{stats?.classes.avgClass | number}}</span>
+                            <span><i></i>Average/class</span>
+                        </div>
+                        <div class="stat__item">
+                            <span>{{stats?.classes.avgStream | number}}</span>
+                            <span><i></i>Average/stream</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="stat">
+                <span>Payments</span>
+                <div>
+                    <article>
+                        <div class="stat__item" *ngFor="let m of stats?.payments.total">
+                            <span>{{m.total | number}}</span>
+                            <span><i></i>{{m.mode | titlecase}} payments</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" style="color: rgb(0, 128, 100);">
+                            <span>{{stats?.payments.today | currency: 'KShs.'}}</span>
+                            <span><i></i>Today</span>
+                        </div>
+                        <div class="stat__item" style="color: rgb(0, 66, 128);">
+                            <span>{{stats?.payments.week | currency: 'KShs.'}}</span>
+                            <span><i></i>This week</span>
+                        </div>
+                        <div class="stat__item" style="color: rgb(0, 128, 90);">
+                            <span>{{stats?.payments.month | currency: 'KShs.'}}</span>
+                            <span><i></i>This month</span>
+                        </div>
+                        <div class="stat__item" style="color: rgb(128, 105, 0);">
+                            <span>{{stats?.payments.year | currency: 'KShs.'}}</span>
+                            <span><i></i>This year</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="stat">
+                <span>Employees</span>
+                <div>
+                    <article>
+                        <div class="stat__item">
+                            <span>{{stats?.employees.total | number}}</span>
+                            <span><i class="fa fa-user"></i>Total</span>
+                        </div>
+                        <div class="stat__item" *ngFor="let g of stats?.employees.gender">
+                            <span>{{g.total | number}}</span>
+                            <span><i class="fa fa-user-group"></i>{{g.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let s of stats?.employees.state">
+                            <span>{{s.total | number}}</span>
+                            <span><i class="fa fa-user-group"></i>{{s.state | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.employees.active">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-user-group"></i>Active {{a.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.employees.transfered">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-user-group"></i>Transfered {{a.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="stat__item" *ngFor="let a of stats?.employees.retired">
+                            <span>{{a.total | number}}</span>
+                            <span><i class="fa fa-user-group"></i>Retired {{a.gender | titlecase}}</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </ng-container>
 </app-portal>
