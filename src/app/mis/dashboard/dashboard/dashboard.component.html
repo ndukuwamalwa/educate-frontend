@@ -1,6 +1,7 @@
 <app-portal>
     <ng-container class="page-content">
-        <div id="stats">
+        <app-loader *ngIf="isLoading"></app-loader>
+        <div id="stats" *ngIf="!isLoading">
             <div class="stat">
                 <span>Attendance</span>
                 <div>
