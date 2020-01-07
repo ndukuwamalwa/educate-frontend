@@ -31,4 +31,16 @@ export class TeacherService {
   retired(options): Observable<any> {
     return this.http._get(`${this.api}/teachers?type=retired&${createQuery(options)}`);
   }
+
+  allActive(): Observable<any> {
+    return this.http._get(`${this.api}/teachers/all`);
+  }
+
+  saveClassTeachers(data: { teacher: number, stream: number, role: string, year: number }[]): Observable<any> {
+    return this.http._post(`${this.api}/teachers/classes`, data);
+  }
+
+  getClassTeachers(year: number): Observable<any> {
+    return this.http._get(`${this.api}/teachers/classes?year=${year}`);
+  }
 }
