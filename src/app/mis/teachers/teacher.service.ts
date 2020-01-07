@@ -43,4 +43,12 @@ export class TeacherService {
   getClassTeachers(year: number): Observable<any> {
     return this.http._get(`${this.api}/teachers/classes?year=${year}`);
   }
+
+  saveSubjectAssignment(data: {teacher: number,stream: number,subject: number,year: number}[]): Observable<any> {
+    return this.http._post(`${this.api}/teachers/subjects`, data);
+  }
+
+  getSubjectAssignments(clas: number, year: number): Observable<any> {
+    return this.http._get(`${this.api}/teachers/subjects?class=${clas}&year=${year}`);
+  }
 }
