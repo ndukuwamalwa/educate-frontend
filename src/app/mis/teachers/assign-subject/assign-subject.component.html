@@ -1,1 +1,34 @@
-<p>assign-subject works!</p>
+<form #f="ngForm" (ngSubmit)="save(f.value)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">Assign subjects to teachers</span>
+    </div>
+    <fieldset>
+        <label for="year">Effective year</label>
+        <input type="number" name="year" id="year" min="2010" required [(ngModel)]="year" (change)="onYearChange()">
+    </fieldset>
+    <app-loader *ngIf="isGettingStreams || isGettingClasses || isGettingTeachers || isGettingSubjects"></app-loader>
+    <fieldset *ngIf="!isGettingClasses">
+        <label for="class">Select class</label>
+        <select name="class" id="class" required ngModel (change)="onClassChange($event.target.value)">
+            <option [value]="c.id" *ngFor="let c of classes">{{'Form ' + c.level}}</option>
+        </select>
+    </fieldset>
+    <div *ngIf="filteredStreams">
+        <p class="info">You can save only the sections you need if necessary.</p>
+        <div *ngFor="let s of filteredStreams" class="field-collection">
+            <fieldset *ngFor="let sub of subjects">
+                <label [for]="s.id+'-'+sub.id">{{'Form '+ s.level + ' '+ s.name}}-<span
+                        style="opacity: .7;">({{sub.name | titlecase}})</span></label>
+                <select [name]="s.id+'-'+sub.id" [id]="s.id+'-'+sub.id" [ngModel]="previous[s.id+'-'+sub.id]">
+                    <option [value]="t.id" *ngFor="let t of teachers">{{t.name | titlecase}}</option>
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <fieldset *ngIf="!filteredStreams"></fieldset>
+    <fieldset *ngIf="filteredStreams">
+        <p class="info">Any conflicting information will be automatically overriden</p>
+        <button class="btn btn--primary" [disabled]="isSaving">Save</button>
+        <app-loader *ngIf="isSaving"></app-loader>
+    </fieldset>
+</form>

@@ -1,1 +1,35 @@
-<p>view-teacher-subjects works!</p>
+<form #f="ngForm" (ngSubmit)="load(f.value)">
+    <fieldset>
+        <label for="class">Class</label>
+        <select name="clas" id="class" [ngModel]="selectedClass" required>
+            <option [value]="c.id" *ngFor="let c of classes">{{'Form '+c.level}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label for="year">Year</label>
+        <select name="year" id="year" [ngModel]="year" required>
+            <option [value]="y" *ngFor="let y of years">{{y}}</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <label class="transparent">.</label>
+        <button class="btn btn--primary" [disabled]="isGettingData">Load</button>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<p class="info" *ngIf="teacherSubjects && teacherSubjects.length === 0">No items found</p>
+<app-loader *ngIf="isGettingData"></app-loader>
+<table *ngIf="teacherSubjects && teacherSubjects.length > 0">
+    <thead>
+        <th>Teacher</th>
+        <th>Subject</th>
+        <th>Stream</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let ts of teacherSubjects">
+            <td data-label="Teacher">{{ts.teacher | titlecase}}</td>
+            <td data-label="Subject">{{ts.subject | titlecase}}</td>
+            <td data-label="Stream">{{ts.stream | titlecase}}</td>
+        </tr>
+    </tbody>
+</table>
