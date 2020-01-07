@@ -25,6 +25,10 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
+    const token = this.auth.token;
+    if (token && !this.auth.isTokenExpired()) {
+      this.goTo();
+    }
   }
 
   goTo() {
