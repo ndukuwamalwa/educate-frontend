@@ -1,20 +1,46 @@
-<form>
+<form #f="ngForm" (ngSubmit)="save(f.value.year)" ngNativeValidate>
     <div class="form-title">
         <span class="form-heading">Assign teachers to classes</span>
         <span>Assignments will be effected for the current year.</span>
-        <span>Only classes that have not been assigned a teacher will be shown.</span>
     </div>
     <fieldset>
-        <label for="category">Select category</label>
-        <div>
-            <div>
-                <input type="radio" name="category" id="classteacher" ngModel required value="Classteacher">
-                <label for="classteacher">Class teacher</label>
-            </div>
-            <div>
-                <input type="radio" name="category" id="assistant" ngModel required value="Classteacher">
-                <label for="assistant">Assistant</label>
-            </div>
-        </div>
+        <label for="year">Select effective year</label>
+        <input type="number" name="year" id="year" min="2010" [ngModel]="currentYear">
+    </fieldset>
+    <app-loader *ngIf="isGettingStreams || isGettingTeachers"></app-loader>
+    <fieldset class="full-width" *ngIf="!isGettingStreams && !isGettingTeachers">
+        <table>
+            <caption>If you already saved for the selected year, select only the changes you want to make</caption>
+            <thead>
+                <tr>
+                    <th>Stream</th>
+                    <th>Class Teacher</th>
+                    <th>Assistant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of streams">
+                    <td data-label="Stream">Form {{s.level + ' ' + s.name}}</td>
+                    <td data-label="Teacher">
+                        <select [name]="'teacher_'+s.id" [id]="'teacher_'+s.id" ngModel
+                            (change)="checkClassTeacher($event.target)">
+                            <option [value]="t.id" *ngFor="let t of teachers">{{t.name | titlecase}}</option>
+                        </select>
+                    </td>
+                    <td data-label="Assistant">
+                        <select [name]="'assist_'+s.id" [id]="'assist_'+s.id" ngModel
+                            (change)="checkAssistant($event.target)">
+                            <option value="none">--None--</option>
+                            <option [value]="t.id" *ngFor="let t of teachers">{{t.name | titlecase}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset *ngIf="this.classteachers.length > 0 || this.assistants.length > 0">
+        <p class="info">Any existing arrangements will be replaced.</p>
+        <button class="btn btn--primary" [disabled]="isSaving">Save</button>
+        <app-loader *ngIf="isSaving"></app-loader>
     </fieldset>
 </form>
