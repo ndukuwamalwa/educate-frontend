@@ -47,4 +47,8 @@ export class AuthService {
     return window.sessionStorage.getItem('token');
   }
 
+  isTokenExpired(): boolean {
+    return this.tokenService.isTokenExpired(this.token);
+  }
+
 }
