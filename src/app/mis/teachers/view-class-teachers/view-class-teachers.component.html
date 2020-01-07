@@ -1,1 +1,32 @@
-<p>view-class-teachers works!</p>
+<form>
+    <div class="form-title">
+        <span class="form-heading">Class teachers & assistants</span>
+    </div>
+    <fieldset>
+        <label for="year">Change year</label>
+        <select name="year" id="year" [ngModel]="year" (change)="onYearChange($event.target.value)">
+            <option [value]="y" *ngFor="let y of years">{{y}}</option>
+        </select>
+    </fieldset>
+    <fieldset></fieldset>
+</form>
+<p class="info" *ngIf="teachers && teachers.length === 0">No items to show</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="teachers && teachers.length > 0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Stream</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let t of teachers">
+            <td data-label="Name">{{t.fname + ' ' + t.lname | titlecase}}</td>
+            <td data-label="Role">{{t.role | titlecase}}</td>
+            <td data-label="Stream">{{t.stream | titlecase}}</td>
+            <td data-label="Year">{{t.year}}</td>
+        </tr>
+    </tbody>
+</table>
