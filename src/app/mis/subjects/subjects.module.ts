@@ -11,6 +11,7 @@ import { SubjectService } from './subject.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SubjectDetailsComponent } from './subject-details/subject-details.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SubjectLessoningComponent } from './subject-lessoning/subject-lessoning.component';
 
 
 
@@ -21,7 +22,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ViewSubjectsComponent,
     SubjectRegisterComponent,
     ViewSubjectRegisterComponent,
-    SubjectDetailsComponent
+    SubjectDetailsComponent,
+    SubjectLessoningComponent
   ],
   imports: [
     CommonModule,

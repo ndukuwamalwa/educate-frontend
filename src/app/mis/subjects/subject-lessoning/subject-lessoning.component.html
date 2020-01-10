@@ -1,0 +1,38 @@
+<app-loader *ngIf="isGettingSubjects || isGettingSetup"></app-loader>
+<p class="info" *ngIf="subjects && subjects.length === 0 && !isGettingSetup">No subjects found. Please create some
+    subjects.</p>
+<form #f="ngForm" (ngSubmit)="save(f.value)" ngNativeValidate
+    *ngIf="subjects && subjects.length > 0 && !isGettingSetup">
+    <div class="form-title">
+        <span class="form-heading">Subject lessoning creteria</span>
+    </div>
+    <div *ngFor="let s of subjects" class="subject-container">
+        <h3>{{s.name | titlecase}}</h3>
+        <article>
+            <fieldset>
+                <label [for]="'lessons_'+s.id">Number of lessons per week</label>
+                <input type="number" [name]="'lessons_'+s.id" [id]="'lessons_'+s.id" required min="1"
+                    [ngModel]="previous[s.id]?.lessons" #lessons>
+            </fieldset>
+            <fieldset *ngIf="lessons.value > 2">
+                <label [for]="'double_'+s.id">Has double lessons?</label>
+                <select [name]="'double_'+s.id" [id]="'double_'+s.id" [ngModel]="previous[s.id]?.doubles" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </fieldset>
+            <fieldset>
+                <label [for]="'daytime_'+s.id">Constrain lessons to</label>
+                <select [name]="'daytime_'+s.id" [id]="'daytime_'+s.id" required [ngModel]="previous[s.id]?.daytime">
+                    <option value="Morning">Morning</option>
+                    <option value="Afternoon">Afternoon</option>
+                    <option value="Anytime">Anytime</option>
+                </select>
+            </fieldset>
+        </article>
+    </div>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isSaving">Save</button>
+        <app-loader *ngIf="isSaving"></app-loader>
+    </fieldset>
+</form>
