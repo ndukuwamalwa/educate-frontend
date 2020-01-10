@@ -43,4 +43,12 @@ export class SubjectService {
   deregister(id): Observable<any> {
     return this.http._delete(`${this.api}/subjects/register?id=${id}`);
   }
+
+  lessoning(): Observable<any> {
+    return this.http._get(`${this.api}/subjects/lessoning`);
+  }
+
+  saveLessoning(pack: { subject: number, lessons: number, doubles: number, daytime: string }[]): Observable<any> {
+    return this.http._post(`${this.api}/subjects/lessoning`, pack);
+  }
 }
