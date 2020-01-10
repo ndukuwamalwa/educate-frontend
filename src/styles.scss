@@ -68,12 +68,17 @@ form {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
+            margin-top: 10px;
 
             div {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-right: 7px;
+                
+                label {
+                    font-size: 80%;
+                }
             }
         }
     }
