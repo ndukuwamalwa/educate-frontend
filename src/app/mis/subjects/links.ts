@@ -20,6 +20,10 @@ export const subjectLinks: TabLink[] = [
             {
                 label: "List",
                 path: "/list"
+            },
+            {
+                label: "Lessoning",
+                path: '/lessoning'
             }
         ]
     },
