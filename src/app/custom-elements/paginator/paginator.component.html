@@ -19,7 +19,8 @@
       </select>
     </div>
     <div>
-      <span>{{((page - 1)*size + 1) | number}} to {{((page - 1)*size + shown) | number}} of {{total}}</span>
+      <span *ngIf="total === 0">0 - 0 of 0</span>
+      <span *ngIf="total > 0">{{((page - 1)*size + 1) | number}} to {{((page - 1)*size + shown) | number}} of {{total}}</span>
     </div>
     <div>
       <label for="sort">Sort</label>
