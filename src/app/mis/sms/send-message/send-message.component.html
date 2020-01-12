@@ -1,1 +1,25 @@
-<p>send-message works!</p>
+<form #f="ngForm" (ngSubmit)="send(f)" ngNativeValidate>
+    <div class="form-title">
+        <span class="form-heading">Send Single Message</span>
+    </div>
+    <fieldset class="full-width" *ngIf="type && type === 'single'">
+        <label for="recipient">Recipient</label>
+        <input type="tel" name="recipient" id="recipient" pattern="^07[0-9]{8}$" required ngModel
+            placeholder="0712345678">
+    </fieldset>
+    <fieldset class="full-width" *ngIf="type && type === 'multiple'">
+        <label for="recipient">Enter phone numbers separated by commas</label>
+        <textarea name="recipient" id="recipient" ngModel required
+            placeholder="0712345678, 0723456789, 0734567890,..."></textarea>
+    </fieldset>
+    <fieldset class="full-width">
+        <label for="message">Message</label>
+        <textarea name="message" id="message" required ngModel></textarea>
+    </fieldset>
+    <fieldset>
+        <button class="btn btn--primary" [disabled]="isSending">
+            <i class="fa fa-send"></i> Send
+        </button>
+        <app-loader *ngIf="isSending"></app-loader>
+    </fieldset>
+</form>

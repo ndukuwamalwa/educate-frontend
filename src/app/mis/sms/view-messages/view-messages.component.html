@@ -1,1 +1,21 @@
-<p>view-messages works!</p>
+<app-paginator [total]="total" [sorts]="sorts" [shown]="messages?.length" (output)="onOptions($event)"></app-paginator>
+<p class="info" *ngIf="messages && messages.length === 0">No messages found.</p>
+<app-loader *ngIf="isLoading"></app-loader>
+<table *ngIf="messages && messages.length > 0">
+    <thead>
+        <tr>
+            <th>Recipient</th>
+            <th>Message</th>
+            <th>Sent</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor='let m of messages'>
+            <td *ngIf="m.single === 1">{{m.recipient}}</td>
+            <td *ngIf="m.single === 0" [title]="m.recipient" class="clickable">{{m.recipient?.split(",")?.length}}
+                recipients</td>
+            <td>{{m.message}}</td>
+            <td>{{m.sent | date: 'shortTime'}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -6,6 +6,7 @@ import { CustomElementsModule } from 'src/app/custom-elements/custom-elements.mo
 import { SendMessageComponent } from './send-message/send-message.component';
 import { ViewMessagesComponent } from './view-messages/view-messages.component';
 import { SmsService } from './sms.service';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -14,7 +15,8 @@ import { SmsService } from './sms.service';
   imports: [
     CommonModule,
     PortalModule,
-    CustomElementsModule
+    CustomElementsModule,
+    FormsModule
   ],
   exports: [
     SmsComponent

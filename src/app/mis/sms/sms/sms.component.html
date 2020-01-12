@@ -1,20 +1,17 @@
 <app-portal>
     <ng-container class="page-content">
-        <app-tab [links]="links" [default]="'/add'" [base]="'/sms'">
+        <app-tab [links]="links" [default]="'/add'" [base]="'/sms'" #tab>
             <ng-container class="tab-content">
                 <div data-path="/add">
-                    <div data-path="/single">
-                        <app-send-message></app-send-message>
+                    <div data-path="/single" *ngIf="tab.tab === 'add' && tab.subtab === 'single'">
+                        <app-send-message [type]="'single'"></app-send-message>
                     </div>
-                    <div data-path="/multiple">
-                        <app-send-message></app-send-message>
+                    <div data-path="/multiple" *ngIf="tab.tab === 'add' && tab.subtab === 'multiple'">
+                        <app-send-message [type]="'multiple'"></app-send-message>
                     </div>
                 </div>
                 <div data-path="/view">
-                    <div data-path="/single">
-                        <app-view-messages></app-view-messages>
-                    </div>
-                    <div data-path="/multiple">
+                    <div data-path="/messages" *ngIf="tab.tab === 'view' && tab.subtab === 'messages'">
                         <app-view-messages></app-view-messages>
                     </div>
                 </div>
