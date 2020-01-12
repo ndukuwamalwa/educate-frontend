@@ -19,15 +19,11 @@ export const smsLinks: TabLink[] = [
     {
         label: "Previous",
         path: "/view",
-        default: "/single",
+        default: "/messages",
         children: [
             {
-                label: "Single destination",
-                path: "/single"
-            },
-            {
-                label: "Multi destinations",
-                path: "/multiple"
+                label: "Messages",
+                path: "/messages"
             }
         ]
     }
