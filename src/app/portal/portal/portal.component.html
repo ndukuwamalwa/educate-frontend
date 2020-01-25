@@ -25,85 +25,85 @@
 </header>
 <nav *ngIf="menuShown">
     <div>
-        <a routerLink="/dashboard" title="Home">
+        <a routerLink="/dashboard" title="Home" [ngClass]="{'active-module': isActiveMenu('/dashboard')}">
             <img src="assets/icons/home.svg" alt="Home">
             <span>Home</span>
         </a>
     </div>
     <div>
-        <a routerLink="/students/x/y" title="Students">
+        <a routerLink="/students/x/y" title="Students" [ngClass]="{'active-module': isActiveMenu('/students')}">
             <img src="assets/icons/school.svg" alt="Students">
             <span>Students</span>
         </a>
     </div>
     <div>
-        <a routerLink="/attendance/x/y" title="Attendance">
+        <a routerLink="/attendance/x/y" title="Attendance" [ngClass]="{'active-module': isActiveMenu('/attendance')}">
             <img src="assets/icons/tick.svg" alt="Attendance">
             <span>Attendance</span>
         </a>
     </div>
     <div>
-        <a routerLink="/teachers/x/y" title="Teachers">
+        <a routerLink="/teachers/x/y" title="Teachers" [ngClass]="{'active-module': isActiveMenu('/teachers')}">
             <img src="assets/icons/user-group.svg" alt="Teachers">
             <span>Teachers</span>
         </a>
     </div>
     <div>
-        <a routerLink="/classes/x/y" title="Classes">
+        <a routerLink="/classes/x/y" title="Classes" [ngClass]="{'active-module': isActiveMenu('/classes')}">
             <img src="assets/icons/folder.svg" alt="Classes">
             <span>Classes</span>
         </a>
     </div>
     <div>
-        <a routerLink="/subjects/x/y" title="Subjects">
+        <a routerLink="/subjects/x/y" title="Subjects" [ngClass]="{'active-module': isActiveMenu('/subjects')}">
             <img src="assets/icons/book.svg" alt="Subjects">
             <span>Subjects</span>
         </a>
     </div>
     <div>
-        <a routerLink="/fees/x/y" title="Fees">
+        <a routerLink="/fees/x/y" title="Fees" [ngClass]="{'active-module': isActiveMenu('/fees')}">
             <img src="assets/icons/coins.svg" alt="Fees">
             <span>Fees</span>
         </a>
     </div>
     <div>
-        <a routerLink="/payments/x/y" title="Payments">
+        <a routerLink="/payments/x/y" title="Payments" [ngClass]="{'active-module': isActiveMenu('/payments')}">
             <img src="assets/icons/money.svg" alt="Payments">
             <span>Payments</span>
         </a>
     </div>
     <div>
-        <a routerLink="/exams/x/y" title="Exams">
+        <a routerLink="/exams/x/y" title="Exams" [ngClass]="{'active-module': isActiveMenu('/exams')}">
             <img src="assets/icons/paper.svg" alt="Exams">
             <span>Exams</span>
         </a>
     </div>
     <div>
-        <a routerLink="/hostels/x/y" title="Hostels">
+        <a routerLink="/hostels/x/y" title="Hostels" [ngClass]="{'active-module': isActiveMenu('/hostels')}">
             <img src="assets/icons/folder-closed.svg" alt="Hostels">
             <span>Hostels</span>
         </a>
     </div>
     <div>
-        <a routerLink="/employees/x/y" title="Employees">
+        <a routerLink="/employees/x/y" title="Employees" [ngClass]="{'active-module': isActiveMenu('/employees')}">
             <img src="assets/icons/group.svg" alt="Employees">
             <span>Employees</span>
         </a>
     </div>
     <div>
-        <a routerLink="/users/x/y" title="Users">
+        <a routerLink="/users/x/y" title="Users" [ngClass]="{'active-module': isActiveMenu('/users')}">
             <img src="assets/icons/user.svg" alt="Users">
             <span>Users</span>
         </a>
     </div>
     <div>
-        <a routerLink="/sms/x/y" title="SMS">
+        <a routerLink="/sms/x/y" title="SMS" [ngClass]="{'active-module': isActiveMenu('/sms')}">
             <img src="assets/icons/chat.svg" alt="SMS">
             <span>SMS</span>
         </a>
     </div>
     <div>
-        <a routerLink="/setup/x/y" title="Setup">
+        <a routerLink="/setup/x/y" title="Setup" [ngClass]="{'active-module': isActiveMenu('/setup')}">
             <img src="assets/icons/calendar.svg" alt="Setup">
             <span>Setup</span>
         </a>

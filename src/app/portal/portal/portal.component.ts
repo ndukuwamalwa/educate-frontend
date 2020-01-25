@@ -42,4 +42,8 @@ export class PortalComponent implements OnInit {
       this.router.navigate(['']);
     });
   }
+
+  isActiveMenu(path: string) {
+    return window.location.pathname.startsWith(path);
+  }
 }
