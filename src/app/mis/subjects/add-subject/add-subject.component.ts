@@ -50,6 +50,7 @@ export class AddSubjectComponent implements OnChanges {
       .subscribe(res => {
         this.toastr.success("Subject added successfully.");
         this.router.navigate(['subjects', 'view', 'list']);
+        this.subjectService.fetchSubjects = null;
         this.isLoading = false;
       }, e => {
         this.isLoading = false;

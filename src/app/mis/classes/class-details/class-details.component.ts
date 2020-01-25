@@ -58,6 +58,7 @@ export class ClassDetailsComponent implements OnInit {
         stream.students = 0;
         this.streams.push(stream);
         this.clas.streams = +this.clas.streams;
+        this.classService.fetchStreams = null;
       }, e => {
         this.isLoading = false;
         if (e.status === 409) return this.toastr.error("Stream already exists.");
