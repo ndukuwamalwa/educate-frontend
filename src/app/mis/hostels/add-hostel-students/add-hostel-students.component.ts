@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HostelService } from '../hostel.service';
 import { ClassService } from '../../classes/class.service';
 import { ToastrService } from 'src/app/toastr.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmComponent } from 'src/app/custom-elements/confirm/confirm.component';
 
 @Component({
   selector: 'app-add-hostel-students',
@@ -22,7 +24,8 @@ export class AddHostelStudentsComponent implements OnInit {
   constructor(
     private hostelService: HostelService,
     private classService: ClassService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -76,18 +79,26 @@ export class AddHostelStudentsComponent implements OnInit {
   }
 
   addToHostel() {
-    this.isAddingToHostel = true;
-    this.hostelService.addStudents(this.selectedHostel.id, this.selected)
-      .subscribe(res => {
-        this.isAddingToHostel = false;
-        this.loadStudents({ hostel: this.selectedHostel.id, clas: this.selectedClass });
-        this.selectedHostel.total += this.selected.length;
-        this.selected = [];
-        this.toastr.success("Students added to hostel successfully.");
-      }, e => {
-        this.isAddingToHostel = false;
-        if (e.status === 409) return this.toastr.error(e.error.message);
-        return this.toastr.error("Failed to add students to hostel.");
+    const cnf = this.dialog.open(ConfirmComponent, {
+      data: `Add the selected ${this.selected.length} student(s) to ${this.selectedHostel.name}?`
+    });
+    cnf.afterClosed()
+      .subscribe(r => {
+        if (r) {
+          this.isAddingToHostel = true;
+          this.hostelService.addStudents(this.selectedHostel.id, this.selected)
+            .subscribe(res => {
+              this.isAddingToHostel = false;
+              this.loadStudents({ hostel: this.selectedHostel.id, clas: this.selectedClass });
+              this.selectedHostel.total += this.selected.length;
+              this.selected = [];
+              this.toastr.success("Students added to hostel successfully.");
+            }, e => {
+              this.isAddingToHostel = false;
+              if (e.status === 409) return this.toastr.error(e.error.message);
+              return this.toastr.error("Failed to add students to hostel.");
+            });
+        }
       });
   }
 
