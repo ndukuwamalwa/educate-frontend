@@ -4,12 +4,14 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Http } from 'src/app/http/http';
 import { createQuery } from 'src/app/utilities';
+import { publishReplay, refCount } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentsService {
   api = `${environment.apiUrl}/api`;
+  recentUrls: any = {};
 
   constructor(private http: Http) { }
 
@@ -18,7 +20,13 @@ export class StudentsService {
   }
 
   active(options): Observable<any> {
-    return this.http._get(`${this.api}/students?type=active&${createQuery(options)}`);
+    const newUrl = `${this.api}/students?type=active&${createQuery(options)}`;
+    
+    if (!this.recentUrls[newUrl.toLowerCase()]) {
+      this.recentUrls[newUrl.toLowerCase()] = this.http._get(newUrl)
+      .pipe(publishReplay(1), refCount());
+    }
+    return this.recentUrls[newUrl.toLowerCase()];
   }
 
   archived(options): Observable<any> {
@@ -61,8 +69,14 @@ export class StudentsService {
     return this.http._post(`${this.api}/students/activate`, ids);
   }
 
-  viewByAdm(adm, verbose: boolean = false): Observable<any> {
-    return this.http._get(`${this.api}/students?adm=${adm}&verbose=true`);
+  viewByAdm(adm): Observable<any> {
+    const newUrl = `${this.api}/students?adm=${adm}&verbose=true`;
+    
+    if (!this.recentUrls[newUrl.toLowerCase()]) {
+      this.recentUrls[newUrl.toLowerCase()] = this.http._get(newUrl)
+      .pipe(publishReplay(1), refCount());
+    }
+    return this.recentUrls[newUrl.toLowerCase()];
   }
 
   update(data, id): Observable<any> {

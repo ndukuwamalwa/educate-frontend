@@ -3,12 +3,14 @@ import { environment } from 'src/environments/environment';
 import { Http } from 'src/app/http/http';
 import { Subject } from 'src/app/models/subject.model';
 import { Observable } from 'rxjs';
+import { publishReplay, refCount } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubjectService {
   api: string = `${environment.apiUrl}/api`;
+  fetchSubjects: Observable<any>;
 
   constructor(private http: Http) { }
 
@@ -21,7 +23,10 @@ export class SubjectService {
   }
 
   subjects(): Observable<any> {
-    return this.http._get(`${this.api}/subjects`);
+    if (!this.fetchSubjects) {
+      this.fetchSubjects = this.http._get(`${this.api}/subjects`).pipe(publishReplay(1), refCount());
+    }
+    return this.fetchSubjects;
   }
 
   delete(id): Observable<any> {

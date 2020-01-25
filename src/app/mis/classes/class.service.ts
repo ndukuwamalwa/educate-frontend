@@ -5,12 +5,15 @@ import { Observable } from 'rxjs';
 import { Http } from 'src/app/http/http';
 import { Stream } from 'src/app/models/stream.model';
 import { createQuery } from 'src/app/utilities';
+import { refCount, publishReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClassService {
   api: string = `${environment.apiUrl}/api`;
+  fetchClasses: Observable<any>;
+  fetchStreams: Observable<any>;
   constructor(private http: Http) { }
 
   addClass(clas: Class): Observable<any> {
@@ -22,7 +25,13 @@ export class ClassService {
   }
 
   classes(): Observable<any> {
-    return this.http._get(`${this.api}/class`);
+    if (!this.fetchClasses) {
+      this.fetchClasses = this.http._get(`${this.api}/class`).pipe(
+        publishReplay(1),
+        refCount()
+      );
+    }
+    return this.fetchClasses; 
   }
 
   updateClass(clas: Class, id): Observable<any> {
@@ -34,7 +43,13 @@ export class ClassService {
   }
 
   streams(): Observable<any> {
-    return this.http._get(`${this.api}/streams`);
+    if (!this.fetchStreams) {
+      this.fetchStreams = this.http._get(`${this.api}/streams`).pipe(
+        publishReplay(1),
+        refCount()
+      );
+    }
+    return this.fetchStreams;
   }
 
   deleteStream(id): Observable<any> {
