@@ -1,4 +1,5 @@
 import { PRINT } from './constants';
+import { Observable } from 'rxjs';
 
 export function createQuery(options = {}): string {
     const keys = Object.keys(options);
@@ -39,4 +40,9 @@ export function isValidKePhone(str: string): boolean {
     if (actualNo.length !== 9) return false;
     if (!(/^[0-9]+$/i.test(actualNo))) return false;
     return true;
+}
+
+export function getObservableUrl(ob: Observable<any>): string {
+    if (!ob) return undefined;
+    return ob.source.source.source.source.source['value'].url
 }
