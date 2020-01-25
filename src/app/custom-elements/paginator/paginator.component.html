@@ -2,34 +2,32 @@
   <div>
     <input type="search" autocomplete="off" placeholder="Enter keyword to search" name="search" id="search-box"
       (keyup)="onSearch($event, s.value)" #s>
-    <button class="btn btn--primary" (click)="onSearch($event, s.value)">Search</button>
+    <button class="btn btn--primary" (click)="onSearch($event, s.value)" id="search-btn"><i
+        class="fa fa-search"></i></button>
+    <label for="size">Size</label>
+    <select name="size" id="size" (change)="onPageSizeChange($event.target.value)" [ngModel]="size">
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="50">50</option>
+      <option value="80">80</option>
+      <option value="100">100</option>
+      <option value="150">150</option>
+      <option value="200">200</option>
+    </select>
+    <span *ngIf="total === 0" class="counter">0 - 0 of 0</span>
+    <span *ngIf="total > 0" class="counter">{{((page - 1)*size + 1) | number}} to {{((page - 1)*size + shown) | number}} of
+      {{total}}</span>
   </div>
   <div class="pagination">
-    <div>
-      <label for="size">Items per page</label>
-      <select name="size" id="size" (change)="onPageSizeChange($event.target.value)" [ngModel]="size">
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="50">50</option>
-        <option value="80">80</option>
-        <option value="100">100</option>
-        <option value="150">150</option>
-        <option value="200">200</option>
-      </select>
-    </div>
-    <div>
-      <span *ngIf="total === 0">0 - 0 of 0</span>
-      <span *ngIf="total > 0">{{((page - 1)*size + 1) | number}} to {{((page - 1)*size + shown) | number}} of {{total}}</span>
-    </div>
-    <div>
+    <div class="sort-param">
       <label for="sort">Sort</label>
       <select name="sort" [ngModel]="sort" id="sort" (change)="onSortChange($event.target.value)">
         <option value="1">Asc</option>
         <option value="-1">Desc</option>
       </select>
     </div>
-    <div>
+    <div class="sort-param">
       <label for="sortBy">Sort by</label>
       <select name="sortBy" id="sortBy" [ngModel]="sortBy" (change)="onSortByChange($event.target.value)">
         <option [value]="sort.key" *ngFor="let sort of sorts">{{sort.label | titlecase}}</option>
@@ -42,12 +40,9 @@
       </select>
     </div>
     <div id="buts">
-      <button [disabled]="page === 1" class="btn btn--primary" (click)="prev()">
-        <i class="fa fa-chevron-left"></i>
-      </button>
-      <button [disabled]="pages && (page === pages[pages.length - 1])" class="btn btn--primary" (click)="next()">
-        <i class="fa fa-chevron-right"></i>
-      </button>
+      <i class="fa fa-chevron-left" (click)="prev()" [ngClass]="{green: page > 1}"></i>
+      <i class="fa fa-chevron-right" (click)="next()"
+        [ngClass]="{green: (pages && (page !== pages[pages.length - 1]))}"></i>
     </div>
   </div>
 </article>

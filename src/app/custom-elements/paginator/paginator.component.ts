@@ -65,6 +65,7 @@ export class PaginatorComponent implements OnChanges {
   }
 
   prev() {
+    if (this.page === 1) return;
     if (this.page !== 1) {
       this.page -= 1;
       this.sendChange();
@@ -72,6 +73,7 @@ export class PaginatorComponent implements OnChanges {
   }
 
   next() {
+    if (!this.pages) return;
     if (this.page !== this.pages[this.pages.length - 1]) {
       this.page += 1;
       this.sendChange();
