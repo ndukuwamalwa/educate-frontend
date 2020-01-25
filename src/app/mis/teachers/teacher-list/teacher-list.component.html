@@ -2,6 +2,7 @@
 <h4 *ngIf="category === 'active'">Current teachers</h4>
 <h4 *ngIf="category === 'transfered'">Transfered teachers</h4>
 <h4 *ngIf="category === 'retired'">Retired teachers</h4>
+<app-loader *ngIf="isLoading"></app-loader>
 <app-paginator [total]="total" [sorts]="columns" (output)="onOptionsChange($event)" [shown]="teachers?.length">
 </app-paginator>
 <table>
@@ -33,5 +34,6 @@
     <fieldset>
         <button class="btn btn--primary" [disabled]="isSavingTeachers" (click)="createTeachers()">Create
             {{selected.length | number}} teachers</button>
+        <app-loader *ngIf="isSavingTeachers"></app-loader>
     </fieldset>
 </form>

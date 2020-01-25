@@ -59,5 +59,6 @@
     </div>
     <fieldset>
         <button (click)="mark()" class="btn btn--primary" [disabled]="isMarking">Mark Present</button>
+        <app-loader *ngIf="isMarking"></app-loader>
     </fieldset>
 </form>
