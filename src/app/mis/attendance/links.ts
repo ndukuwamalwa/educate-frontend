@@ -1,10 +1,8 @@
 import { TabLink } from 'src/app/models/tab-link';
-import { JwtHelperService } from '@auth0/angular-jwt';
-const jwt = new JwtHelperService();
-const user = jwt.decodeToken(window.sessionStorage.getItem('token'));
-const type = user.type.toLowerCase();
+import { getSessionUserType } from 'src/app/utilities';
 
 export function attendanceLinks(): TabLink[] {
+    const type = getSessionUserType();
     let attendanceLinks: TabLink[];
     if (type === 'admin') {
         attendanceLinks = [
