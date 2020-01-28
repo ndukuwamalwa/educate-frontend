@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { ToastrService } from 'src/app/toastr.service';
+import { getSessionUserType } from 'src/app/utilities';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +11,7 @@ import { ToastrService } from 'src/app/toastr.service';
 export class DashboardComponent implements OnInit {
   stats: any;
   isLoading: boolean = false;
+  userType = getSessionUserType();
   constructor(
     private dashService: DashboardService,
     private toastr: ToastrService

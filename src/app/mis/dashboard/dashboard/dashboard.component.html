@@ -21,7 +21,7 @@
                     </article>
                 </div>
             </div>
-            <div class="stat">
+            <div class="stat" *ngIf="userType !== 'teacher'">
                 <span>Students</span>
                 <div>
                     <article>
@@ -74,7 +74,7 @@
                     </article>
                 </div>
             </div>
-            <div class="stat">
+            <div class="stat" *ngIf="userType !== 'teacher'">
                 <span>Classes</span>
                 <div>
                     <article>
@@ -119,7 +119,7 @@
                     </article>
                 </div>
             </div>
-            <div class="stat">
+            <div class="stat" *ngIf="userType === 'admin' || userType === 'finance'">
                 <span>Payments</span>
                 <div>
                     <article>
@@ -148,7 +148,7 @@
                     </article>
                 </div>
             </div>
-            <div class="stat">
+            <div class="stat" *ngIf="userType !== 'teacher'">
                 <span>Employees</span>
                 <div>
                     <article>
