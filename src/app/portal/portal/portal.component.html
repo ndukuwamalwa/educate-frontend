@@ -30,79 +30,79 @@
             <span>Home</span>
         </a>
     </div>
-    <div *ngIf="studentModule.length > 0">
+    <div *ngIf="studentModule?.length > 0">
         <a routerLink="/students/view/active" title="Students" [ngClass]="{'active-module': isActiveMenu('/students')}">
             <img src="assets/icons/school.svg" alt="Students">
             <span>Students</span>
         </a>
     </div>
-    <div *ngIf="attendanceModule.length > 0">
+    <div *ngIf="attendanceModule?.length > 0">
         <a [routerLink]="user.type.toLowerCase() === 'teacher' ? '/attendance/mark/stream': '/attendance/view/stream'" title="Attendance" [ngClass]="{'active-module': isActiveMenu('/attendance')}">
             <img src="assets/icons/tick.svg" alt="Attendance">
             <span>Attendance</span>
         </a>
     </div>
-    <div *ngIf="teacherModule.length > 0">
+    <div *ngIf="teacherModule?.length > 0">
         <a routerLink="/teachers/view/active" title="Teachers" [ngClass]="{'active-module': isActiveMenu('/teachers')}">
             <img src="assets/icons/user-group.svg" alt="Teachers">
             <span>Teachers</span>
         </a>
     </div>
-    <div *ngIf="classModule.length > 0">
+    <div *ngIf="classModule?.length > 0">
         <a routerLink="/classes/view/classes" title="Classes" [ngClass]="{'active-module': isActiveMenu('/classes')}">
             <img src="assets/icons/folder.svg" alt="Classes">
             <span>Classes</span>
         </a>
     </div>
-    <div *ngIf="subjectModule.length > 0">
+    <div *ngIf="subjectModule?.length > 0">
         <a routerLink="/subjects/view/list" title="Subjects" [ngClass]="{'active-module': isActiveMenu('/subjects')}">
             <img src="assets/icons/book.svg" alt="Subjects">
             <span>Subjects</span>
         </a>
     </div>
-    <div *ngIf="feeModule.length > 0">
+    <div *ngIf="feeModule?.length > 0">
         <a routerLink="/fees/view/stream" title="Fees" [ngClass]="{'active-module': isActiveMenu('/fees')}">
             <img src="assets/icons/coins.svg" alt="Fees">
             <span>Fees</span>
         </a>
     </div>
-    <div *ngIf="paymentModule.length > 0">
+    <div *ngIf="paymentModule?.length > 0">
         <a routerLink="/payments/bank-slip/new" title="Payments" [ngClass]="{'active-module': isActiveMenu('/payments')}">
             <img src="assets/icons/money.svg" alt="Payments">
             <span>Payments</span>
         </a>
     </div>
-    <div *ngIf="examModule.length > 0">
+    <div *ngIf="examModule?.length > 0">
         <a routerLink="/exams/view/all" title="Exams" [ngClass]="{'active-module': isActiveMenu('/exams')}">
             <img src="assets/icons/paper.svg" alt="Exams">
             <span>Exams</span>
         </a>
     </div>
-    <div *ngIf="hostelModule.length > 0">
+    <div *ngIf="hostelModule?.length > 0">
         <a routerLink="/hostels/view/list" title="Hostels" [ngClass]="{'active-module': isActiveMenu('/hostels')}">
             <img src="assets/icons/folder-closed.svg" alt="Hostels">
             <span>Hostels</span>
         </a>
     </div>
-    <div *ngIf="employeeModule.length > 0">
+    <div *ngIf="employeeModule?.length > 0">
         <a routerLink="/employees/view/active" title="Employees" [ngClass]="{'active-module': isActiveMenu('/employees')}">
             <img src="assets/icons/group.svg" alt="Employees">
             <span>Employees</span>
         </a>
     </div>
-    <div *ngIf="userModule.length > 0">
+    <div *ngIf="userModule?.length > 0">
         <a routerLink="/users/view/users" title="Users" [ngClass]="{'active-module': isActiveMenu('/users')}">
             <img src="assets/icons/user.svg" alt="Users">
             <span>Users</span>
         </a>
     </div>
-    <div *ngIf="smsModule.length > 0">
+    <div *ngIf="smsModule?.length > 0">
         <a routerLink="/sms/add/single" title="SMS" [ngClass]="{'active-module': isActiveMenu('/sms')}">
             <img src="assets/icons/chat.svg" alt="SMS">
             <span>SMS</span>
         </a>
     </div>
-    <div *ngIf="setupModule.length > 0">
+    <div *ngIf="setupModule?.length > 0">
         <a routerLink="/setup/view/list" title="Setup" [ngClass]="{'active-module': isActiveMenu('/setup')}">
             <img src="assets/icons/calendar.svg" alt="Setup">
             <span>Setup</span>
