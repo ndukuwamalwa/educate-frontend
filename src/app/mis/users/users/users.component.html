@@ -6,16 +6,10 @@
                     <div data-path="/new" *ngIf="tabs.tab === 'add' && tabs.subtab === 'new'">
                         <app-add-user></app-add-user>
                     </div>
-                    <div data-path="/group" *ngIf="tabs.tab === 'add' && tabs.subtab === 'group'">
-                        <app-add-user-group></app-add-user-group>
-                    </div>
                 </div>
                 <div data-path="/view">
                     <div data-path="/users" *ngIf="tabs.tab === 'view' && tabs.subtab === 'users'">
                         <app-view-users></app-view-users>
-                    </div>
-                    <div data-path="/groups" *ngIf="tabs.tab === 'view' && tabs.subtab === 'groups'">
-                        <app-view-user-groups></app-view-user-groups>
                     </div>
                 </div>
             </ng-container>
