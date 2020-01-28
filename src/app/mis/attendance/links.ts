@@ -58,10 +58,6 @@ export function attendanceLinks(): TabLink[] {
                     {
                         label: "Stream",
                         path: "/stream"
-                    },
-                    {
-                        label: "Class",
-                        path: "/class"
                     }
                 ]
             },
