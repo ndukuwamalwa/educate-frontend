@@ -32,28 +32,4 @@ export class UserService {
   view(id): Observable<any> {
     return this.http._get(`${this.api}/users?id=${id}`);
   }
-
-  addGroup(group): Observable<any> {
-    return this.http._post(`${this.api}/users/groups`, group);
-  }
-
-  updateGroup(group, id): Observable<any> {
-    return this.http._put(`${this.api}/users/groups?id=${id}`, group);
-  }
-
-  deleteGroup(id): Observable<any> {
-    return this.http._delete(`${this.api}/users/groups?id=${id}`);
-  }
-
-  listGroups(): Observable<any> {
-    return this.http._get(`${this.api}/users/groups`);
-  }
-
-  getTables(): Observable<any> {
-    return this.http._get(`${this.api}/users/tables`);
-  }
-
-  groupUsers(id): Observable<any> {
-    return this.http._get(`${this.api}/group/users?id=${id}`);
-  }
 }
