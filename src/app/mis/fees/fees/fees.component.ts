@@ -9,7 +9,7 @@ import { feeLinks } from '../links';
 })
 export class FeesComponent implements OnInit {
 
-  links: TabLink[] = feeLinks;
+  links: TabLink[] = feeLinks();
 
   constructor() { }
 

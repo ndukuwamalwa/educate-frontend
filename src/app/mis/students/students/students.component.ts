@@ -14,7 +14,7 @@ import { ConfirmComponent } from 'src/app/custom-elements/confirm/confirm.compon
   styleUrls: ['./students.component.scss']
 })
 export class StudentsComponent implements OnInit {
-  links: TabLink[] = studentLinks;
+  links: TabLink[] = studentLinks();
   isLoading: boolean = false;
   toArchive: number[] = [];
   toDelete: number[] = [];

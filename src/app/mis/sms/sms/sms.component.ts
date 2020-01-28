@@ -9,7 +9,7 @@ import { smsLinks } from '../links';
 })
 export class SmsComponent implements OnInit {
 
-  links: TabLink[] = smsLinks;
+  links: TabLink[] = smsLinks();
 
   constructor() { }
 

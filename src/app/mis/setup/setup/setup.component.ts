@@ -9,7 +9,7 @@ import { setupLinks } from '../links';
 })
 export class SetupComponent implements OnInit {
 
-  links: TabLink[] = setupLinks;
+  links: TabLink[] = setupLinks();
 
   constructor() { }
 

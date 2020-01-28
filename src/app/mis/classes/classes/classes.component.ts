@@ -8,7 +8,7 @@ import { classLinks } from '../links';
   styleUrls: ['./classes.component.scss']
 })
 export class ClassesComponent implements OnInit {
-  links: TabLink[] = classLinks;
+  links: TabLink[] = classLinks();
 
   constructor() { }
 

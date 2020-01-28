@@ -9,7 +9,7 @@ import { userLinks } from '../links';
 })
 export class UsersComponent implements OnInit {
 
-  links: TabLink[] = userLinks;
+  links: TabLink[] = userLinks();
 
   constructor() { }
 

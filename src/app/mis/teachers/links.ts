@@ -1,64 +1,189 @@
 import { TabLink } from 'src/app/models/tab-link';
+import { JwtHelperService } from '@auth0/angular-jwt';
+const jwt = new JwtHelperService();
+const user = jwt.decodeToken(window.sessionStorage.getItem('token'));
+const type = user.type.toLowerCase();
 
-export const teacherLinks: TabLink[] = [
-    {
-        label: "New",
-        path: "/add",
-        default: "/new",
-        children: [
+export function teacherLinks(): TabLink[] {
+    let teacherLinks: TabLink[];
+    if (type === 'admin') {
+        teacherLinks = [
             {
-                label: "New teacher",
-                path: "/new"
-            }
-        ]
-    },
-    {
-        label: "Teachers",
-        path: "/view",
-        default: "/active",
-        children: [
-            {
-                label: "Active",
-                path: "/active"
+                label: "Teachers",
+                path: "/view",
+                default: "/active",
+                children: [
+                    {
+                        label: "Active",
+                        path: "/active"
+                    },
+                    {
+                        label: "Transferred",
+                        path: "/transfered"
+                    },
+                    {
+                        label: "Retired",
+                        path: "/retired"
+                    }
+                ]
             },
             {
-                label: "Transferred",
-                path: "/transfered"
+                label: "Classes",
+                path: "/classes",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
             },
             {
-                label: "Retired",
-                path: "/retired"
+                label: "Subjects",
+                path: "/subjects",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
             }
-        ]
-    },
-    {
-        label: "Classes",
-        path: "/classes",
-        default: "/view",
-        children: [
+        ];
+    } else if (type === 'registrar') {
+        teacherLinks = [
             {
-                label: "Assign class",
-                path: "/assign"
+                label: "Teachers",
+                path: "/view",
+                default: "/active",
+                children: [
+                    {
+                        label: "Active",
+                        path: "/active"
+                    },
+                    {
+                        label: "Transferred",
+                        path: "/transfered"
+                    },
+                    {
+                        label: "Retired",
+                        path: "/retired"
+                    }
+                ]
             },
             {
-                label: "Assignments",
-                path: "/view"
-            }
-        ]
-    },
-    {
-        label: "Subjects",
-        path: "/subjects",
-        default: "/view",
-        children: [
-            {
-                label: "Assign subject",
-                path: "/assign"
+                label: "Classes",
+                path: "/classes",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assign class",
+                        path: "/assign"
+                    },
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
             },
             {
-                label: "Assignments",
-                path: "/view"
+                label: "Subjects",
+                path: "/subjects",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assign subject",
+                        path: "/assign"
+                    },
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
             }
-        ]
+        ];
+    } else if (type === 'teacher') {
+        teacherLinks = [
+            {
+                label: "Teachers",
+                path: "/view",
+                default: "/active",
+                children: [
+                    {
+                        label: "Active",
+                        path: "/active"
+                    }
+                ]
+            },
+            {
+                label: "Classes",
+                path: "/classes",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
+            },
+            {
+                label: "Subjects",
+                path: "/subjects",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
+            }
+        ];
+    } else if (type === 'finance') {
+        teacherLinks = [
+            {
+                label: "Teachers",
+                path: "/view",
+                default: "/active",
+                children: [
+                    {
+                        label: "Active",
+                        path: "/active"
+                    },
+                    {
+                        label: "Transferred",
+                        path: "/transfered"
+                    },
+                    {
+                        label: "Retired",
+                        path: "/retired"
+                    }
+                ]
+            },
+            {
+                label: "Classes",
+                path: "/classes",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
+            },
+            {
+                label: "Subjects",
+                path: "/subjects",
+                default: "/view",
+                children: [
+                    {
+                        label: "Assignments",
+                        path: "/view"
+                    }
+                ]
+            }
+        ];
+    } else {
+        teacherLinks = [];
     }
-];
+    return teacherLinks;
+}

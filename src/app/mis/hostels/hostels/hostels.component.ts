@@ -9,7 +9,7 @@ import { hostelLinks } from '../links';
 })
 export class HostelsComponent implements OnInit {
 
-  links: TabLink[] = hostelLinks;
+  links: TabLink[] = hostelLinks();
 
   constructor() { }
 
