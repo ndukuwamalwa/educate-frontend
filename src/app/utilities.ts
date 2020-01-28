@@ -1,5 +1,7 @@
 import { PRINT } from './constants';
 import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { User } from './models/user.model';
 
 export function createQuery(options = {}): string {
     const keys = Object.keys(options);
@@ -45,4 +47,16 @@ export function isValidKePhone(str: string): boolean {
 export function getObservableUrl(ob: Observable<any>): string {
     if (!ob) return undefined;
     return ob.source.source.source.source.source['value'].url
+}
+
+export function getSessionUserType(): string {
+    const token = window.sessionStorage.getItem('token');
+    if (!token) {
+        window.location.reload();
+        return;
+    }
+    const jwt = new JwtHelperService();
+    const user: User = jwt.decodeToken(token);
+    if (!user || !user.type) return null;
+    return user.type.toLowerCase();
 }
