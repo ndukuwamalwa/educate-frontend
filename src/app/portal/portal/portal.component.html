@@ -7,9 +7,9 @@
         <div>
             <div>
                 <i class="fa fa-user"></i>
-                <span>{{user.name | titlecase}}</span>
+                <span class="desktop">{{user?.username | lowercase}}</span>
             </div>
-            <span class="desktop">({{user.title | titlecase}})</span>
+            <span>({{user?.type | titlecase}})</span>
         </div>
         <div>
             <i class="fa fa-sign-out"></i>
