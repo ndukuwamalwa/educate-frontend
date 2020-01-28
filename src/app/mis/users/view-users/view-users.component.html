@@ -16,7 +16,7 @@
             <td data-label="Username">{{user.username | lowercase}}</td>
             <td data-label="Emp No.">{{user.empNo | uppercase}}</td>
             <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
-                    (click)="delete(user.id)"></i></td>
+                    (click)="delete(user.id)" *ngIf="user.id !== loggedInUser.id"></i></td>
         </tr>
     </tbody>
 </table>

@@ -5,6 +5,7 @@ import { ToastrService } from 'src/app/toastr.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { ConfirmComponent } from 'src/app/custom-elements/confirm/confirm.component';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-view-users',
@@ -14,6 +15,7 @@ import { ConfirmComponent } from 'src/app/custom-elements/confirm/confirm.compon
 export class ViewUsersComponent implements OnInit {
 
   users: User[];
+  loggedInUser = this.auth.getUserDetails();
   isLoading: boolean = false;
   total: number;
   sorts: { label: string, key: string }[] = [
@@ -34,7 +36,8 @@ export class ViewUsersComponent implements OnInit {
   constructor(
     private userService: UserService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
