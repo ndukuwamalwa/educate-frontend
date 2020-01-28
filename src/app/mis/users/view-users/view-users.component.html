@@ -5,18 +5,16 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Title</th>
             <th>Username</th>
-            <th>Group Name</th>
+            <th>Emp No.</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let user of users" class="clickable" (click)="viewUser($event.target.nodeName, user)">
             <td data-label="Name">{{user.name | titlecase}}</td>
-            <td data-label="Title">{{user.title | titlecase}}</td>
             <td data-label="Username">{{user.username | lowercase}}</td>
-            <td data-label="Group Name">{{user.groupName | titlecase}}</td>
+            <td data-label="Emp No.">{{user.empNo | uppercase}}</td>
             <td data-label="Action"><i class="fa fa-trash action-icon action-icon--danger"
                     (click)="delete(user.id)"></i></td>
         </tr>

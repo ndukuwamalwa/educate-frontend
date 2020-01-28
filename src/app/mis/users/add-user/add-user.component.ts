@@ -17,20 +17,15 @@ export class AddUserComponent implements OnChanges, OnInit {
   @Output('submitted') submitted: EventEmitter<User> = new EventEmitter();
   groups: any[];
   userForm = this.fb.group({
-    name: ['', [
-      Validators.required,
-      Validators.pattern(/^[a-z' ]+$/i)
-    ]],
-    title: ['', [
-      Validators.required,
-      Validators.pattern(/^[a-z ]+$/i)
+    empNo: ['', [
+      Validators.required
     ]],
     username: ['', [
       Validators.required,
       Validators.email
     ]],
     password: ['', [Validators.required]],
-    u_group: ['', [Validators.required]]
+    type: ['', [Validators.required]]
   });
 
   constructor(
@@ -43,22 +38,16 @@ export class AddUserComponent implements OnChanges, OnInit {
   ngOnChanges() {
     if (this.data) {
       this.userForm.removeControl('password');
+      this.userForm.controls.empNo.disable;
       this.userForm.setValue({
-        name: this.data.name,
-        title: this.data.title,
+        empNo: this.data.empNo,
         username: this.data.username,
-        u_group: this.data.u_group
+        type: this.data.type
       });
     }
   }
 
   ngOnInit() {
-    this.userService.listGroups()
-      .subscribe(res => {
-        this.groups = res.items;
-      }, e => {
-        this.toastr.error("Failed to load user groups.");
-      });
   }
 
   save(data: User) {
@@ -74,6 +63,9 @@ export class AddUserComponent implements OnChanges, OnInit {
         this.router.navigate(['users', 'view', 'users']);
       }, e => {
         this.isLoading = false;
+        if (e.error.message.startsWith("Cannot add or update a child row")) {
+          return this.toastr.error("Invalid employee number");
+        }
         if (e.status === 409) return this.toastr.error("Username has alreday been used.");
         return this.toastr.error("Failed to add user.");
       });

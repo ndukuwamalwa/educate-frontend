@@ -22,16 +22,12 @@ export class ViewUsersComponent implements OnInit {
       key: "name"
     },
     {
-      label: "Title",
-      key: "title"
-    },
-    {
       label: "Username",
       key: "username"
     },
     {
-      label: "Group",
-      key: "groupName"
+      label: "Emp No.",
+      key: "empNo"
     }
   ];
 

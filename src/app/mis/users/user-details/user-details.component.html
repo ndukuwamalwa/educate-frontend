@@ -10,8 +10,8 @@
                         <td>{{user?.name | titlecase}}</td>
                     </tr>
                     <tr>
-                        <td>Title</td>
-                        <td>{{user?.title | titlecase}}</td>
+                        <td>Employee Number</td>
+                        <td>{{user?.empNo | uppercase}}</td>
                     </tr>
                     <tr>
                         <td>Username</td>
@@ -22,8 +22,8 @@
                         <td>{{user?.state | titlecase}}</td>
                     </tr>
                     <tr>
-                        <td>User group</td>
-                        <td>{{user?.groupName | titlecase}}</td>
+                        <td>User Type</td>
+                        <td>{{user?.type | titlecase}}</td>
                     </tr>
                     <tr>
                         <td>Date created</td>
@@ -33,42 +33,8 @@
             </table>
         </mat-tab>
         <mat-tab label="Update">
-            <app-add-user [data]="user" (submitted)="update($event)" [isLoading]="isUpdating">
+            <app-add-user [data]="user" (submitted)="update($event)" [isLoading]="isUpdating" [title]="'Update User'">
             </app-add-user>
-        </mat-tab>
-        <mat-tab label="Access">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Entity</th>
-                        <th>Create</th>
-                        <th>Update</th>
-                        <th>View</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="user?.tables.length">
-                    <tr *ngFor="let t of user?.tables">
-                        <td data-label="Entity">{{t.table | uppercase}}</td>
-                        <td data-label="Create">
-                            <i class="fa fa-check" *ngIf="t.operations.includes('CREATE')"></i>
-                            <i class="fa fa-close" *ngIf="!t.operations.includes('CREATE')"></i>
-                        </td>
-                        <td data-label="Update">
-                            <i class="fa fa-check" *ngIf="t.operations.includes('UPDATE')"></i>
-                            <i class="fa fa-close" *ngIf="!t.operations.includes('UPDATE')"></i>
-                        </td>
-                        <td data-label="View">
-                            <i class="fa fa-check" *ngIf="t.operations.includes('SELECT')"></i>
-                            <i class="fa fa-close" *ngIf="!t.operations.includes('SELECT')"></i>
-                        </td>
-                        <td data-label="Delete">
-                            <i class="fa fa-check" *ngIf="t.operations.includes('DELETE')"></i>
-                            <i class="fa fa-close" *ngIf="!t.operations.includes('DELETE')"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </mat-tab>
     </mat-tab-group>
 </mat-dialog-content>

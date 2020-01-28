@@ -3,13 +3,9 @@
         <span class="form-heading">{{title}}</span>
         <span>All fields marked * must be completed</span>
     </div>
-    <fieldset>
-        <label for="name">Name*</label>
-        <input type="text" name="name" id="name" formControlName="name" autocomplete="off">
-    </fieldset>
-    <fieldset>
-        <label for="title">Title*</label>
-        <input type="text" name="title" id="title" formControlName="title" autocomplete="off">
+    <fieldset *ngIf="!data">
+        <label for="empNo">Employee no.</label>
+        <input type="text" name="empNo" id="empNo" formControlName="empNo" autocomplete="off">
     </fieldset>
     <fieldset>
         <label for="username">Email*</label>
@@ -20,9 +16,12 @@
         <input type="password" name="password" id="password" formControlName="password" autocomplete="off">
     </fieldset>
     <fieldset>
-        <label for="u_group">User group*</label>
-        <select name="u_group" id="u_group" formControlName="u_group">
-            <option [value]="g.id" *ngFor='let g of groups'>{{g.name | titlecase}}</option>
+        <label for="type">User Type* <span class="danger">Be careful</span></label>
+        <select name="type" id="type" formControlName="type">
+            <option value="Teacher">Teacher</option>
+            <option value="Registrar">Registrar/Admissions</option>
+            <option value="Finance">Finance/Bursar</option>
+            <option value="Admin">Admin</option>
         </select>
     </fieldset>
     <fieldset>
