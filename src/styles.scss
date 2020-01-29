@@ -144,9 +144,20 @@ textarea {
 .mat-dialog-actions {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 10px;
     z-index: 20;
     background-color: transparent;
+
+    .close-btn {
+        min-width: 20px;
+        max-width: 20px;
+        padding: 5px;
+        background-color: transparent;
+        color: red;
+        overflow: hidden;
+        font-weight: bold;
+        font-size: 20px;
+    }
 }
 
 .mat-dialog-container {
