@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Student } from 'src/app/models/student.model';
 import { StudentsService } from '../students.service';
 import { ToastrService } from 'src/app/toastr.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-student-details',
@@ -39,7 +40,8 @@ export class StudentDetailsComponent implements OnInit {
       });
   }
 
-  update(data) {
+  update(form: NgForm) {
+    const data = form.value;
     this.isUpdating = true;
     this.studentService.update(data, this.basicDetails.id)
       .subscribe(res => {

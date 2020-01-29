@@ -1,4 +1,4 @@
-<form [formGroup]="studentForm" (ngSubmit)="submit(studentForm.value)">
+<form [formGroup]="studentForm" (ngSubmit)="submit(studentForm)">
     <div class="form-title">
         <span class="form-heading">{{title}}</span>
         <span>All fields marked * must be completed</span>
@@ -10,6 +10,19 @@
     <fieldset>
         <label for="admitted">Date admitted*</label>
         <input type="date" formControlName="admitted" id="admitted" autocomplete="off">
+    </fieldset>
+    <fieldset>
+        <label for="gender">Gender*</label>
+        <div>
+            <div>
+                <input type="radio" name="gender" id="male" value="Male" formControlName="gender">
+                <label for="male">Male</label>
+            </div>
+            <div>
+                <input type="radio" name="gender" id="female" value="Female" formControlName="gender">
+                <label for="female">Female</label>
+            </div>
+        </div>
     </fieldset>
     <fieldset>
         <label for="fname">First name*</label>
@@ -28,17 +41,20 @@
         <input type="date" formControlName="dob" id="dob" autocomplete="off">
     </fieldset>
     <fieldset>
-        <label for="gender">Gender*</label>
-        <div>
-            <div>
-                <input type="radio" name="gender" id="male" value="Male" formControlName="gender">
-                <label for="male">Male</label>
-            </div>
-            <div>
-                <input type="radio" name="gender" id="female" value="Female" formControlName="gender">
-                <label for="female">Female</label>
-            </div>
-        </div>
+        <label for="fatherName">Name of Father*</label>
+        <input type="text" name="fatherName" id="fatherName" formControlName="fatherName">
+    </fieldset>
+    <fieldset>
+        <label for="motherName">Name of Mother*</label>
+        <input type="text" name="motherName" id="motherName" formControlName="motherName">
+    </fieldset>
+    <fieldset>
+        <label for="guardianName">Guardian Name(if any)</label>
+        <input type="text" name="guardianName" id="guardianName" formControlName="guardianName">
+    </fieldset>
+    <fieldset>
+        <label for="homeContact">Home Contact*</label>
+        <input type="tel" name="homeContact" id="homeContact" formControlName="homeContact">
     </fieldset>
     <fieldset>
         <label for="county">County of origin*</label>

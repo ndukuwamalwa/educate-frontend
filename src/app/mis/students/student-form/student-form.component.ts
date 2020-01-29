@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { counties } from 'src/app/constants';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, NgForm, FormGroup } from '@angular/forms';
 import { Student } from 'src/app/models/student.model';
 
 @Component({
@@ -11,7 +11,7 @@ export class StudentFormComponent implements OnInit, OnChanges {
   @Input('title') title: string;
   @Input('data') data: Student;
   @Input('isLoading') isLoading: boolean = false;
-  @Output('onSubmit') onSubmit: EventEmitter<Student> = new EventEmitter();
+  @Output('onSubmit') onSubmit: EventEmitter<FormGroup> = new EventEmitter();
 
   counties = counties;
   studentForm = this.fb.group({
@@ -41,6 +41,21 @@ export class StudentFormComponent implements OnInit, OnChanges {
     ]],
     county: ['', [
       Validators.required
+    ]],
+    fatherName: ['', [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z ']+$/i)
+    ]],
+    motherName: ['', [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z ']+$/i)
+    ]],
+    guardianName: ['', [
+      Validators.pattern(/^[a-zA-Z ']+$/i)
+    ]],
+    homeContact: ['', [
+      Validators.required,
+      Validators.pattern(/^07[0-9]{8}$/)
     ]]
   });
 
@@ -61,8 +76,8 @@ export class StudentFormComponent implements OnInit, OnChanges {
     }
   }
 
-  submit(data: Student) {
-    this.onSubmit.emit(data);
+  submit(form: FormGroup) {
+    this.onSubmit.emit(form);
   }
 
 }

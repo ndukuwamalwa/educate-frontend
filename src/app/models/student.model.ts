@@ -8,5 +8,9 @@ export interface Student {
     dob: string;
     gender: string;
     county: string;
+    fatherName: string;
+    motherName: string;
+    guardianName?: string;
+    homeContact: string;
     created: string;
 } 

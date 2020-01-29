@@ -7,6 +7,7 @@ import { StudentsService } from '../students.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from 'src/app/custom-elements/confirm/confirm.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-students',
@@ -32,12 +33,13 @@ export class StudentsComponent implements OnInit {
 
   }
 
-  addStudent(student: Student) {
+  addStudent(form: NgForm) {
     this.isLoading = true;
-    this.studentService.add(student)
+    this.studentService.add(form.value)
       .subscribe(res => {
         this.isLoading = false;
         this.toastr.success("Student added successfully");
+        form.reset();
       }, e => {
         this.isLoading = false;
         if (e.status === 409) return this.toastr.error("Admission number has already been used.");

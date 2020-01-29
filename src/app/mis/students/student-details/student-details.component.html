@@ -54,6 +54,22 @@
                         <td>{{basicDetails?.admitted | date}}</td>
                     </tr>
                     <tr>
+                        <td>Father's name</td>
+                        <td>{{basicDetails?.fatherName | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Mother's name</td>
+                        <td>{{basicDetails?.motherName | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Guardian's name</td>
+                        <td>{{basicDetails?.guardianName | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Home Contact</td>
+                        <td>{{basicDetails?.homeContact}}</td>
+                    </tr>
+                    <tr>
                         <td>Date added</td>
                         <td>{{basicDetails?.created | date: 'medium'}}</td>
                     </tr>
