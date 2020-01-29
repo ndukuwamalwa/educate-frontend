@@ -31,7 +31,7 @@ export class AuthService {
     return Promise.resolve(true);
   }
 
-  getUserDetails(): { name: string, username: string, title: string, access: string } {
+  getUserDetails(): { id: string | number, name: string, username: string, title: string, access: string } {
     const token = window.sessionStorage.getItem("token");
     if (!token) return null;
     const user = this.tokenService.decodeToken(token);
