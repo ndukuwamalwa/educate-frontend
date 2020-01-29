@@ -7,12 +7,12 @@
         <fieldset class="full-width">
             <label for="username">Username</label>
             <input type="text" name="username" id="username" formControlName="username" autocomplete="off"
-                (focus)="onFocus()" readonly>
+                (focus)="onFocus()">
         </fieldset>
         <fieldset class="full-width">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" formControlName="password" autocomplete="off"
-                (focus)="onFocus()" readonly>
+                (focus)="onFocus()">
         </fieldset>
         <fieldset class="full-width">
             <p style="color: red;" *ngIf="invalidCredentials">{{invalidCredentials}}</p>
