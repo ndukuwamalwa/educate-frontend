@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ViewAttendanceComponent } from './view-attendance/view-attendance.component';
 import { AttendanceService } from './attendance.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CacheService } from 'src/app/cache-service';
 
 
 
@@ -24,7 +25,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     AttandanceComponent
   ],
   providers: [
-    AttendanceService
+    AttendanceService,
+    CacheService
   ]
 })
 export class AttendanceModule { }
