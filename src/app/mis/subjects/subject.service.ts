@@ -3,33 +3,32 @@ import { environment } from 'src/environments/environment';
 import { Http } from 'src/app/http/http';
 import { Subject } from 'src/app/models/subject.model';
 import { Observable } from 'rxjs';
-import { publishReplay, refCount } from 'rxjs/operators';
+import { CacheService } from 'src/app/cache-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubjectService {
   api: string = `${environment.apiUrl}/api`;
-  fetchSubjects: Observable<any>;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private cacheService: CacheService) { }
 
   add(subject: Subject): Observable<any> {
+    this.cacheService.clear(`${this.api}/subjects`);
     return this.http._post(`${this.api}/subjects`, subject);
   }
 
   update(subject: Subject, id): Observable<any> {
+    this.cacheService.clear(`${this.api}/subjects`);
     return this.http._put(`${this.api}/subjects?id=${id}`, subject);
   }
 
   subjects(): Observable<any> {
-    if (!this.fetchSubjects) {
-      this.fetchSubjects = this.http._get(`${this.api}/subjects`).pipe(publishReplay(1), refCount());
-    }
-    return this.fetchSubjects;
+    return this.cacheService.cache(`${this.api}/subjects`);
   }
 
   delete(id): Observable<any> {
+    this.cacheService.clear(`${this.api}/subjects`);
     return this.http._delete(`${this.api}/subjects?id=${id}`);
   }
 
@@ -48,12 +47,5 @@ export class SubjectService {
   deregister(id): Observable<any> {
     return this.http._delete(`${this.api}/subjects/register?id=${id}`);
   }
-
-  lessoning(): Observable<any> {
-    return this.http._get(`${this.api}/subjects/lessoning`);
-  }
-
-  saveLessoning(pack: { subject: number, lessons: number, doubles: number, daytime: string }[]): Observable<any> {
-    return this.http._post(`${this.api}/subjects/lessoning`, pack);
-  }
+  
 }

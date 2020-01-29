@@ -4,6 +4,7 @@ import { User } from 'src/app/models/user.model';
 import { Observable } from 'rxjs';
 import { Http } from 'src/app/http/http';
 import { createQuery } from 'src/app/utilities';
+import { CacheService } from 'src/app/cache-service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { createQuery } from 'src/app/utilities';
 export class UserService {
   api = `${environment.apiUrl}/api`;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private cacheService: CacheService) { }
 
   add(user: User): Observable<any> {
     return this.http._post(`${this.api}/users`, user);
@@ -26,10 +27,10 @@ export class UserService {
   }
 
   list(options): Observable<any> {
-    return this.http._get(`${this.api}/users?${createQuery(options)}`);
+    return this.cacheService.cache(`${this.api}/users?${createQuery(options)}`);
   }
 
   view(id): Observable<any> {
-    return this.http._get(`${this.api}/users?id=${id}`);
+    return this.cacheService.cache(`${this.api}/users?id=${id}`);
   }
 }

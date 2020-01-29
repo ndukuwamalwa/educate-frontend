@@ -48,7 +48,6 @@ export class AddClassComponent implements OnChanges {
       .subscribe(res => {
         this.isLoading = false;
         this.toastr.success("Class added successfully.");
-        this.classService.fetchClasses = null;
         this.router.navigate(['classes', 'view', 'classes']);
       }, e => {
         this.isLoading = false;

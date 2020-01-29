@@ -38,7 +38,6 @@ export class StudentsComponent implements OnInit {
       .subscribe(res => {
         this.isLoading = false;
         this.toastr.success("Student added successfully");
-        this.studentService.recentUrls = {};
       }, e => {
         this.isLoading = false;
         if (e.status === 409) return this.toastr.error("Admission number has already been used.");
@@ -96,7 +95,6 @@ export class StudentsComponent implements OnInit {
         this.isLoading = false;
         this.toastr.success("Operation successful");
         this.router.navigate(['students', 'view', 'expelled']);
-        this.studentService.recentUrls = {};
       }, e => {
         this.isLoading = false;
         if (e.status === 404) return this.toastr.error("Student by the given admission number was not found.");
@@ -131,7 +129,6 @@ export class StudentsComponent implements OnInit {
         this.toastr.success(`Archived ${this.toArchive.length} students`);
         this.toArchive = [];
         this.router.navigate(['students', 'view', 'archived']);
-        this.studentService.recentUrls = {};
       }, e => {
         this.isLoading = false;
         this.toastr.error("Failed to execute request.");
@@ -157,7 +154,6 @@ export class StudentsComponent implements OnInit {
               this.isLoading = false;
               this.toastr.success("Students deleted successfully.");
               this.router.navigate(['students', 'view', 'active']);
-              this.studentService.recentUrls = {};
             }, e => {
               this.isLoading = false;
               this.toastr.error("Could not delete part/all of the selected students. Please retry.");
@@ -181,7 +177,6 @@ export class StudentsComponent implements OnInit {
               this.isLoading = false;
               this.toastr.success("Students restored successfully.");
               this.router.navigate(['students', 'view', 'active']);
-              this.studentService.recentUrls = {};
             }, e => {
               this.isLoading = false;
               this.toastr.error("Failed to restore some/all of the students.");

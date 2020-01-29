@@ -46,7 +46,6 @@ export class StudentDetailsComponent implements OnInit {
         this.isUpdating = false;
         this.toastr.success("Details updated successfully.");
         this.basicDetails = { ...this.basicDetails, ...data };
-        this.studentService.recentUrls = {};
       }, e => {
         this.isUpdating = false;
         if (e.status === 409) return this.toastr.error("Admission number conflicts with another student.");
