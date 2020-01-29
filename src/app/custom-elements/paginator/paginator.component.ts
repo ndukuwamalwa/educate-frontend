@@ -11,28 +11,30 @@ export class PaginatorComponent implements OnChanges {
   @Input('shown') shown: number;
   size: number = 50;
   page: number = 1;
-  pages: number[];
+  pages: number[] = [];
   sortBy: string = 'id';
   sort: number = -1;
   search: string = '';
+  pagesCalculated: boolean = false;
   @Output('output') output: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   calculatePages() {
-    let totalPages = Math.ceil(this.total/this.size);
+    let totalPages = Math.ceil(this.total / this.size);
     if (totalPages === 0) {
       totalPages = 1;
     }
     this.pages = [];
-    for (let i = 1; i <= totalPages; i ++) {
+    for (let i = 1; i <= totalPages; i++) {
       this.pages.push(i);
     }
     this.page = 1;
   }
 
   ngOnChanges() {
-    if (this.total && this.sorts) {
+    if (this.total && this.sorts && !this.pagesCalculated) {
+      this.pagesCalculated = true;
       this.calculatePages();
     }
   }
@@ -66,18 +68,14 @@ export class PaginatorComponent implements OnChanges {
 
   prev() {
     if (this.page === 1) return;
-    if (this.page !== 1) {
-      this.page -= 1;
-      this.sendChange();
-    }
+    this.page -= 1;
+    this.sendChange();
   }
 
   next() {
-    if (!this.pages) return;
-    if (this.page !== this.pages[this.pages.length - 1]) {
-      this.page += 1;
-      this.sendChange();
-    }
+    if (this.page === this.pages[this.pages.length - 1]) return;
+    this.page += 1;
+    this.sendChange();
   }
 
   sendChange() {

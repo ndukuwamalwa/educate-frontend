@@ -42,7 +42,7 @@
     <div id="buts">
       <i class="fa fa-chevron-left" (click)="prev()" [ngClass]="{green: page > 1}"></i>
       <i class="fa fa-chevron-right" (click)="next()"
-        [ngClass]="{green: (pages && (page !== pages[pages.length - 1]))}"></i>
+        [ngClass]="{green: page !== pages[pages.length - 1]}"></i>
     </div>
   </div>
 </article>
