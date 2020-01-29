@@ -15,14 +15,17 @@ export class UserService {
   constructor(private http: Http, private cacheService: CacheService) { }
 
   add(user: User): Observable<any> {
+    this.cacheService.clear(`${this.api}/users`);
     return this.http._post(`${this.api}/users`, user);
   }
 
   update(user: User, id): Observable<any> {
+    this.cacheService.clear(`${this.api}/users`);
     return this.http._put(`${this.api}/users?id=${id}`, user);
   }
 
   delete(id): Observable<any> {
+    this.cacheService.clear(`${this.api}/users`);
     return this.http._delete(`${this.api}/users?id=${id}`);
   }
 
