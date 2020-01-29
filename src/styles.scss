@@ -101,6 +101,10 @@ select {
     background-color: #fff;
 }
 
+input:invalid, select:invalid {
+    box-shadow: none;
+}
+
 textarea {
     height: 100px;
 }
