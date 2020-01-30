@@ -1,5 +1,6 @@
 <app-paginator [total]="total" [shown]="students?.length" [sorts]="sorts" (output)="onOptions($event)"></app-paginator>
 <p class="info" *ngIf="students && students?.length === 0">No IDPs!!</p>
+<app-loader *ngIf="isLoading"></app-loader>
 <table>
     <thead>
         <tr>
@@ -36,7 +37,7 @@
         </select>
     </fieldset>
     <fieldset>
-        <button class="btn btn--primary" [disabled]="isLoading">Add {{selectedStudents.length}} students</button>
-        <app-loader *ngIf="isLoading"></app-loader>
+        <button class="btn btn--primary" [disabled]="isAddingToClass">Add {{selectedStudents.length}} students</button>
+        <app-loader *ngIf="isAddingToClass"></app-loader>
     </fieldset>
 </form>

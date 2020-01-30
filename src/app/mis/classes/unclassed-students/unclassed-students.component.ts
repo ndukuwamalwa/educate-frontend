@@ -14,6 +14,7 @@ export class UnclassedStudentsComponent implements OnInit {
   students: Student[];
   streams: Stream[];
   isLoading: boolean = false;
+  isAddingToClass: boolean = false;
   selectedStudents: number[] = [];
   sorts: { label: string, key: string }[] = [
     {
@@ -76,15 +77,15 @@ export class UnclassedStudentsComponent implements OnInit {
   }
 
   addToClass({ stream }) {
-    this.isLoading = true;
+    this.isAddingToClass = true;
     this.classService.addStudents(stream, this.selectedStudents)
       .subscribe(res => {
-        this.isLoading = false;
+        this.isAddingToClass = false;
         this.getStudents();
         this.toastr.success("Students added to selected class successfully.");
         this.selectedStudents = [];
       }, e => {
-        this.isLoading = false;
+        this.isAddingToClass = false;
         if (e.status === 409) return this.toastr.error("Some students already exist in the class. Please refresh page.");
         this.toastr.error("Failed to add students to class.");
       });
