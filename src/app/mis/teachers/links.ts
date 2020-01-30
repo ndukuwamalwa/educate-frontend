@@ -51,6 +51,17 @@ export function teacherLinks(): TabLink[] {
     } else if (type === 'registrar') {
         teacherLinks = [
             {
+                label: "Add",
+                path: "/add",
+                default: "/new",
+                children: [
+                    {
+                        label: "New",
+                        path: "/new"
+                    }
+                ]
+            },
+            {
                 label: "Teachers",
                 path: "/view",
                 default: "/active",
